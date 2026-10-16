@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PART 5 逐手看蕈狀體怎麼打｜蕈狀體學 21 點</title>
+<link rel="stylesheet" href="assets/flybj.css">
+<style>
+/* 播放台：只在這一頁用，顏色取 flybj.css 的變數；三個動作另定三色（要牌金、停牌紫、加倍青） */
+:root{--hit:#a67c00; --stand:#6f4fc4; --double:#1b8a8a}
+.rig{border:1px solid var(--border);border-radius:var(--radius);padding:14px;background:var(--bg);display:flex;flex-direction:column;gap:12px;margin:18px 0}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{font:inherit;font-size:14px;border:1px solid var(--border);background:var(--panel);color:var(--ink);padding:4px 14px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab:focus-visible,.pbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stage{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:14px}
+@media (max-width:800px){.stage{grid-template-columns:minmax(0,1fr)}}
+.vbox{position:relative;background:#000;border-radius:8px;overflow:hidden;aspect-ratio:16/9;max-width:100%}
+.vbox video{width:100%;height:100%;display:block}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}
+.pbtn{font:inherit;font-size:13px;border:1px solid var(--border);background:var(--panel);color:var(--ink);padding:3px 11px;border-radius:6px;cursor:pointer}
+.pbtn.main{background:var(--ink);color:#fff;border-color:var(--ink);min-width:70px}
+.pbtn[aria-pressed="true"]{background:var(--ink);color:#fff}
+.ctl input[type=range]{flex:1;min-width:110px;accent-color:var(--ink)}
+.readout{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 10px;align-items:center;font-size:13.5px}
+.readout .lab{color:var(--soft)}
+.mono{font-family:Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.cards{font-family:Menlo,Consolas,monospace;font-size:15px;font-weight:700;letter-spacing:.08em}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-family:Menlo,Consolas,monospace;font-size:12px;padding:1px 9px;border-radius:999px;border:1px solid var(--border);color:var(--soft)}
+.chip.on{color:#fff;border-color:transparent}
+.chip.on.bh{background:var(--hit)} .chip.on.bs{background:var(--stand)} .chip.on.bd{background:var(--double)} .chip.dim{opacity:.4}
+.tl canvas{width:100%;height:150px;display:block;cursor:pointer}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--soft)}
+.sw{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:4px}
+.note2{font-size:13.5px;color:var(--soft);border-left:3px solid var(--border);padding-left:10px;margin:0}
+</style>
+</head>
+<body>
+<div class="crumb"><a href="https://marginli.github.io/bsc-topics/">BSC 專題課程</a> ／ <a href="index.html">蕈狀體學 21 點</a> ／ PART 5</div>
+<header class="hero">
+  <p class="eyebrow">PART 5</p>
+  <h1>逐手看蕈狀體怎麼打</h1>
+  <p class="subtitle">把重現時的三萬手錄成影片：牌桌、Kenyon 細胞與輸出神經元的活動、多巴胺、學習曲線與策略表逐手對齊；把 PART 1 的機制與 PART 3 的結果直接在畫面上找出來</p>
+</header>
+
+<div class="wrap">
+
+  <div class="pager top">
+    <a href="part4-checks.html">← PART 4　作者沒做的檢查</a>
+    <a href="index.html">回課程首頁 →</a>
+  </div>
+
+  <nav class="toc">
+    <h2>本頁章節</h2>
+    <ol>
+      <li><a href="#s1">這些影片是什麼</a></li>
+      <li><a href="#s2">播放台</a></li>
+      <li><a href="#s3">在畫面上找四件事</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="s1"><span class="pt">1</span>這些影片是什麼</h2>
+
+  <p>21 點沒有遊戲畫面，影片是從逐手紀錄畫出來的。本課把 <a href="part3-repro.html#s7">PART 3 第 7 節</a>那個實驗用種子 0 重跑一次，每一手多記下牌面、三個候選動作的好惡值、選了什麼、是不是隨機探索、以及 Kenyon 細胞與輸出神經元的活動；這份紀錄逐手與 BJ5 的結果核對過（每 2,000 手的平均輸贏與一致率完全相同），再用它畫成影片。三種大腦各一支：<b>連結體 ＋ 多巴胺</b>（完整模型）、<b>切斷多巴胺</b>（多巴胺神經元照常放電，但到輸出神經元的連結被設成 0）、<b>未訓練</b>（從頭到尾選好惡值最高的動作，不探索、不學習）。三支影片的第 1 手完全相同——同一個種子、同一副牌、同一個還沒學過任何東西的蕈狀體——之後因為每種大腦選的動作不同，抽到的牌就分道揚鑣。</p>
+  <p>每支影片約一分鐘：開頭 6 手和最後 6 手慢速逐步播——發牌、三個候選動作各「聞」一次、選擇、抽牌、莊家翻牌、結果與多巴胺——中間 29,988 手快轉 18 秒。畫面上每個數字都來自紀錄，網頁播放時只是重播，<b>不會在瀏覽器裡重新模擬</b>。</p>
+
+  <p class="figsrc">逐手紀錄由課程 repo 外的 <code>fly_play_game/demo/record_bj.py</code> 產生、<code>render_bj.py</code> 畫成影片；本頁引用的手牌與數字收在 <code>out/bj_demo_summary.json</code>，播放台用的逐格資料在 <code>assets/demo/data.json</code>（與 <code>out/demo_data.json</code> 同一份）。</p>
+
+  <h2 id="s2"><span class="pt">2</span>播放台</h2>
+
+  <div class="rig">
+    <div class="tabs" role="tablist" aria-label="大腦">
+      <button class="tab" role="tab" id="btab-bj_fly" data-b="bj_fly" aria-selected="true">連結體 ＋ 多巴胺</button>
+      <button class="tab" role="tab" id="btab-bj_nodopa" data-b="bj_nodopa" aria-selected="false">切斷多巴胺</button>
+      <button class="tab" role="tab" id="btab-bj_untrained" data-b="bj_untrained" aria-selected="false">未訓練（不學習）</button>
+    </div>
+    <div class="stage">
+      <div>
+        <div class="vbox"><video id="bjVid" muted playsinline preload="auto" src="assets/demo/bj_fly.mp4"></video></div>
+        <div class="ctl">
+          <button class="pbtn main" id="bjPlay">▶ 播放</button>
+          <button class="pbtn" id="bjBack" aria-label="上一格">◀ 格</button>
+          <button class="pbtn" id="bjFwd" aria-label="下一格">格 ▶</button>
+          <button class="pbtn" id="bjFull">全螢幕</button>
+          <input type="range" id="bjScrub" min="0" max="100" value="0" aria-label="時間">
+          <span role="group" aria-label="速度">
+            <button class="pbtn" data-r="0.5" aria-pressed="false">½×</button>
+            <button class="pbtn" data-r="1" aria-pressed="true">1×</button>
+            <button class="pbtn" data-r="2" aria-pressed="false">2×</button>
+          </span>
+        </div>
+      </div>
+      <div>
+        <div class="readout">
+          <span class="lab">進度</span><span><b id="bjHudH">第 1 手</b>　<span class="lab">階段：<span id="bjStage">發牌</span>　累積每手 <span class="mono" id="bjHudC">+0.000</span></span></span>
+          <span class="lab">果蠅</span><span><span class="cards" id="bjP"></span> <span class="lab" id="bjPT"></span></span>
+          <span class="lab">莊家</span><span><span class="cards" id="bjD"></span> <span class="lab" id="bjDT"></span></span>
+          <span class="lab">候選好惡</span>
+          <div class="chips"><span class="chip bh" id="bcH">要牌</span><span class="chip bs" id="bcS">停牌</span><span class="chip bd" id="bcD">加倍</span></div>
+          <span class="lab"></span><span class="lab" id="bjDec"></span>
+          <span class="lab">結果</span><span id="bjOut">—</span>
+          <span class="lab">策略表</span><span class="lab" id="bjAgr"></span>
+        </div>
+        <p class="note2" id="bjNote"></p>
+      </div>
+    </div>
+    <div class="tl"><canvas id="bjTl" aria-label="累積每手輸贏隨影片進度；點一下跳到該時間"></canvas></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--green)"></i>從第 1 手起的累積每手平均輸贏</span>
+      <span>灰底：快轉段</span>
+      <span>虛線：永遠停牌、隨機出牌的參考值</span>
+      <span>點曲線可以跳到那個時間</span>
+    </div>
+  </div>
+
+  <p class="figsrc"><b>影片的四個面板。</b>左邊是牌桌：莊家與果蠅的牌、三個候選動作的好惡值長條（<a href="part1-what.html#s3">PART 1 第 3 節</a>的好惡值；只在前兩張時有「加倍」），框起來的是選中的那個，「隨機探索」表示這一手沒看好惡值、亂選的（<a href="part1-what.html#s5">PART 1 第 5 節</a>）；結果列寫輸贏與這手的回饋方向。右上是蕈狀體：1,200 顆 Kenyon 細胞排成 40 × 30 的格子（位置只是編號順序，不是解剖位置），亮的是這個「情境＋動作」活化的 72 顆；97 顆輸出神經元分趨近型 56 顆（藍）、迴避型 41 顆（琥珀），亮度是活動量，Σ趨近 − Σ迴避 就是好惡值；下方 332 顆多巴胺神經元在結果出來時閃一次：贏是獎賞群（PAM 316 顆，綠），輸是懲罰群（PPL1 16 顆，紅），強度看輸贏幾注。「切斷多巴胺」那支影片在多巴胺到輸出神經元的箭頭上畫紅叉。右下左邊是每手平均輸贏的曲線（線是最近 1,000 手的滑動平均，點是每 2,000 手的平均，虛線是三條參考值），右邊是 260 格策略表：橫是莊家明牌、直是手上點數，每格的顏色是蕈狀體現在會選的動作，格中的點表示與基本策略相同；表每 200 手更新一次。</p>
+  <p class="figsrc"><b>影片旁的讀數。</b>與影片逐格同步。「候選好惡」三個數字就是影片裡三條長條的值；「策略表」那一行是 260 格裡與基本策略相同的比例。下方的曲線是從第 1 手起的累積平均（前 20 手不畫，因為幾手的平均只會在 −1 與 +1 之間跳），和影片裡的 1,000 手滑動平均是兩種算法，數字不會一樣。</p>
+
+  <h2 id="s3"><span class="pt">3</span>在畫面上找四件事</h2>
+
+  <ol>
+    <li><b>第 1 手：沒學過的蕈狀體怎麼選。</b>三個分頁的第 1 手完全相同：果蠅拿到 10、10，硬 20 對莊家明牌 8。三個候選動作的好惡值是要牌 +0.243、停牌 +0.168、加倍 +0.019——還沒學過任何東西的蕈狀體，對「要牌」這個氣味的好惡本來就最高（這是 PN 分配的亂數決定的，不是學來的），所以它在硬 20 還要牌，抽到 6 爆牌，輸 1 注。結果出來時懲罰群多巴胺閃紅、強度 0.5，這手「硬 20 對 8 ＋ 要牌」的 KC→MBON 連結被削弱。這就是 PART 3 第 7 節說「未訓練的蕈狀體幾乎每格都要牌」的現場：打完 0 手時，策略表 260 格裡要牌 239 格、停牌 17 格、加倍 4 格。</li>
+    <li><b>第 6 手：贏一次的回饋長什麼樣。</b>在「連結體 ＋ 多巴胺」分頁拉到第 6 手：硬 11 對明牌 10，好惡值要牌 +0.763、停牌 +0.429、加倍 +0.469，要牌；抽到 10 成為 21，第二次決策停牌（+0.559 對 +0.511）；莊家 20，贏 1 注，獎賞群多巴胺閃綠。這一手做過的兩個決定（硬 11 要牌、硬 21 停牌）都分到同樣的獎賞——<a href="part1-what.html#s5">PART 1 第 5 節</a>講的「一手裡每個決定分到同樣的回饋」。基本策略在硬 11 對 10 會加倍，蕈狀體選的是要牌，所以這一格仍算不一致。</li>
+    <li><b>最後 6 手：學完之後所有好惡值都靠近 0。</b>同一分頁拉到第 29,995 手：硬 10 對明牌 5，好惡值要牌 −0.004、停牌 −0.000、加倍 −0.042，三個都在 0 附近，停牌以極小的差距勝出。30,000 手的懲罰把幾乎每一種「情境＋動作」的 KC→MBON 連結都削弱過，右上的輸出神經元幾乎不亮；蕈狀體學到的是「哪個動作比較不糟」，不是「哪個動作好」。基本策略在這一格會加倍。切到「切斷多巴胺」分頁看同一個位置（第 29,995 手，硬 15 對明牌 10；牌面和完整模型不同，因為第 1 手之後兩種大腦抽到的牌已經分開）：好惡值還是 +0.326、+0.391、+0.219 這種沒學過的大小——連結從頭到尾沒變，30,000 手只是把探索率從 35% 降到 3% 而已。</li>
+    <li><b>快轉段：策略表怎麼翻面。</b>在「連結體 ＋ 多巴胺」分頁看右下的 260 格：打完 0 手是要牌 239 格；打完 2,000 手已經變成停牌 211 格、加倍 49 格、要牌 0 格；打完 30,000 手是停牌 214、加倍 40、要牌 6（只剩硬 10、硬 11、硬 16、軟 16、軟 21 這幾種點數還要牌）。與基本策略一致的比例從 45% 掉到 41%，再回到 44%——基本策略 260 格裡 115 格要牌、106 格停牌、39 格加倍：未訓練的表對中 117 格（45%），其中 106 格是要牌；學完後幾乎每格都停牌，換成對中停牌那些格，比例差不多，但每手平均輸贏從第一個 2,000 手的 −0.259 變成最後的 −0.150。這就是 PART 3 第 7 節的結論：勝率改善能重現，但學到的不是基本策略，而是「不要爆牌」。</li>
+  </ol>
+
+  <p class="figsrc">四個檢查點的牌面、好惡值、策略表格數與每 2,000 手平均都在 <code>out/bj_demo_summary.json</code>（各條件開頭與結尾各 6 手的紀錄、打完 0／2,000／30,000 手時的 260 格統計、基本策略表各動作的格數）；每 2,000 手平均與 <code>out/blackjack/bj5_blackjack_30000.json</code> 種子 0 的 blocks 相同。</p>
+
+  <div class="pager">
+    <a href="part4-checks.html">← PART 4　作者沒做的檢查</a>
+    <a href="index.html">回課程首頁 →</a>
+  </div>
+
+</div>
+<div class="foot">BSC 腦空間體研究中心 · 專題課程 蕈狀體學 21 點 · 教材由 Claude Code 產生　·　<a href="index.html">回課程首頁</a></div>
+
+<script>
+const BJ_FPS=30,BJ_ACT=["要牌","停牌","加倍"],BJ_ST=["發牌","聞三個候選動作","選擇","抽牌","莊家翻牌","莊家補牌","結果","快轉","結束"];
+const $=s=>document.querySelector(s),css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const BJ_NOTE={
+  bj_fly:E=>`每手結束後的學習方向：輸了，懲罰多巴胺減弱通往「趨近型」輸出神經元的突觸，這手聞過的情境＋動作以後聞起來更差；贏了，獎賞多巴胺減弱通往「迴避型」的突觸，聞起來更好。種子 0 每 2,000 手的平均輸贏從 ${E.blocks[0].toFixed(3)} 變成 ${E.blocks[E.blocks.length-1].toFixed(3)}；與基本策略的一致率 ${(E.agree[0]*100).toFixed(0)}% → ${(E.agree[E.agree.length-1]*100).toFixed(0)}%。`,
+  bj_nodopa:E=>`多巴胺神經元照常放電，但到輸出神經元的連結被切斷（影片中的紅叉），突觸不會改變；探索率照樣衰減。種子 0 整場停在 ${E.blocks[E.blocks.length-1].toFixed(3)} 左右，和隨機出牌差不多。`,
+  bj_untrained:E=>`從頭到尾選好惡值最高的動作、不探索、不學習。未訓練的蕈狀體在策略表 260 格裡有 239 格要牌，常常爆牌，種子 0 每手平均 ${E.blocks[E.blocks.length-1].toFixed(3)}。`
+};
+let D,B="bj_fly",bidx=0,bjBase=null;
+const bvid=$("#bjVid"),btl=$("#bjTl");
+const rk=c=>c===11?"A":String(c);
+function bjTotal(cs){let t=cs.reduce((a,b)=>a+b,0),ac=cs.filter(c=>c===11).length;while(t>21&&ac){t-=10;ac--}return [t,ac>0]}
+function bjCardsAt(dec,p){if(dec[4])return 2;for(let n=3;n<=p.length;n++){const [t,s]=bjTotal(p.slice(0,n));if(t===dec[1]&&(s?1:0)===dec[2])return n}return p.length}
+function bjShow(i){
+  const E=D.bj_episodes[B];bidx=Math.max(0,Math.min(E.n-1,i));i=bidx;
+  const h=E.h[i],st=E.st[i],di=E.di[i],opt=E.opt[i],hand=E.hands[h],dec=di>=0?E.dec[di]:null,p=hand[2],dl=hand[3];
+  $("#bjHudH").textContent="第 "+(h+1).toLocaleString()+" 手";$("#bjHudC").textContent=(E.cum[i]>=0?"+":"")+E.cum[i].toFixed(3);$("#bjScrub").value=i;
+  $("#bjStage").textContent=BJ_ST[st]+(st===7?"（每格跳過許多手）":"");
+  let np=p.length,nd=dl.length;
+  if(st===0){np=2;nd=1}else if(st<=3&&dec){np=bjCardsAt(dec,p)+(st===3?1:0);nd=1}
+  const [pt,ps]=bjTotal(p.slice(0,np));$("#bjP").textContent=p.slice(0,np).map(rk).join(" ");$("#bjPT").textContent=(ps?"軟 ":"硬 ")+pt+(pt>21?"，爆牌":"");
+  const [dt,ds]=bjTotal(dl.slice(0,nd));$("#bjD").textContent=dl.slice(0,nd).map(rk).join(" ")+(nd<dl.length||st<4?" ▮":"");$("#bjDT").textContent=nd===1?"明牌":(ds?"軟 ":"")+dt+(dt>21?"，爆牌":"");
+  [["#bcH",0,5],["#bcS",1,6],["#bcD",2,7]].forEach(([id,a,k])=>{const c=$(id),v=dec?dec[k]:null;
+    c.textContent=BJ_ACT[a]+(v==null?"":" "+(v>=0?"+":"")+v.toFixed(3));
+    c.classList.toggle("dim",!!dec&&v==null);
+    c.classList.toggle("on",!!dec&&((st===1&&opt===a)||(st!==1&&dec[8]===a)))});
+  const sit=dec?`${dec[2]?"軟":"硬"} ${dec[1]} 對明牌 ${rk(dec[3])}：`:"";
+  $("#bjDec").textContent=dec?(st===1?`${sit}正在聞「${BJ_ACT[opt]}」`:`${sit}選「${BJ_ACT[dec[8]]}」${dec[9]?"（隨機探索）":""}　基本策略：${BJ_ACT[dec[10]]}${dec[8]===dec[10]?"，一致":""}`):(st===0?"發牌中":"沒有決策（有人拿到黑傑克）");
+  const net=E.net[i];$("#bjOut").textContent=net==null?"—":`${hand[1]==="bust"?"爆牌，":hand[1]==="dealer_bust"?"莊家爆牌，":hand[1]==="blackjack"?"黑傑克，":hand[1]==="dealer_bj"?"莊家黑傑克，":""}${net>0?"贏":net<0?"輸":"平手"} ${net>0?"+":""}${net}`;
+  $("#bjOut").style.color=net==null?"":net>0?css("--green"):net<0?css("--red"):css("--soft");
+  $("#bjAgr").textContent=`與基本策略一致 ${(E.agr[i]*100).toFixed(0)}%（260 格）`;
+  bjPaintHead();
+}
+function drawBjTimeline(){
+  const E=D.bj_episodes[B],dpr=window.devicePixelRatio||1,W=btl.clientWidth,H=150;btl.width=W*dpr;btl.height=H*dpr;
+  const off=document.createElement("canvas");off.width=btl.width;off.height=btl.height;const g=off.getContext("2d");g.scale(dpr,dpr);
+  const padL=40,padR=8,top=6,bot=H-20,n=E.n,X=i=>padL+i/(n-1)*(W-padL-padR),Y=v=>bot-(v+0.55)/0.6*(bot-top);
+  g.font="11px Menlo,Consolas,monospace";
+  let a=-1;for(let i=0;i<=n;i++){const ff=i<n&&E.st[i]===7;if(ff&&a<0)a=i;if(!ff&&a>=0){g.fillStyle=css("--panel");g.fillRect(X(a),top,X(i)-X(a),bot-top);a=-1}}
+  g.strokeStyle=css("--border");g.lineWidth=1;
+  for(const v of [-0.5,-0.4,-0.3,-0.2,-0.1,0]){g.beginPath();g.moveTo(padL,Y(v)+.5);g.lineTo(W-padR,Y(v)+.5);g.stroke();g.fillStyle=css("--soft");g.fillText(v.toFixed(1),4,Y(v)+4)}
+  g.setLineDash([3,3]);g.strokeStyle=css("--faint");
+  for(const [k,lab] of [["always stand","永遠停牌"],["random","隨機"]]){const y=Y(D.blackjack.reference[k]);g.beginPath();g.moveTo(padL,y);g.lineTo(W-padR,y);g.stroke();g.fillStyle=css("--soft");g.font="11px sans-serif";g.fillText(lab,W-padR-60,y-3);g.font="11px Menlo,Consolas,monospace"}
+  g.setLineDash([]);
+  g.strokeStyle=css("--green");g.lineWidth=1.8;g.beginPath();
+  let started=false;for(let i=0;i<n;i++){if(E.h[i]<20)continue;const y=Y(Math.max(-0.55,Math.min(0.05,E.cum[i])));started?g.lineTo(X(i),y):g.moveTo(X(i),y);started=true}g.stroke();
+  g.fillStyle=css("--soft");g.font="11px sans-serif";g.fillText("前 20 手不畫",padL+4,top+12);
+  const marks=[[0,"第 1 手"]];for(let i=1;i<n;i++){if(E.st[i]===7&&E.st[i-1]!==7)marks.push([i,"第 "+(E.h[i]+1).toLocaleString()+" 手起快轉"]);if(E.st[i]!==7&&E.st[i-1]===7)marks.push([i,"第 "+(E.h[i]+1).toLocaleString()+" 手"])}
+  for(const [i,t] of marks){const x=X(i);g.fillText(t,Math.min(x,W-padR-80),H-5)}
+  bjBase={off,X,n,dpr,top,bot};bjPaintHead();
+}
+function bjPaintHead(){if(!bjBase)return;const g=btl.getContext("2d");g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,btl.width,btl.height);g.drawImage(bjBase.off,0,0);g.scale(bjBase.dpr,bjBase.dpr);const x=bjBase.X(bidx);g.fillStyle=css("--ink");g.fillRect(x-1,bjBase.top,2,bjBase.bot-bjBase.top)}
+btl.addEventListener("click",ev=>{if(!bjBase)return;const r=btl.getBoundingClientRect();const fx=(ev.clientX-r.left-40)/(r.width-48);bjSeek(Math.round(Math.max(0,Math.min(1,fx))*(bjBase.n-1)))});
+const bjFrameOf=t=>Math.floor(t*BJ_FPS+1e-3);
+function bjLoop(){bjShow(bjFrameOf(bvid.currentTime));if(!bvid.paused&&!bvid.ended)requestAnimationFrame(bjLoop)}
+function bjSeek(i){bvid.pause();bvid.currentTime=(i+0.5)/BJ_FPS;bjShow(i);bjSetPlay()}
+function bjSetPlay(){$("#bjPlay").textContent=bvid.paused||bvid.ended?"▶ 播放":"❚❚ 暫停"}
+$("#bjPlay").onclick=()=>{if(bvid.paused||bvid.ended){if(bvid.ended||bidx>=D.bj_episodes[B].n-1)bvid.currentTime=0;bvid.play().then(()=>{bjSetPlay();requestAnimationFrame(bjLoop)}).catch(()=>{})}else{bvid.pause();bjSetPlay()}};
+bvid.addEventListener("pause",bjSetPlay);bvid.addEventListener("ended",()=>{bjSetPlay();bjShow(D.bj_episodes[B].n-1)});
+$("#bjBack").onclick=()=>bjSeek(bidx-1);$("#bjFwd").onclick=()=>bjSeek(bidx+1);
+$("#bjFull").onclick=()=>{const v=bvid;(v.requestFullscreen||v.webkitEnterFullscreen||v.webkitRequestFullscreen||(()=>{})).call(v)};
+$("#bjScrub").oninput=e=>bjSeek(+e.target.value);
+document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{bvid.playbackRate=+b.dataset.r;document.querySelectorAll("[data-r]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+function selectBj(b){
+  B=b;document.querySelectorAll(".tab[data-b]").forEach(t=>t.setAttribute("aria-selected",t.dataset.b===b));
+  const rate=bvid.playbackRate;bvid.pause();bvid.src="assets/demo/"+b+".mp4";bvid.playbackRate=rate;bvid.load();
+  $("#bjScrub").max=D.bj_episodes[b].n-1;$("#bjNote").textContent=BJ_NOTE[b](D.bj_episodes[b]);
+  drawBjTimeline();bjShow(0);bjSetPlay();
+}
+document.querySelectorAll(".tab[data-b]").forEach(t=>t.onclick=()=>selectBj(t.dataset.b));
+fetch("assets/demo/data.json").then(r=>r.json()).then(d=>{D=d;selectBj("bj_fly");new ResizeObserver(()=>drawBjTimeline()).observe(btl)});
+</script>
+</body>
+</html>

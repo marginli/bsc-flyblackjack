@@ -1,0 +1,1613 @@
+{
+ "source": "fly_play_game/demo/rec/bj_*.json（record_bj.py，seed 0，30,000 手，與 bj5 結果逐塊核對）",
+ "conditions": {
+  "bj_fly": {
+   "name": "connectome + dopamine",
+   "blocks": [
+    -0.2585,
+    -0.15975,
+    -0.2005,
+    -0.226,
+    -0.153,
+    -0.1395,
+    -0.16075,
+    -0.1145,
+    -0.187,
+    -0.1865,
+    -0.15875,
+    -0.105,
+    -0.15175,
+    -0.14725,
+    -0.15025
+   ],
+   "agree": [
+    0.4115384615384615,
+    0.43846153846153846,
+    0.4307692307692308,
+    0.4230769230769231,
+    0.4076923076923077,
+    0.4307692307692308,
+    0.4346153846153846,
+    0.4423076923076923,
+    0.4576923076923077,
+    0.46923076923076923,
+    0.46153846153846156,
+    0.45,
+    0.45,
+    0.46153846153846156,
+    0.43846153846153846
+   ],
+   "hands": {
+    "1": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      10,
+      6
+     ],
+     "dealer": [
+      8,
+      5
+     ],
+     "explore_rate": 0.35,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 8,
+       "first": true,
+       "values": {
+        "hit": 0.2432,
+        "stand": 0.1681,
+        "double": 0.0185
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "2": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      2,
+      2,
+      10,
+      10
+     ],
+     "dealer": [
+      2,
+      4
+     ],
+     "explore_rate": 0.3499,
+     "decisions": [
+      {
+       "total": 4,
+       "soft": false,
+       "upcard": 2,
+       "first": true,
+       "values": {
+        "hit": 0.7009,
+        "stand": 0.5673,
+        "double": 0.4214
+       },
+       "chosen": "hit",
+       "explored": true,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 14,
+       "soft": false,
+       "upcard": 2,
+       "first": false,
+       "values": {
+        "hit": 0.7423,
+        "stand": 0.7832
+       },
+       "chosen": "hit",
+       "explored": true,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "3": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      8,
+      10
+     ],
+     "dealer": [
+      9,
+      11
+     ],
+     "explore_rate": 0.3499,
+     "decisions": [
+      {
+       "total": 18,
+       "soft": false,
+       "upcard": 9,
+       "first": true,
+       "values": {
+        "hit": 0.4923,
+        "stand": 0.3274,
+        "double": 0.1036
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "4": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      9,
+      5
+     ],
+     "dealer": [
+      9,
+      11
+     ],
+     "explore_rate": 0.3498,
+     "decisions": [
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 9,
+       "first": true,
+       "values": {
+        "hit": 0.5308,
+        "stand": 0.3813,
+        "double": 0.1514
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "5": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      10,
+      10
+     ],
+     "dealer": [
+      2,
+      7
+     ],
+     "explore_rate": 0.3497,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 2,
+       "first": true,
+       "values": {
+        "hit": 0.6412,
+        "stand": 0.6318,
+        "double": 0.484
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "6": {
+     "net": 1.0,
+     "how": "win",
+     "player": [
+      9,
+      2,
+      10
+     ],
+     "dealer": [
+      10,
+      10
+     ],
+     "explore_rate": 0.3496,
+     "decisions": [
+      {
+       "total": 11,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": 0.7631,
+        "stand": 0.4292,
+        "double": 0.4694
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "double"
+      },
+      {
+       "total": 21,
+       "soft": false,
+       "upcard": 10,
+       "first": false,
+       "values": {
+        "hit": 0.5115,
+        "stand": 0.5588
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "reward",
+     "dopamine_strength": 0.5
+    },
+    "29995": {
+     "net": 1.0,
+     "how": "dealer_bust",
+     "player": [
+      2,
+      8
+     ],
+     "dealer": [
+      5,
+      9,
+      8
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 10,
+       "soft": false,
+       "upcard": 5,
+       "first": true,
+       "values": {
+        "hit": -0.0042,
+        "stand": -0.0002,
+        "double": -0.0415
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "double"
+      }
+     ],
+     "dopamine": "reward",
+     "dopamine_strength": 0.5
+    },
+    "29996": {
+     "net": -1.0,
+     "how": "lose",
+     "player": [
+      6,
+      10
+     ],
+     "dealer": [
+      8,
+      11
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 16,
+       "soft": false,
+       "upcard": 8,
+       "first": true,
+       "values": {
+        "hit": -0.0364,
+        "stand": -0.0259,
+        "double": -0.093
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "29997": {
+     "net": 1.5,
+     "how": "blackjack",
+     "player": [
+      11,
+      10
+     ],
+     "dealer": [
+      2,
+      2
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "29998": {
+     "net": -1.0,
+     "how": "lose",
+     "player": [
+      5,
+      10
+     ],
+     "dealer": [
+      10,
+      10
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 15,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": -0.0202,
+        "stand": 0.0,
+        "double": -0.0653
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "29999": {
+     "net": -1.0,
+     "how": "lose",
+     "player": [
+      4,
+      4
+     ],
+     "dealer": [
+      5,
+      4,
+      11
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 8,
+       "soft": false,
+       "upcard": 5,
+       "first": true,
+       "values": {
+        "hit": -0.0182,
+        "stand": 0.0003,
+        "double": -0.0343
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "30000": {
+     "net": -2.0,
+     "how": "lose",
+     "player": [
+      7,
+      3,
+      8
+     ],
+     "dealer": [
+      10,
+      10
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 10,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": -0.0031,
+        "stand": 0.0001,
+        "double": 0.0018
+       },
+       "chosen": "double",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 1.0
+    }
+   },
+   "chart_counts_after_hands": {
+    "0": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "200": {
+     "hit": 5,
+     "stand": 52,
+     "double": 203,
+     "agree": 0.2692,
+     "depression": 0.0978
+    },
+    "2000": {
+     "hit": 0,
+     "stand": 211,
+     "double": 49,
+     "agree": 0.4115,
+     "depression": 0.3536
+    },
+    "10000": {
+     "hit": 9,
+     "stand": 215,
+     "double": 36,
+     "agree": 0.4077,
+     "depression": 0.4904
+    },
+    "30000": {
+     "hit": 6,
+     "stand": 214,
+     "double": 40,
+     "agree": 0.4385,
+     "depression": 0.5299
+    }
+   },
+   "still_hit_totals_at_end": [
+    "hard 10",
+    "hard 11",
+    "hard 16",
+    "soft 16",
+    "soft 21"
+   ]
+  },
+  "bj_nodopa": {
+   "name": "dopamine cut + exploration decay",
+   "blocks": [
+    -0.3925,
+    -0.4605,
+    -0.49,
+    -0.49425,
+    -0.49225,
+    -0.44,
+    -0.46075,
+    -0.45125,
+    -0.48475,
+    -0.4645,
+    -0.48225,
+    -0.45625,
+    -0.472,
+    -0.45125,
+    -0.43925
+   ],
+   "agree": [
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45
+   ],
+   "hands": {
+    "1": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      10,
+      6
+     ],
+     "dealer": [
+      8,
+      5
+     ],
+     "explore_rate": 0.35,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 8,
+       "first": true,
+       "values": {
+        "hit": 0.2432,
+        "stand": 0.1681,
+        "double": 0.0185
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "2": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      2,
+      2,
+      10,
+      10
+     ],
+     "dealer": [
+      2,
+      4
+     ],
+     "explore_rate": 0.3499,
+     "decisions": [
+      {
+       "total": 4,
+       "soft": false,
+       "upcard": 2,
+       "first": true,
+       "values": {
+        "hit": 0.7138,
+        "stand": 0.5686,
+        "double": 0.4227
+       },
+       "chosen": "hit",
+       "explored": true,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 14,
+       "soft": false,
+       "upcard": 2,
+       "first": false,
+       "values": {
+        "hit": 0.7539,
+        "stand": 0.7847
+       },
+       "chosen": "hit",
+       "explored": true,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "3": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      8,
+      10
+     ],
+     "dealer": [
+      9,
+      11
+     ],
+     "explore_rate": 0.3499,
+     "decisions": [
+      {
+       "total": 18,
+       "soft": false,
+       "upcard": 9,
+       "first": true,
+       "values": {
+        "hit": 0.5311,
+        "stand": 0.3317,
+        "double": 0.107
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "4": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      9,
+      5
+     ],
+     "dealer": [
+      9,
+      11
+     ],
+     "explore_rate": 0.3498,
+     "decisions": [
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 9,
+       "first": true,
+       "values": {
+        "hit": 0.5885,
+        "stand": 0.3924,
+        "double": 0.1592
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "5": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      10,
+      10
+     ],
+     "dealer": [
+      2,
+      7
+     ],
+     "explore_rate": 0.3497,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 2,
+       "first": true,
+       "values": {
+        "hit": 0.727,
+        "stand": 0.6629,
+        "double": 0.5104
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "6": {
+     "net": 1.0,
+     "how": "win",
+     "player": [
+      9,
+      2,
+      10
+     ],
+     "dealer": [
+      10,
+      10
+     ],
+     "explore_rate": 0.3496,
+     "decisions": [
+      {
+       "total": 11,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": 0.8495,
+        "stand": 0.4498,
+        "double": 0.4856
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "double"
+      },
+      {
+       "total": 21,
+       "soft": false,
+       "upcard": 10,
+       "first": false,
+       "values": {
+        "hit": 0.5711,
+        "stand": 0.576
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "reward",
+     "dopamine_strength": 0.5
+    },
+    "29995": {
+     "net": -1.0,
+     "how": "lose",
+     "player": [
+      10,
+      5
+     ],
+     "dealer": [
+      10,
+      10
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 15,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": 0.3262,
+        "stand": 0.3907,
+        "double": 0.2187
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "29996": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      9,
+      6,
+      4,
+      10
+     ],
+     "dealer": [
+      7,
+      2
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 15,
+       "soft": false,
+       "upcard": 7,
+       "first": true,
+       "values": {
+        "hit": 0.0896,
+        "stand": 0.0727,
+        "double": 0.0031
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 7,
+       "first": false,
+       "values": {
+        "hit": 0.3763,
+        "stand": 0.331
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "29997": {
+     "net": 1.0,
+     "how": "dealer_bust",
+     "player": [
+      9,
+      4
+     ],
+     "dealer": [
+      5,
+      5,
+      6,
+      10
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 13,
+       "soft": false,
+       "upcard": 5,
+       "first": true,
+       "values": {
+        "hit": 0.6449,
+        "stand": 0.7254,
+        "double": 0.5715
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "reward",
+     "dopamine_strength": 0.5
+    },
+    "29998": {
+     "net": 1.0,
+     "how": "win",
+     "player": [
+      3,
+      9,
+      9
+     ],
+     "dealer": [
+      9,
+      10
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 12,
+       "soft": false,
+       "upcard": 9,
+       "first": true,
+       "values": {
+        "hit": 0.7382,
+        "stand": 0.6074,
+        "double": 0.3258
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 21,
+       "soft": false,
+       "upcard": 9,
+       "first": false,
+       "values": {
+        "hit": 0.5743,
+        "stand": 0.7007
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "reward",
+     "dopamine_strength": 0.5
+    },
+    "29999": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      9,
+      2,
+      8,
+      10
+     ],
+     "dealer": [
+      5,
+      5
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 11,
+       "soft": false,
+       "upcard": 5,
+       "first": true,
+       "values": {
+        "hit": 0.498,
+        "stand": 0.3448,
+        "double": 0.1584
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "double"
+      },
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 5,
+       "first": false,
+       "values": {
+        "hit": 0.5559,
+        "stand": 0.533
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": "punish",
+     "dopamine_strength": 0.5
+    },
+    "30000": {
+     "net": 1.0,
+     "how": "dealer_bust",
+     "player": [
+      11,
+      4,
+      7
+     ],
+     "dealer": [
+      10,
+      2,
+      2,
+      10
+     ],
+     "explore_rate": 0.0303,
+     "decisions": [
+      {
+       "total": 15,
+       "soft": true,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": 0.5276,
+        "stand": 0.4846,
+        "double": 0.303
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 12,
+       "soft": false,
+       "upcard": 10,
+       "first": false,
+       "values": {
+        "hit": 0.6056,
+        "stand": 0.6659
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": "reward",
+     "dopamine_strength": 0.5
+    }
+   },
+   "chart_counts_after_hands": {
+    "0": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "200": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "2000": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "10000": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "30000": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    }
+   },
+   "still_hit_totals_at_end": [
+    "hard 5",
+    "hard 6",
+    "hard 7",
+    "hard 8",
+    "hard 9",
+    "hard 10",
+    "hard 11",
+    "hard 12",
+    "hard 13",
+    "soft 13",
+    "hard 14",
+    "soft 14",
+    "hard 15",
+    "soft 15",
+    "hard 16",
+    "soft 16",
+    "hard 17",
+    "soft 17",
+    "hard 18",
+    "soft 18",
+    "hard 19",
+    "soft 19",
+    "hard 20",
+    "soft 20",
+    "hard 21",
+    "soft 21"
+   ]
+  },
+  "bj_untrained": {
+   "name": "untrained greedy",
+   "blocks": [
+    -0.4465,
+    -0.489,
+    -0.48975,
+    -0.486,
+    -0.48525,
+    -0.449,
+    -0.48325,
+    -0.4465,
+    -0.48925,
+    -0.45,
+    -0.473,
+    -0.445,
+    -0.48575,
+    -0.43975,
+    -0.4475
+   ],
+   "agree": [
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45,
+    0.45
+   ],
+   "hands": {
+    "1": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      10,
+      6
+     ],
+     "dealer": [
+      8,
+      5
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 8,
+       "first": true,
+       "values": {
+        "hit": 0.2432,
+        "stand": 0.1681,
+        "double": 0.0185
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "2": {
+     "net": 1.0,
+     "how": "dealer_bust",
+     "player": [
+      2,
+      2,
+      10
+     ],
+     "dealer": [
+      2,
+      4,
+      10,
+      10
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 4,
+       "soft": false,
+       "upcard": 2,
+       "first": true,
+       "values": {
+        "hit": 0.7138,
+        "stand": 0.5686,
+        "double": 0.4227
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 14,
+       "soft": false,
+       "upcard": 2,
+       "first": false,
+       "values": {
+        "hit": 0.7539,
+        "stand": 0.7847
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "3": {
+     "net": -1.0,
+     "how": "dealer_bj",
+     "player": [
+      8,
+      9
+     ],
+     "dealer": [
+      11,
+      10
+     ],
+     "explore_rate": 0.0,
+     "decisions": [],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "4": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      9,
+      5
+     ],
+     "dealer": [
+      9,
+      11
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 9,
+       "first": true,
+       "values": {
+        "hit": 0.5885,
+        "stand": 0.3924,
+        "double": 0.1592
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "5": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      10,
+      10
+     ],
+     "dealer": [
+      2,
+      7
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 2,
+       "first": true,
+       "values": {
+        "hit": 0.727,
+        "stand": 0.6629,
+        "double": 0.5104
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "6": {
+     "net": 1.0,
+     "how": "win",
+     "player": [
+      9,
+      2,
+      10
+     ],
+     "dealer": [
+      10,
+      10
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 11,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": 0.8495,
+        "stand": 0.4498,
+        "double": 0.4856
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "double"
+      },
+      {
+       "total": 21,
+       "soft": false,
+       "upcard": 10,
+       "first": false,
+       "values": {
+        "hit": 0.5711,
+        "stand": 0.576
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "29995": {
+     "net": 1.5,
+     "how": "blackjack",
+     "player": [
+      10,
+      11
+     ],
+     "dealer": [
+      3,
+      5
+     ],
+     "explore_rate": 0.0,
+     "decisions": [],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "29996": {
+     "net": 1.0,
+     "how": "dealer_bust",
+     "player": [
+      3,
+      9,
+      2
+     ],
+     "dealer": [
+      10,
+      5,
+      7
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 12,
+       "soft": false,
+       "upcard": 10,
+       "first": true,
+       "values": {
+        "hit": 0.744,
+        "stand": 0.5573,
+        "double": 0.3992
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "hit"
+      },
+      {
+       "total": 14,
+       "soft": false,
+       "upcard": 10,
+       "first": false,
+       "values": {
+        "hit": 0.5207,
+        "stand": 0.6036
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "hit"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "29997": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      10,
+      9,
+      10
+     ],
+     "dealer": [
+      5,
+      10
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 5,
+       "first": true,
+       "values": {
+        "hit": 0.316,
+        "stand": 0.2114,
+        "double": -0.0352
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "29998": {
+     "net": -1.0,
+     "how": "lose",
+     "player": [
+      10,
+      8,
+      11
+     ],
+     "dealer": [
+      3,
+      6,
+      6,
+      5
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 18,
+       "soft": false,
+       "upcard": 3,
+       "first": true,
+       "values": {
+        "hit": 0.5565,
+        "stand": 0.3579,
+        "double": 0.3496
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      },
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 3,
+       "first": false,
+       "values": {
+        "hit": 0.6593,
+        "stand": 0.7717
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "29999": {
+     "net": 1.0,
+     "how": "win",
+     "player": [
+      10,
+      10,
+      11
+     ],
+     "dealer": [
+      7,
+      11
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 20,
+       "soft": false,
+       "upcard": 7,
+       "first": true,
+       "values": {
+        "hit": 0.1644,
+        "stand": 0.1152,
+        "double": -0.0488
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      },
+      {
+       "total": 21,
+       "soft": false,
+       "upcard": 7,
+       "first": false,
+       "values": {
+        "hit": 0.4543,
+        "stand": 0.6016
+       },
+       "chosen": "stand",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    },
+    "30000": {
+     "net": -1.0,
+     "how": "bust",
+     "player": [
+      7,
+      8,
+      4,
+      10
+     ],
+     "dealer": [
+      4,
+      7
+     ],
+     "explore_rate": 0.0,
+     "decisions": [
+      {
+       "total": 15,
+       "soft": false,
+       "upcard": 4,
+       "first": true,
+       "values": {
+        "hit": 0.2433,
+        "stand": 0.2012,
+        "double": 0.133
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      },
+      {
+       "total": 19,
+       "soft": false,
+       "upcard": 4,
+       "first": false,
+       "values": {
+        "hit": 0.49,
+        "stand": 0.4374
+       },
+       "chosen": "hit",
+       "explored": false,
+       "basic_strategy": "stand"
+      }
+     ],
+     "dopamine": null,
+     "dopamine_strength": null
+    }
+   },
+   "chart_counts_after_hands": {
+    "0": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "200": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "2000": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "10000": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    },
+    "30000": {
+     "hit": 239,
+     "stand": 17,
+     "double": 4,
+     "agree": 0.45,
+     "depression": 0.0
+    }
+   },
+   "still_hit_totals_at_end": [
+    "hard 5",
+    "hard 6",
+    "hard 7",
+    "hard 8",
+    "hard 9",
+    "hard 10",
+    "hard 11",
+    "hard 12",
+    "hard 13",
+    "soft 13",
+    "hard 14",
+    "soft 14",
+    "hard 15",
+    "soft 15",
+    "hard 16",
+    "soft 16",
+    "hard 17",
+    "soft 17",
+    "hard 18",
+    "soft 18",
+    "hard 19",
+    "soft 19",
+    "hard 20",
+    "soft 20",
+    "hard 21",
+    "soft 21"
+   ]
+  }
+ },
+ "basic_strategy_cells": {
+  "hit": 115,
+  "stand": 106,
+  "double": 39,
+  "total": 260
+ },
+ "reference": {
+  "basic strategy": -0.013925,
+  "random": -0.44475,
+  "always stand": -0.15835
+ },
+ "params": {
+  "explore0": 0.35,
+  "explore_floor": 0.03,
+  "halflife": 3000,
+  "lr": 0.05,
+  "decay": 5e-05,
+  "learn": true,
+  "dopamine": true
+ },
+ "kc_active_per_situation": 72
+}
