@@ -16,6 +16,17 @@
 
 <div class="wrap">
 
+  <figure class="fig" style="margin:0 0 34px">
+    <video controls preload="metadata" poster="assets/poster.jpg"
+           style="display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:12px;background:#000">
+      <source src="assets/flybj-overview.mp4" type="video/mp4">
+      <track kind="captions" src="assets/flybj-overview.vtt" srclang="zh-Hant" label="中文字幕" default>
+      你的瀏覽器不支援內嵌影片，<a href="assets/flybj-overview.mp4">可以直接下載這個 MP4</a>。
+    </video>
+    <figcaption><b>12 分 12 秒　·　1080p　·　附中文字幕（播放器右下角開啟）。</b>投影片由課程網頁的內容與圖自動產生，共 14 張。
+    <span class="figsrc">投影片要點與旁白稿在 <code>scripts/video_slides.py</code>，影片由 <code>scripts/make_video.py</code> 產生，規格記在 <code>out/video_meta.json</code>；<code>scripts/video_check.py</code> 檢查「投影片上寫的每一點，旁白有沒有講到」。影片本身也可以<a href="assets/flybj-overview.mp4">直接下載</a>。</span></figcaption>
+  </figure>
+
   <div class="intro"><dl>
     <dt>這是什麼</dt>
     <dd>一堂「重現」的專題課。對象是一個公開在 GitHub 上的專案 <b>fly-blackjack</b>：它從一隻雄果蠅的<b>連結體</b>（connectome：一顆腦裡每一顆神經元連到哪些神經元、各有幾個突觸的完整清單）切出<b>蕈狀體</b>（果蠅負責嗅覺學習的腦區），把牌面編成「氣味」送進去，贏了放獎賞的多巴胺、輸了放懲罰的多巴胺（多巴胺：腦裡負責傳「這件事是好是壞」的化學訊號），讓它用學氣味好壞的方式學 21 點怎麼打。清單本身不會動；把清單裡每一顆神經元換成一條會算活動量（這顆神經元此刻有多活躍，一個數）的式子、照清單接起來、再加上一條「多巴胺來了就削弱連結」的規則，就成了一個會學的模型（PART 1 講這件事）。另一個同類的公開專案 fruitfly-lab（讓一段視覺迴路在 Doom 裡轉身開火、沒有學習）是<a href="https://marginli.github.io/bsc-flysimu/">另一堂獨立的課</a>。</dd>

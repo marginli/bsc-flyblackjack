@@ -28,7 +28,7 @@ BSC 專題課程（**重現型**，規範見 `../types/repro.md`）。對象是�
 | `out/` | **頁面上每個數字的出處**：實跑的 JSON 與 log（`collect_out.py`）、可攜測試（`porttest.json`）、PART 5 的檢查點（`bj_demo_summary.json`） |
 | `pack/` | 學員下載包的原始檔（`setup_envs.sh`、`blackjack/run_all.sh`、`blackjack/scripts/`、`check.py`、`expected.json`） |
 | `downloads/flyblackjack-code.zip` | `pack/` 打包，附 `SHA256SUMS.txt`。改了 `pack/` 任何檔案都要重打包 |
-| `scripts/` | 收資料、產圖、產驗收表、整理影片資料、記錄可攜測試，以及四道稽核（`page_audit.py`、`content_audit.py`、`svg_audit.py`、`number_audit.py`） |
+| `scripts/` | 收資料、產圖、產驗收表、整理影片資料、記錄可攜測試，四道稽核（`page_audit.py`、`content_audit.py`、`svg_audit.py`、`number_audit.py`），以及首頁說明影片的產生器（`video_slides.py` 投影片要點＋旁白稿、`make_video.py`、`video_check.py` 查旁白覆蓋、`video_verify.py` 查影音同步與辨識回填、`make_shots.py` 抽影片畫面） |
 | `_notes/` | 修正紀錄。**進 repo，但由 workflow 的 `rm -rf _notes` 擋在網站之外** |
 
 ## 重產
@@ -39,6 +39,9 @@ python3 scripts/build_demo_data.py                # fly_play_game/demo → asset
 ~/anaconda3/bin/python scripts/make_figures.py    # out/ → assets/*.png
 python3 scripts/make_expected.py                  # out/ → pack/expected.json，接著重打包 downloads/
 python3 scripts/record_porttest.py <測試資料夾> blackjack   # 可攜測試 → out/porttest.json
+python3 scripts/video_check.py                    # 投影片上寫的每一點，旁白有沒有講到
+~/.venvs/tts/bin/python scripts/make_video.py     # 重做首頁的說明影片（assets/flybj-overview.mp4 + .vtt + poster.jpg、out/video_meta.json）
+~/.venvs/asr/bin/python scripts/video_verify.py   # 影音同步 + 辨識回填（報告在 _video/verify.txt）
 python3 scripts/number_audit.py                   # 頁面數字對回 out/
 python3 scripts/page_audit.py                     # 標籤平衡、連結與錨點、中英夾雜
 ```
