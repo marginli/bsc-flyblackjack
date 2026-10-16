@@ -17,7 +17,7 @@ SAY_FIX = [("fly-blackjack", "fly blackjack"), ("fruitfly-lab", "fruitfly lab"),
            ("MaleCNS", "Male C N S"), ("FlyWire", "Fly Wire"), ("README", "read me"),
            ("AOTU019", "AOTU 零一九"), ("AOTU025", "AOTU 零二五"), ("DNa02", "D N A 零二"), ("LC10a", "LC 十 a"),
            ("ViZDoom", "Doom 引擎"), ("MBON", "M B O N"), ("PPL1", "P P L 一"), ("DAN", "D A N"), ("PN", "P N"),
-           ("Hz", "赫茲")]
+           ("Hz", "赫茲"), ("T-maze", "T maze")]
 
 SLIDES = [
  dict(eyebrow="BSC 專題課程", title="蕈狀體學 21 點：<b>重現 fly-blackjack</b>",
@@ -80,7 +80,7 @@ SLIDES = [
                "<b>BJ3</b> 制約：學習指數 README <b>−1.30</b>、本機 <b>−1.301</b>；三個對照組都是 0",
                "T-maze 位移本機 <b>+0.03</b>、README <b>+0.00</b>：對不上，原因在 README，不影響結論"],
       img=None, imgcap="",
-      say="第三部分逐步重現。BJ1 是 Dino：訓練好的讀出在 50 個保留關卡完成 45 關，三個對照組都是 0，四列數字與 README 逐位相同。BJ2 切出蕈狀體：跑兩次，檔案的 md5 相同，細胞數也與作者存進 repo 的紀錄檔相同；對不上的只有 README 寫的兩個連結數，22586 與 61210，但實驗讀的是那個逐位相同的檔案，不影響結果。BJ3 制約學習：學習指數 README 寫 −1.30、本機 −1.301，三個對照組都是 0。T-maze 的位移本機是 +0.03、README 是 +0.00，對不上；原因在 README，那是兩次抽樣的差，不是學習，不影響結論。"),
+      say="第三部分逐步重現。BJ1 是 Dino：訓練好的讀出在 50 個保留關卡完成 45 關，三個對照組都是 0，四列數字與 README 逐位相同。BJ2 切出蕈狀體：跑兩次，檔案的 md5 相同，細胞數也與作者存進 repo 的紀錄檔相同；對不上的只有 README 寫的兩個連結數，22586 與 61210，但實驗讀的是那個逐位相同的檔案，不影響結果。BJ3 制約學習：學習指數 README 寫 −1.30、本機 −1.301，三個對照組都是 0。T-maze 的位移本機是 0.03、README 是 0.00，對不上；原因在 README，那是兩次抽樣的差，不是學習，不影響結論。"),
 
  dict(eyebrow="PART 3", title="BJ4 覓食：<b>README 少寫了一個參數</b>",
       bullets=["作者附的策略：學習組每場被電 <b>3.85</b> 次、兩個對照 <b>7.50</b>——逐位相同",
