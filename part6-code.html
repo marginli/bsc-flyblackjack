@@ -612,7 +612,7 @@
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s5"><span class="pt">5</span>第二層：check.py，驗收</h2>
 
-  <p><b>這支在做什麼。</b>run_all.sh 跑完的最後一步。它讀 <code>expected.json</code>（本課實跑的結果，每一項寫著「去哪個檔、取哪個值、用哪種標準比」），逐項去你的 <code>results/</code> 與 <code>logs/</code> 取值，比對後印 ✓ 或 ✗，共 __NCHK__ 項。PART 3 第 1 節講的三種判定標準，在這裡變成五種程式判法，本課用到其中兩種。</p>
+  <p><b>這支在做什麼。</b>run_all.sh 跑完的最後一步。它讀 <code>expected.json</code>（本課實跑的結果，每一項寫著「去哪個檔、取哪個值、用哪種標準比」），逐項去你的 <code>results/</code> 與 <code>logs/</code> 取值，比對後印 ✓ 或 ✗，共 17 項。PART 3 第 1 節講的三種判定標準，在這裡變成五種程式判法，本課用到其中兩種。</p>
 
 <!-- code: check.py 1-10 hl=5,6,7,9,10 lab=5:①,9:②,10:③ -->
 <figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;驗收：把 run_all.sh 跑出來的數字跟 expected.json（本課實跑的結果）逐項比對。
@@ -691,7 +691,7 @@
   <ul class="walk">
     <li><b class="l">①</b>△ 那一類：expected.json 裡標了 <code>known</code> 的項目，本課實跑時就不符、頁面上已經說明。這一包沒有一項標 known，所以 PART 2 第 7 節的最後一行只有「通過」與「不符」兩個數。<code>continue</code> 是跳到下一項。</li>
     <li><b class="l">②</b>其他項目印 ✓ 或 ✗；✗ 的後面附上本次的值和預期值，讓你知道差在哪。</li>
-    <li><b class="l">③</b>最後一行總結：幾項通過、幾項不符。可攜測試印的是「__CHKLINE__」（<code>out/porttest.json</code>）。第 59 行把不符的數目交回去，第 62、63 行（本頁沒引）用它決定程式的結束碼（程式結束時告訴終端機成功或失敗的一個數：0 是成功、1 是失敗）：有不符就回 1。</li>
+    <li><b class="l">③</b>最後一行總結：幾項通過、幾項不符。可攜測試印的是「blackjack：17 項通過，0 項不符（共 17 項）」（<code>out/porttest.json</code>）。第 59 行把不符的數目交回去，第 62、63 行（本頁沒引）用它決定程式的結束碼（程式結束時告訴終端機成功或失敗的一個數：0 是成功、1 是失敗）：有不符就回 1。</li>
   </ul>
 
   <!-- ══════════════════════════════════════════════════════ -->
@@ -790,7 +790,7 @@
     <li><b class="l">①</b><code>dopamine</code>：給懲罰強度與獎賞強度，算每顆 MBON 收到多少多巴胺。</li>
     <li><b class="l">②</b>332 顆 DAN 裡，懲罰群（PPL1，16 顆）的活動設成懲罰強度。</li>
     <li><b class="l">③</b>其餘（PAM，316 顆）設成獎賞強度。21 點裡贏了給獎賞、輸了給懲罰，兩個最多一個不是 0。</li>
-    <li><b class="l">④</b>乘上 DAN→MBON 的權重：每顆 MBON 收到的多巴胺 ＝ 強度 × 它從那群收到的突觸比例。作者的註解「只在解剖允許的地方」：沒有 DAN 連到的 MBON 這一項是 0。PART 4 的 X2（打亂 DAN→MBON 那項檢查，第 4 節）打亂的就是這個矩陣的欄。</li>
+    <li><b class="l">④</b>乘上 DAN→MBON 的權重：每顆 MBON 收到的多巴胺 ＝ 強度 × 它從那群收到的突觸比例。作者的註解「只在解剖允許的地方」：沒有 DAN 連到的 MBON 這一項是 0。PART 4 的 X2（打亂 DAN→MBON 那項檢查，第 3 節）打亂的就是這個矩陣的欄。</li>
   </ul>
 
 <!-- code: model.py 131-143 hl=131,132,133,134,135,136,137,138,139,140,141,142 lab=131:①,132:②,133:③,134:④,135:⑤,136:⑥,137:⑦,139:⑧,140:⑨,142:⑩ -->
@@ -1068,6 +1068,7 @@
     <tr><td><code>web/</code>、<code>site/</code>、<code>export_web.py</code></td><td>作者的網頁版與線上牌桌</td><td>本課沒有重現；bj3 只讀了 <code>site/mb.json</code> 的連結位置清單，與作者附的 <code>data/brain_seed.json</code></td><td>—</td></tr>
   </table>
   </div>
+  <p class="figsrc">表裡的 682 顆 PN 出自 <code>out/blackjack/logs/bj1_extract_run1.log</code>（PART 1 第 2 節的細胞數）。</p>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s9"><span class="pt">9</span>總表：每個檔案誰叫它；四個零件各在哪一行</h2>

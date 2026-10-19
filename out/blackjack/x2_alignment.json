@@ -1,0 +1,34 @@
+{
+ "note": "W_dan_mbon（每顆 DAN 的列正規化後）：單位懲罰（PPL1）與單位獎賞（PAM）送到各 MBON 的量，分子是落在趨近型（+1）／迴避型（−1）MBON 的總和，分母是全部。原始接線裡兩個比例接近 1，因為作者的標記本來就是從同一個矩陣數出來的。",
+ "n_mbon": 97,
+ "n_approach": 56,
+ "n_avoid": 41,
+ "n_punish_dan": 16,
+ "n_reward_dan": 316,
+ "original": {
+  "punish_to_approach": 0.9713315262961116,
+  "reward_to_avoid": 0.9281280661901846
+ },
+ "permutations": {
+  "0": {
+   "punish_to_approach": 0.5714124022564048,
+   "reward_to_avoid": 0.4151025379613277
+  },
+  "1": {
+   "punish_to_approach": 0.6072820485202506,
+   "reward_to_avoid": 0.46111695216589726
+  },
+  "2": {
+   "punish_to_approach": 0.6146667129924582,
+   "reward_to_avoid": 0.4705901710341979
+  },
+  "3": {
+   "punish_to_approach": 0.5266908030460876,
+   "reward_to_avoid": 0.35773263320069837
+  },
+  "4": {
+   "punish_to_approach": 0.5895198087324129,
+   "reward_to_avoid": 0.4383311389803836
+  }
+ }
+}

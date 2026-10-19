@@ -1,19 +1,97 @@
-X1 {"none": {"n": 50, "mean": -1.3773391033650628, "sd": 0.33061201055880346, "ci95": [-1.4689800772513393, -1.2856981294787864]}, "shuffled": {"n": 50, "mean": -1.386875745239918, "sd": 0.3892639542925672, "ci95": [-1.4947742084866098, -1.2789772819932264]}, "none_first12": {"n": 12, "mean": -1.3014266688568241, "sd": 0.33865263297831644, "ci95": [-1.4930374338923946, -1.1098159038212536]}}
-X2 perm 0 -0.3106953549861835
-X2 perm 1 -0.2776311643194021
-X2 perm 2 -0.4374446398504736
-X2 perm 3 -0.15152720896639782
-X2 perm 4 -0.3516744169281416
-X2 perm 5 -0.28516398100966317
-X2 perm 6 -0.21874518496354764
-X2 perm 7 -0.1868263955985753
-X2 perm 8 -0.39014972977286405
-X2 perm 9 -0.44242263756238237
-X3 all_live_kc -1.2101495889778957 0.0
-X3 random1200_0 -1.3174543972640465 0.0
-X3 random1200_1 -1.242773186897127 0.0
-X3 random1200_2 -1.3111406078106054 0.0
-X3 random1200_3 -1.4264731084988362 0.0
-X3 random1200_4 -1.3419413044449022 0.0
+X1 connectome + dopamine                 seed  0  winrate -0.259 -> -0.150  agree 0.412 -> 0.438  (18s)
+X1 connectome + dopamine                 seed  1  winrate -0.244 -> -0.164  agree 0.392 -> 0.446  (18s)
+X1 connectome + dopamine                 seed  2  winrate -0.238 -> -0.129  agree 0.465 -> 0.473  (20s)
+X1 connectome + dopamine                 seed  3  winrate -0.235 -> -0.103  agree 0.473 -> 0.469  (20s)
+X1 connectome + dopamine                 seed  4  winrate -0.197 -> -0.090  agree 0.419 -> 0.458  (19s)
+X1 connectome + dopamine                 seed  5  winrate -0.252 -> -0.130  agree 0.450 -> 0.488  (20s)
+X1 connectome + dopamine                 seed  6  winrate -0.250 -> -0.105  agree 0.450 -> 0.462  (19s)
+X1 connectome + dopamine                 seed  7  winrate -0.244 -> -0.158  agree 0.504 -> 0.504  (20s)
+X1 connectome + dopamine                 seed  8  winrate -0.275 -> -0.141  agree 0.435 -> 0.492  (19s)
+X1 connectome + dopamine                 seed  9  winrate -0.284 -> -0.135  agree 0.465 -> 0.500  (21s)
+X1 connectome + dopamine                 seed 10  winrate -0.243 -> -0.145  agree 0.400 -> 0.442  (19s)
+X1 connectome + dopamine                 seed 11  winrate -0.215 -> -0.164  agree 0.435 -> 0.462  (20s)
+X1 connectome + dopamine                 seed 12  winrate -0.241 -> -0.178  agree 0.454 -> 0.435  (18s)
+X1 connectome + dopamine                 seed 13  winrate -0.228 -> -0.130  agree 0.446 -> 0.504  (21s)
+X1 connectome + dopamine                 seed 14  winrate -0.217 -> -0.096  agree 0.404 -> 0.481  (19s)
+X1 connectome + dopamine                 seed 15  winrate -0.234 -> -0.050  agree 0.469 -> 0.492  (22s)
+X1 connectome + dopamine                 seed 16  winrate -0.203 -> -0.158  agree 0.485 -> 0.592  (23s)
+X1 connectome + dopamine                 seed 17  winrate -0.251 -> -0.154  agree 0.427 -> 0.485  (16s)
+X1 connectome + dopamine                 seed 18  winrate -0.267 -> -0.144  agree 0.427 -> 0.408  (13s)
+X1 connectome + dopamine                 seed 19  winrate -0.195 -> -0.108  agree 0.485 -> 0.550  (14s)
+X1 dopamine cut + exploration decay      seed  0  winrate -0.393 -> -0.439  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  1  winrate -0.440 -> -0.470  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  2  winrate -0.448 -> -0.515  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  3  winrate -0.449 -> -0.501  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  4  winrate -0.434 -> -0.476  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  5  winrate -0.443 -> -0.445  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  6  winrate -0.480 -> -0.496  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  7  winrate -0.473 -> -0.450  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  8  winrate -0.484 -> -0.486  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed  9  winrate -0.451 -> -0.449  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 10  winrate -0.459 -> -0.441  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 11  winrate -0.480 -> -0.482  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 12  winrate -0.453 -> -0.474  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 13  winrate -0.464 -> -0.456  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 14  winrate -0.447 -> -0.488  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 15  winrate -0.449 -> -0.480  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 16  winrate -0.464 -> -0.494  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 17  winrate -0.477 -> -0.464  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 18  winrate -0.442 -> -0.482  agree 0.450 -> 0.450  (18s)
+X1 dopamine cut + exploration decay      seed 19  winrate -0.456 -> -0.455  agree 0.450 -> 0.450  (18s)
+X1 untrained greedy                      seed  0  winrate -0.447 -> -0.448  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  1  winrate -0.507 -> -0.469  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  2  winrate -0.491 -> -0.523  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  3  winrate -0.496 -> -0.499  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  4  winrate -0.461 -> -0.468  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  5  winrate -0.473 -> -0.462  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  6  winrate -0.470 -> -0.488  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  7  winrate -0.463 -> -0.465  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  8  winrate -0.483 -> -0.492  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed  9  winrate -0.454 -> -0.453  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 10  winrate -0.452 -> -0.454  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 11  winrate -0.477 -> -0.469  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 12  winrate -0.453 -> -0.478  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 13  winrate -0.469 -> -0.468  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 14  winrate -0.463 -> -0.465  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 15  winrate -0.485 -> -0.489  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 16  winrate -0.465 -> -0.476  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 17  winrate -0.457 -> -0.452  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 18  winrate -0.484 -> -0.481  agree 0.450 -> 0.450  (9s)
+X1 untrained greedy                      seed 19  winrate -0.415 -> -0.459  agree 0.450 -> 0.450  (9s)
+X1 {'connectome + dopamine': -0.1317, 'dopamine cut + exploration decay': -0.4722, 'untrained greedy': -0.4729}
+X2 KC->MBON shuffled                     seed  0  winrate -0.243 -> -0.195  agree 0.419 -> 0.438  (12s)
+X2 KC->MBON shuffled                     seed  1  winrate -0.298 -> -0.146  agree 0.469 -> 0.458  (12s)
+X2 KC->MBON shuffled                     seed  2  winrate -0.257 -> -0.126  agree 0.392 -> 0.415  (14s)
+X2 KC->MBON shuffled                     seed  3  winrate -0.316 -> -0.142  agree 0.412 -> 0.415  (13s)
+X2 KC->MBON shuffled                     seed  4  winrate -0.243 -> -0.169  agree 0.423 -> 0.442  (12s)
+X2 DAN->MBON perm 0                      seed  0  winrate -0.448 -> -0.416  agree 0.327 -> 0.350  (13s)
+X2 DAN->MBON perm 0                      seed  1  winrate -0.427 -> -0.443  agree 0.304 -> 0.358  (13s)
+X2 DAN->MBON perm 0                      seed  2  winrate -0.508 -> -0.304  agree 0.315 -> 0.323  (13s)
+X2 DAN->MBON perm 1                      seed  0  winrate -0.389 -> -0.513  agree 0.346 -> 0.342  (14s)
+X2 DAN->MBON perm 1                      seed  1  winrate -0.355 -> -0.568  agree 0.308 -> 0.365  (14s)
+X2 DAN->MBON perm 1                      seed  2  winrate -0.413 -> -0.405  agree 0.323 -> 0.323  (14s)
+X2 DAN->MBON perm 2                      seed  0  winrate -0.351 -> -0.380  agree 0.354 -> 0.331  (14s)
+X2 DAN->MBON perm 2                      seed  1  winrate -0.334 -> -0.437  agree 0.362 -> 0.358  (14s)
+X2 DAN->MBON perm 2                      seed  2  winrate -0.369 -> -0.405  agree 0.362 -> 0.331  (14s)
+X2 DAN->MBON perm 3                      seed  0  winrate -0.449 -> -0.656  agree 0.315 -> 0.308  (15s)
+X2 DAN->MBON perm 3                      seed  1  winrate -0.429 -> -0.650  agree 0.338 -> 0.323  (15s)
+X2 DAN->MBON perm 3                      seed  2  winrate -0.468 -> -0.645  agree 0.319 -> 0.338  (15s)
+X2 DAN->MBON perm 4                      seed  0  winrate -0.460 -> -0.511  agree 0.288 -> 0.312  (15s)
+X2 DAN->MBON perm 4                      seed  1  winrate -0.443 -> -0.552  agree 0.300 -> 0.312  (15s)
+X2 DAN->MBON perm 4                      seed  2  winrate -0.507 -> -0.434  agree 0.277 -> 0.292  (14s)
+X2 -0.1556 -0.488
+X3 all_live_kc                           seed  0  winrate -0.245 -> -0.161  agree 0.400 -> 0.427  (30s)
+X3 all_live_kc                           seed  1  winrate -0.252 -> -0.092  agree 0.400 -> 0.408  (31s)
+X3 all_live_kc                           seed  2  winrate -0.226 -> -0.126  agree 0.408 -> 0.435  (31s)
+X3 random1200_0                          seed  0  winrate -0.286 -> -0.132  agree 0.396 -> 0.427  (13s)
+X3 random1200_0                          seed  1  winrate -0.249 -> -0.148  agree 0.392 -> 0.419  (13s)
+X3 random1200_0                          seed  2  winrate -0.227 -> -0.109  agree 0.392 -> 0.450  (13s)
+X3 random1200_1                          seed  0  winrate -0.246 -> -0.150  agree 0.408 -> 0.415  (12s)
+X3 random1200_1                          seed  1  winrate -0.286 -> -0.121  agree 0.404 -> 0.377  (12s)
+X3 random1200_1                          seed  2  winrate -0.217 -> -0.098  agree 0.408 -> 0.412  (12s)
+X3 random1200_2                          seed  0  winrate -0.195 -> -0.160  agree 0.408 -> 0.431  (12s)
+X3 random1200_2                          seed  1  winrate -0.280 -> -0.168  agree 0.408 -> 0.435  (13s)
+X3 random1200_2                          seed  2  winrate -0.251 -> -0.147  agree 0.404 -> 0.427  (12s)
+X3 {'all_live_kc': -0.1261, 'random1200_0': -0.1296, 'random1200_1': -0.1229, 'random1200_2': -0.158}
 X4 {'acetylcholine|-1': 12, 'acetylcholine|+1': 38, 'gaba|-1': 13, 'gaba|+1': 8, 'glutamate|-1': 16, 'glutamate|+1': 10} 62 / 97
 wrote ../results/bj_extra.json

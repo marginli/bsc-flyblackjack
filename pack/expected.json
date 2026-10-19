@@ -2,143 +2,15 @@
  "blackjack": [
   {
    "step": "BJ1",
-   "what": "Dino 四列結果與 README 相同（45／0／0／0 完成）",
-   "file": "logs/bj1_train.log",
-   "kind": "contains",
-   "value": [
-    "connectome + trained readout                 45         29.12       210.7",
-    "SAME readout, circuit silenced                0          3.48        18.7",
-    "untrained readout                             0          2.26        11.8",
-    "uniform random actions                        0          2.43        12.7"
-   ]
-  },
-  {
-   "step": "BJ2",
    "what": "切出蕈狀體跑兩次，md5 相同且 = 32dc49359f237250162ed33dcb5da93c",
-   "file": "logs/bj2_md5.txt",
+   "file": "logs/bj1_md5.txt",
    "kind": "md5_twice",
    "value": "32dc49359f237250162ed33dcb5da93c"
   },
   {
-   "step": "BJ3",
-   "what": "connectome + plasticity：12 種子平均學習指數 -1.301",
-   "file": "results/mb_results.json",
-   "keys": [
-    "acquisition",
-    "connectome + plasticity"
-   ],
-   "mean": true,
-   "kind": "exact",
-   "value": -1.301427
-  },
-  {
-   "step": "BJ3",
-   "what": "KC->MBON shuffled：12 種子平均學習指數 -1.232",
-   "file": "results/mb_results.json",
-   "keys": [
-    "acquisition",
-    "KC->MBON shuffled"
-   ],
-   "mean": true,
-   "kind": "exact",
-   "value": -1.231649
-  },
-  {
-   "step": "BJ3",
-   "what": "dopamine disconnected：12 種子平均學習指數 0.000",
-   "file": "results/mb_results.json",
-   "keys": [
-    "acquisition",
-    "dopamine disconnected"
-   ],
-   "mean": true,
-   "kind": "exact",
-   "value": 0.0
-  },
-  {
-   "step": "BJ4",
-   "what": "author_policy、learning：每 90 秒電擊 3.85",
-   "file": "results/bj4_forage.json",
-   "keys": [
-    "author_policy",
-    "learning",
-    "shocks"
-   ],
-   "kind": "exact",
-   "value": 3.85
-  },
-  {
-   "step": "BJ4",
-   "what": "author_policy、dopamine cut：每 90 秒電擊 7.5",
-   "file": "results/bj4_forage.json",
-   "keys": [
-    "author_policy",
-    "dopamine cut",
-    "shocks"
-   ],
-   "kind": "exact",
-   "value": 7.5
-  },
-  {
-   "step": "BJ4",
-   "what": "retrained、learning：每 90 秒電擊 1.925",
-   "file": "results/bj4_forage.json",
-   "keys": [
-    "retrained",
-    "learning",
-    "shocks"
-   ],
-   "kind": "exact",
-   "value": 1.925
-  },
-  {
-   "step": "BJ4",
-   "what": "retrained、dopamine cut：每 90 秒電擊 1.875",
-   "file": "results/bj4_forage.json",
-   "keys": [
-    "retrained",
-    "dopamine cut",
-    "shocks"
-   ],
-   "kind": "exact",
-   "value": 1.875
-  },
-  {
-   "step": "BJ4b",
-   "what": "seconds=45 重新訓練、learning：電擊 3.85",
-   "file": "results/bj4b_forage_s45_eval.json",
-   "keys": [
-    "learning",
-    "shocks"
-   ],
-   "kind": "exact",
-   "value": 3.85
-  },
-  {
-   "step": "BJ4b",
-   "what": "seconds=45 重新訓練、dopamine cut：電擊 7.5",
-   "file": "results/bj4b_forage_s45_eval.json",
-   "keys": [
-    "dopamine cut",
-    "shocks"
-   ],
-   "kind": "exact",
-   "value": 7.5
-  },
-  {
-   "step": "BJ4b",
-   "what": "seconds=45 重新訓練的驗證分數 = 作者策略檔記錄的 2942.2",
-   "file": "results/bj4b_forage_s45_eval.json",
-   "keys": [
-    "validation"
-   ],
-   "kind": "exact",
-   "value": 2942.240450387357
-  },
-  {
-   "step": "BJ5",
+   "step": "BJ2",
    "what": "untrained greedy：最後 2,000 手平均每手 -0.4802",
-   "file": "results/bj5_blackjack_30000.json",
+   "file": "results/bj2_blackjack_30000.json",
    "keys": [
     "conditions",
     "untrained greedy",
@@ -148,9 +20,9 @@
    "value": -0.4801666666666667
   },
   {
-   "step": "BJ5",
+   "step": "BJ2",
    "what": "no learning + exploration decay：最後 2,000 手平均每手 -0.4747",
-   "file": "results/bj5_blackjack_30000.json",
+   "file": "results/bj2_blackjack_30000.json",
    "keys": [
     "conditions",
     "no learning + exploration decay",
@@ -160,9 +32,9 @@
    "value": -0.4746666666666666
   },
   {
-   "step": "BJ5",
+   "step": "BJ2",
    "what": "dopamine cut + exploration decay：最後 2,000 手平均每手 -0.4747",
-   "file": "results/bj5_blackjack_30000.json",
+   "file": "results/bj2_blackjack_30000.json",
    "keys": [
     "conditions",
     "dopamine cut + exploration decay",
@@ -172,9 +44,9 @@
    "value": -0.4746666666666666
   },
   {
-   "step": "BJ5",
+   "step": "BJ2",
    "what": "connectome + dopamine：最後 2,000 手平均每手 -0.1478",
-   "file": "results/bj5_blackjack_30000.json",
+   "file": "results/bj2_blackjack_30000.json",
    "keys": [
     "conditions",
     "connectome + dopamine",
@@ -184,27 +56,144 @@
    "value": -0.14775000000000002
   },
   {
+   "step": "BJ3",
+   "what": "作者的大腦檔載入 Python 重新評分，一致率 0.5192",
+   "file": "results/bj3_author_brain.json",
+   "keys": [
+    "python_agreement"
+   ],
+   "kind": "exact",
+   "value": 0.5192307692307693
+  },
+  {
+   "step": "BJ3",
+   "what": "作者網頁版電路的連結位置與本機切出的相同",
+   "file": "results/bj3_author_brain.json",
+   "keys": [
+    "same_edges"
+   ],
+   "kind": "exact",
+   "value": true
+  },
+  {
    "step": "X1",
-   "what": "50 種子學習指數 -1.377",
+   "what": "connectome + dopamine：20 個種子最後 2,000 手平均 -0.1317",
    "file": "results/bj_extra.json",
    "keys": [
-    "X1_50_seeds",
-    "none",
+    "X1_seeds20",
+    "connectome + dopamine",
+    "last",
     "mean"
    ],
    "kind": "exact",
-   "value": -1.3773391033650628
+   "value": -0.1316625
+  },
+  {
+   "step": "X1",
+   "what": "dopamine cut + exploration decay：20 個種子最後 2,000 手平均 -0.4722",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X1_seeds20",
+    "dopamine cut + exploration decay",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.472225
+  },
+  {
+   "step": "X1",
+   "what": "untrained greedy：20 個種子最後 2,000 手平均 -0.4729",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X1_seeds20",
+    "untrained greedy",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.47292500000000004
   },
   {
    "step": "X2",
-   "what": "DAN→MBON 打亂 10 組平均 -0.305",
+   "what": "KC→MBON 打亂 5 個種子平均 -0.1556",
    "file": "results/bj_extra.json",
    "keys": [
-    "X2_dan_mbon_shuffled",
+    "X2_layers",
+    "kc_mbon_shuffled",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.15560000000000002
+  },
+  {
+   "step": "X2",
+   "what": "DAN→MBON 打亂 5 種重排平均 -0.4880",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X2_layers",
+    "dan_mbon_shuffled",
     "mean_of_means"
    ],
    "kind": "exact",
-   "value": -0.30522807139576313
+   "value": -0.4879666666666666
+  },
+  {
+   "step": "X3",
+   "what": "KC 選法 all_live_kc（3811 顆）3 個種子平均 -0.1261",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X3_kc_subsets",
+    "variants",
+    "all_live_kc",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.12608333333333333
+  },
+  {
+   "step": "X3",
+   "what": "KC 選法 random1200_0（1200 顆）3 個種子平均 -0.1296",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X3_kc_subsets",
+    "variants",
+    "random1200_0",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.12958333333333336
+  },
+  {
+   "step": "X3",
+   "what": "KC 選法 random1200_1（1200 顆）3 個種子平均 -0.1229",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X3_kc_subsets",
+    "variants",
+    "random1200_1",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.12291666666666667
+  },
+  {
+   "step": "X3",
+   "what": "KC 選法 random1200_2（1200 顆）3 個種子平均 -0.1580",
+   "file": "results/bj_extra.json",
+   "keys": [
+    "X3_kc_subsets",
+    "variants",
+    "random1200_2",
+    "last",
+    "mean"
+   ],
+   "kind": "exact",
+   "value": -0.158
   },
   {
    "step": "X4",

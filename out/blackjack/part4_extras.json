@@ -1,0 +1,33 @@
+{
+ "untrained_agreement": {
+  "author_1200": 0.45,
+  "all_live_kc": 0.45384615384615384,
+  "random1200_0": 0.4269230769230769,
+  "random1200_1": 0.4076923076923077,
+  "random1200_2": 0.49230769230769234
+ },
+ "learned_agreement": {
+  "n": 37,
+  "min": 0.3769230769230769,
+  "max": 0.5923076923076923
+ },
+ "dan_shuffled_agreement": {
+  "n": 15,
+  "min": 0.2923076923076923,
+  "max": 0.36538461538461536
+ },
+ "x4_chance": {
+  "n_mbon": 97,
+  "n_approach": 56,
+  "n_avoid": 41,
+  "by_nt": {
+   "acetylcholine": 50,
+   "gaba": 21,
+   "glutamate": 26
+  },
+  "expected_agree": 51.97938144329896,
+  "expected_share": 0.5358699117865873,
+  "observed_agree": 62,
+  "observed_share": 0.6391752577319587
+ }
+}

@@ -1,13 +1,39 @@
-BJ1 Dino（約 2 分鐘）
-BJ2 下載與切出蘑菇體
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+/home/wanjuli/anaconda3/lib/python3.11/site-packages/conda/base/context.py:201: FutureWarning: Adding 'defaults' to channel list implicitly is deprecated and will be removed in 25.3. 
+
+To remove this warning, please choose a default channel explicitly with conda's regular configuration system, e.g. by adding 'defaults' to the list of channels:
+
+  conda config --add channels defaults
+
+For more information see https://docs.conda.io/projects/conda/en/stable/user-guide/configuration/use-condarc.html
+
+  deprecated.topic(
+BJ1 下載並切出蕈狀體（下載約 107 MB）
 32dc49359f237250162ed33dcb5da93c  data/mb_circuit.npz
 32dc49359f237250162ed33dcb5da93c  data/mb_circuit.npz
-BJ3 制約與 T-maze
-BJ4 覓食（約 30 分鐘）
-BJ5 21 點（約 6 分鐘）
-BJ4b seconds=45 重新訓練（約 30 分鐘）
-BJ5b 評分作者附的大腦
-加做檢查 X1–X4（約 5 分鐘）
-saved /home/wanjuli/claude_bscai/fly_play_game/blackjack/report_blackjack.docx
-完成：report_blackjack.docx
-TOTAL 27:05.50
+BJ2 21 點 30,000 手 × 4 個條件 × 3 個種子
+BJ3 評分作者附的大腦
+加做檢查 X1–X4
+✗ BJ1    Dino 四列結果與 README 相同（45／0／0／0 完成）　本次 '讀不到（FileNotFoundError）'，預期 ['connectome + trained readout                 45         29.12       210.7', 'SAME readout, circuit silenced                0          3.48        18.7', 'untrained readout                             0          2.26        11.8', 'uniform random actions                        0          2.43        12.7']
+✗ BJ2    切出蕈狀體跑兩次，md5 相同且 = 32dc49359f237250162ed33dcb5da93c　本次 '讀不到（FileNotFoundError）'，預期 '32dc49359f237250162ed33dcb5da93c'
+✗ BJ3    connectome + plasticity：12 種子平均學習指數 -1.301　本次 '讀不到（FileNotFoundError）'，預期 -1.301427
+✗ BJ3    KC->MBON shuffled：12 種子平均學習指數 -1.232　本次 '讀不到（FileNotFoundError）'，預期 -1.231649
+✗ BJ3    dopamine disconnected：12 種子平均學習指數 0.000　本次 '讀不到（FileNotFoundError）'，預期 0.0
+✗ BJ4    author_policy、learning：每 90 秒電擊 3.85　本次 '讀不到（FileNotFoundError）'，預期 3.85
+✗ BJ4    author_policy、dopamine cut：每 90 秒電擊 7.5　本次 '讀不到（FileNotFoundError）'，預期 7.5
+✗ BJ4    retrained、learning：每 90 秒電擊 1.925　本次 '讀不到（FileNotFoundError）'，預期 1.925
+✗ BJ4    retrained、dopamine cut：每 90 秒電擊 1.875　本次 '讀不到（FileNotFoundError）'，預期 1.875
+✗ BJ4b   seconds=45 重新訓練、learning：電擊 3.85　本次 '讀不到（FileNotFoundError）'，預期 3.85
+✗ BJ4b   seconds=45 重新訓練、dopamine cut：電擊 7.5　本次 '讀不到（FileNotFoundError）'，預期 7.5
+✗ BJ4b   seconds=45 重新訓練的驗證分數 = 作者策略檔記錄的 2942.2　本次 '讀不到（FileNotFoundError）'，預期 2942.240450387357
+✗ BJ5    untrained greedy：最後 2,000 手平均每手 -0.4802　本次 '讀不到（FileNotFoundError）'，預期 -0.4801666666666667
+✗ BJ5    no learning + exploration decay：最後 2,000 手平均每手 -0.4747　本次 '讀不到（FileNotFoundError）'，預期 -0.4746666666666666
+✗ BJ5    dopamine cut + exploration decay：最後 2,000 手平均每手 -0.4747　本次 '讀不到（FileNotFoundError）'，預期 -0.4746666666666666
+✗ BJ5    connectome + dopamine：最後 2,000 手平均每手 -0.1478　本次 '讀不到（FileNotFoundError）'，預期 -0.14775000000000002
+✗ X1     50 種子學習指數 -1.377　本次 '讀不到（KeyError）'，預期 -1.3773391033650628
+✗ X2     DAN→MBON 打亂 10 組平均 -0.305　本次 '讀不到（KeyError）'，預期 -0.30522807139576313
+✓ X4     MBON 標記與文獻規則一致 62/97
+
+blackjack：1 項通過，18 項不符（共 19 項）
+Command exited with non-zero status 1
+BLACKJACK 1559.87 s

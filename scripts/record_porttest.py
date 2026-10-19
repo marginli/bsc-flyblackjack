@@ -1,8 +1,8 @@
 """把下載包的可攜測試結果存成 out/porttest.json（PART 2 的執行時間、硬碟用量、驗收輸出都對回這裡）。
 
-可攜測試的做法（~/claude_bscai/porttest2/run_porttests.sh）：把 downloads/*.zip 解到空資料夾；先把 setup_envs.sh 裡的環境名加上
+可攜測試的做法（~/claude_bscai/porttest_bj/run_porttest.sh <zip>）：把 downloads/flyblackjack-code.zip 解到空資料夾；先把 setup_envs.sh 裡的環境名加上
 zt_ 前綴從零建一次並計時（本機已有同名環境時 setup_envs.sh 會跳過建立），用 du -sm 量環境大小後刪掉 zt_ 環境；再用既有環境跑
-run_all.sh 並計時；兩門課依序跑，不同時跑。計時用 /usr/bin/time，輸出存在 envtest/setup.out 與 run.out。
+run_all.sh 並計時。計時用 /usr/bin/time，輸出存在 envtest/setup.out 與 run.out。
 最後用目前版本的 check.py 對同一批輸出再驗收一次。
 用法：python3 scripts/record_porttest.py <可攜測試資料夾> <blackjack|fruitfly>"""
 import json

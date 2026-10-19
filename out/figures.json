@@ -1,1 +1,12 @@
-{}
+{
+ "X1_connectome + dopamine_mean": -0.1316625,
+ "X1_dopamine cut + exploration decay_mean": -0.472225,
+ "X1_untrained greedy_mean": -0.47292500000000004,
+ "X2_dan_perm_means": [
+  -0.38791666666666663,
+  -0.4950833333333334,
+  -0.4073333333333333,
+  -0.6503333333333333,
+  -0.4991666666666667
+ ]
+}

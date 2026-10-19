@@ -40,7 +40,10 @@ python3 scripts/build_demo_data.py                # fly_play_game/demo → asset
 ~/anaconda3/bin/python scripts/make_figures.py    # out/ → assets/*.png
 python3 scripts/make_expected.py                  # out/ → pack/expected.json，接著重打包 downloads/
 python3 scripts/make_code.py                      # PART 6 的程式區塊：從 pack/ 與本機 clone 的作者 repo（~/claude_bscai/fly_play_game/blackjack/repo）照抄；--check 只比對
+bash ~/claude_bscai/porttest_bj/run_porttest.sh downloads/flyblackjack-code.zip   # 可攜測試（解到空資料夾、從零建環境計時、跑 run_all.sh 計時）
 python3 scripts/record_porttest.py <測試資料夾> blackjack   # 可攜測試 → out/porttest.json
+cd ~/claude_bscai/fly_play_game/blackjack/repo && PYTHONPATH=. ~/anaconda3/bin/python <本資料夾>/scripts/x2_alignment.py   # X2 的原因量測 → out/blackjack/x2_alignment.json
+cd ~/claude_bscai/fly_play_game/blackjack/repo && PYTHONPATH=. ~/anaconda3/bin/python <本資料夾>/scripts/part4_extras.py   # X3 沒學過的一致率、X4 機率基準 → out/blackjack/part4_extras.json
 python3 scripts/video_check.py                    # 投影片上寫的每一點，旁白有沒有講到
 ~/.venvs/tts/bin/python scripts/make_video.py     # 重做首頁的說明影片（assets/flybj-overview.mp4 + .vtt + poster.jpg、out/video_meta.json）
 ~/.venvs/asr/bin/python scripts/video_verify.py   # 影音同步 + 辨識回填（報告在 _video/verify.txt）

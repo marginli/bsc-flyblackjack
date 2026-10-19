@@ -27,26 +27,9 @@ def save(fig, name):
     print("寫出", name)
 
 
-def forage():
-    """覓食：電擊次數。作者策略／照 README 重新訓練／加 seconds=45 重新訓練。（PART 3 圖 1）"""
-    a, s45 = J("blackjack/bj4_forage.json"), J("blackjack/bj4b_forage_s45_eval.json")
-    conds = ["learning", "dopamine cut", "plasticity off"]
-    groups = [("author's policy", a["author_policy"]), ("retrained with\nREADME command", a["retrained"]),
-              ("retrained with\nseconds=45", s45)]
-    fig, ax = plt.subplots(figsize=(7.2, 3.4))
-    w = .26
-    for i, (c, col) in enumerate(zip(conds, [GREEN, RED, AMBER])):
-        v = [g[c]["shocks"] for _, g in groups]
-        b = ax.bar(np.arange(3) + (i - 1) * w, v, w * .92, color=col, label=c)
-        ax.bar_label(b, fmt="%.2f", fontsize=8.5, color=SOFT, padding=2)
-    ax.set_xticks(range(3), [g for g, _ in groups]); ax.set_ylabel("shocks per 90 s (mean of 40 seeds)")
-    ax.legend(frameon=False, fontsize=9.5, ncol=3, loc="upper right"); ax.set_ylim(0, 9.5)
-    save(fig, "p3-forage-shocks.png")
-
-
 def blackjack():
     """21 點學習曲線（PART 3 圖 2）。"""
-    d = J("blackjack/bj5_blackjack_30000.json")
+    d = J("blackjack/bj2_blackjack_30000.json")
     blocks = d["hands"] // len(d["conditions"]["connectome + dopamine"]["runs"][0]["blocks"])
     fig, ax = plt.subplots(figsize=(7.2, 3.6))
     style = {"connectome + dopamine": (GREEN, "-", 2.4), "dopamine cut + exploration decay": (RED, "-", 1.6),
@@ -66,26 +49,58 @@ def blackjack():
     save(fig, "p3-blackjack-curve.png")
 
 
-def mb_shuffle():
-    """打亂不同層接線對學習指數的影響（PART 4 圖 1）。"""
+def seeds20():
+    """X1：三個條件各 20 個種子，最後 2,000 手的平均每手輸贏（PART 4 圖 1）。"""
+    x = J("blackjack/bj_extra.json")["X1_seeds20"]
+    ref = J("blackjack/bj2_blackjack_30000.json")["reference"]
+    rows = [("connectome + dopamine", GREEN), ("dopamine cut + exploration decay", RED), ("untrained greedy", SOFT)]
+    fig, ax = plt.subplots(figsize=(7.2, 2.9))
+    rng = np.random.default_rng(0)
+    for i, (k, c) in enumerate(rows):
+        v = [r["last_block"] for r in x[k]["runs"]]
+        ax.scatter(v, i + rng.uniform(-.18, .18, len(v)), s=22, color=c, alpha=.55, zorder=2, linewidths=0)
+        s = x[k]["last"]
+        ax.plot(s["ci95"], [i, i], color=INK, lw=3.2, zorder=3)
+        ax.plot(s["mean"], i, "o", color=INK, ms=6.5, zorder=4)
+        ax.text(s["mean"], i - .36, f"{s['mean']:.3f}", ha="center", fontsize=9, color=INK)
+        meta[f"X1_{k}_mean"] = s["mean"]
+    for k, lab in [("always stand", "always stand"), ("random", "random")]:
+        ax.axvline(ref[k], color=FAINT, lw=1, ls=(0, (2, 3)))
+        ax.text(ref[k], 2.62, f"{lab} {ref[k]:.3f}", ha="center", fontsize=8.5, color=SOFT)
+    ax.set_yticks(range(3), ["connectome + dopamine", "dopamine cut", "untrained"])
+    ax.set_xlabel("net payoff per hand, last 2,000 hands (each dot = one seed; bar = 95% CI of the 20-seed mean)")
+    ax.set_xlim(-0.56, -0.03); ax.set_ylim(-.6, 2.85); ax.invert_yaxis()
+    save(fig, "p4-bj-seeds.png")
+
+
+def layers():
+    """X2：打亂哪一層接線，21 點才學不會（PART 4 圖 2）。"""
     x = J("blackjack/bj_extra.json")
-    full, kc = x["X1_50_seeds"]["none"], x["X1_50_seeds"]["shuffled"]
-    perms = x["X2_dan_mbon_shuffled"]["per_permutation"]
-    fig, ax = plt.subplots(figsize=(7.2, 3.3))
-    for i, (lab, s, c) in enumerate([("intact (50 seeds)", full, GREEN), ("KC->MBON shuffled (50 seeds)", kc, PURPLE)]):
+    ref = J("blackjack/bj2_blackjack_30000.json")["reference"]
+    full = x["X1_seeds20"]["connectome + dopamine"]["last"]
+    unt = x["X1_seeds20"]["untrained greedy"]["last"]
+    kc = x["X2_layers"]["kc_mbon_shuffled"]["last"]
+    perms = x["X2_layers"]["dan_mbon_shuffled"]["per_permutation"]
+    fig, ax = plt.subplots(figsize=(7.2, 3.0))
+    for i, (lab, s, c) in enumerate([("intact (20 seeds)", full, GREEN), ("KC->MBON shuffled (5 seeds)", kc, PURPLE)]):
         ax.plot(s["ci95"], [i, i], color=c, lw=4); ax.plot(s["mean"], i, "o", color=INK, ms=6)
-        ax.text(s["ci95"][1] + .03, i, f"{s['mean']:.2f}", va="center", fontsize=9)
-    pm = [p["mean"] for p in perms]
-    ax.scatter(pm, [2] * len(pm), color=RED, s=26, alpha=.75, zorder=3)
-    mm = x["X2_dan_mbon_shuffled"]["mean_of_means"]
-    ax.plot(mm, 2, "|", color=INK, ms=16, mew=2); ax.text(max(pm) + .03, 2, f"{mm:.2f}", va="center", fontsize=9)
-    ax.axvline(0, color=FAINT, lw=1)
-    ax.set_yticks(range(3), ["intact (50 seeds)", "KC->MBON shuffled (50 seeds)", "DAN->MBON shuffled (10 perms x 12)"])
-    ax.set_xlabel("learning index (more negative = stronger avoidance learning)")
-    ax.set_xlim(-1.65, 0.12); ax.set_ylim(-.6, 2.6); ax.invert_yaxis()
-    save(fig, "p4-mb-shuffle.png")
+        ax.text(s["ci95"][1] + .012, i, f"{s['mean']:.3f}", va="center", fontsize=9)
+    pm = [p["last"]["mean"] for p in perms]
+    ax.scatter(pm, [2] * len(pm), color=RED, s=30, alpha=.8, zorder=3)
+    mm = x["X2_layers"]["dan_mbon_shuffled"]["mean_of_means"]
+    ax.plot(mm, 2, "|", color=INK, ms=16, mew=2); ax.text(max(pm) + .012, 2, f"{mm:.3f}", va="center", fontsize=9)
+    ax.plot(unt["ci95"], [3, 3], color=SOFT, lw=4); ax.plot(unt["mean"], 3, "o", color=INK, ms=6)
+    ax.text(unt["ci95"][1] + .012, 3, f"{unt['mean']:.3f}", va="center", fontsize=9)
+    for k, lab in [("always stand", "always stand"), ("random", "random")]:
+        ax.axvline(ref[k], color=FAINT, lw=1, ls=(0, (2, 3)))
+        ax.text(ref[k], -.55, f"{lab} {ref[k]:.3f}", ha="center", fontsize=8.5, color=SOFT)
+    ax.set_yticks(range(4), ["intact (20 seeds)", "KC->MBON shuffled\n(5 seeds)", "DAN->MBON shuffled\n(5 permutations x 3 seeds)", "untrained (20 seeds)"])
+    ax.set_xlabel("net payoff per hand, last 2,000 hands (bar = 95% CI; red dot = one permutation's 3-seed mean)")
+    ax.set_xlim(-0.70, -0.05); ax.set_ylim(-.8, 3.6); ax.invert_yaxis()
+    meta["X2_dan_perm_means"] = pm
+    save(fig, "p4-bj-layers.png")
 
 
-for f in (forage, blackjack, mb_shuffle):
+for f in (blackjack, seeds20, layers):
     f()
 json.dump(meta, open(os.path.join(O, "figures.json"), "w"), indent=1)
