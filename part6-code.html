@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PART 6 讀程式（上）：兩個指令按下去，電腦做了哪些事｜蕈狀體學 21 點</title>
+<link rel="stylesheet" href="assets/flybj.css">
+</head>
+<body>
+<div class="crumb"><a href="https://marginli.github.io/bsc-topics/">BSC 專題課程</a> ／ <a href="index.html">蕈狀體學 21 點</a> ／ PART 6</div>
+<header class="hero">
+  <p class="eyebrow">PART 6</p>
+  <h1>讀程式（上）：兩個指令按下去，電腦做了哪些事</h1>
+  <p class="subtitle">從 <code>run_all.sh</code> 那一支腳本開始，順著「誰叫了誰」讀完前兩層：你親手執行的兩支腳本，和它們叫到的十一支 Python 程式，每一段在做什麼、為什麼要有這一段。不教 Python 語法。模型本身（第三層）在 PART 7</p>
+</header>
+
+<div class="wrap">
+
+  <div class="pager top">
+    <a href="part5-demo.html">← PART 5　逐手看蕈狀體怎麼打</a>
+    <a href="part7-model.html">PART 7　讀程式（下）→</a>
+  </div>
+
+  <nav class="toc">
+    <h2>本頁章節</h2>
+    <ol>
+      <li><a href="#s1">怎麼讀這兩頁：三層、標記、先認識幾個詞</a></li>
+      <li><a href="#s2">第一層：兩支 shell script</a></li>
+      <li><a href="#s3">第二層：BJ1 到 BJ3，作者的五支入口程式</a></li>
+      <li><a href="#s4">第二層：BJ4 與 BJ5，我們的四支小程式</a></li>
+      <li><a href="#s5">第二層：X1 到 X4，bj_extra.py</a></li>
+      <li><a href="#s6">第二層：check.py，驗收</a></li>
+      <li><a href="#s7">總表：每個檔案誰叫它、讀什麼、寫什麼</a></li>
+    </ol>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s1"><span class="pt">1</span>怎麼讀這兩頁：三層、標記、先認識幾個詞</h2>
+
+  <p><a href="part2-setup.html">PART 2</a> 要你在終端機（打字下指令的視窗）貼兩個指令：<code>bash setup_envs.sh</code> 建環境，<code>bash blackjack/run_all.sh</code> 一鍵重跑。這一頁和下一頁回答同一個問題：<b>那兩個指令按下去之後，電腦到底做了哪些事？</b>做法是順著「誰叫了誰」往下讀，分三層：</p>
+
+  <div class="tblwrap">
+  <table>
+    <tr><th>層</th><th>是什麼</th><th>檔案</th><th>在哪一頁</th></tr>
+    <tr><td><span class="layer">第一層</span></td><td>你親手執行的兩支 shell script（一個文字檔，裡面是一行一行要在終端機裡執行的指令）</td><td><code>setup_envs.sh</code>、<code>run_all.sh</code></td><td>本頁第 2 節</td></tr>
+    <tr><td><span class="layer">第二層</span></td><td><code>run_all.sh</code> 每一行叫到的 Python 程式。五支是作者的（直接用作者的程式跑 BJ1 到 BJ3），六支是本課寫的（BJ4、BJ5、X1 到 X4 與驗收）</td><td>作者的：<code>train.py</code>、<code>fetch.py</code>、<code>extract.py</code>、<code>experiment.py</code>、<code>tmaze.py</code>；我們的：<code>bj4_forage.py</code>、<code>bj4b_forage_s45.py</code>、<code>bj5_blackjack.py</code>、<code>bj5b_author_brain.py</code>、<code>bj_extra.py</code>、<code>check.py</code></td><td>本頁第 3 到 6 節</td></tr>
+    <tr><td><span class="layer">第三層</span></td><td>第二層的程式再往下引用的檔案：模型本身。Dino 那條鏈三個檔，蕈狀體這條鏈六個檔</td><td><code>circuit.py</code>、<code>readout.py</code>、<code>envs.py</code>；<code>model.py</code>、<code>odour.py</code>、<code>embodied.py</code>、<code>arenas.py</code>、<code>gait.py</code>、<code>blackjack.py</code></td><td><a href="part7-model.html">PART 7</a></td></tr>
+  </table>
+  </div>
+
+  <p>第二層的程式讀完，你就知道每一步「叫了哪個模型、餵了什麼、把結果寫到哪」；但模型裡面怎麼算，要到第三層才看得到。這一頁遇到第三層的函式時只說它做什麼，細節留給 PART 7。再往下的第三方套件（別人寫好、裝進來直接用的程式庫，例如 numpy）兩頁都不展開，只在被叫到的那一行說它做什麼。</p>
+
+  <h3>先認識幾個詞</h3>
+
+  <p>下面每一段都會用到這些詞，先在這裡說一次，之後不再解釋。</p>
+
+  <ul>
+    <li><b>下載包</b>：本課給你的那個資料夾（<code>setup_envs.sh</code>、<code>check.py</code>、<code>expected.json</code>、<code>blackjack/</code>，PART 2 第 3 節）。跑完之後它的 <code>blackjack/</code> 底下會多出三個資料夾：<code>repo/</code>（作者的程式）、<code>logs/</code>（每一步印在終端機上的文字，一步一個檔）、<code>results/</code>（算出來的數字，JSON 格式：一種用大括號和冒號寫資料的文字檔）。<b>out/</b>：本課自己實跑時收下來的那一份 logs 與 results，放在本課網站的程式倉庫（GitHub 上的 marginli/bsc-flyblackjack）的 <code>out/</code> 資料夾，給想核對的人用；<code>expected.json</code> 裡的標準答案就是從它抄的。不去拿也不影響讀這一頁，本頁寫「本課收在 out/…」只是告訴你每個數字從哪個檔來。</li>
+    <li><b>作者</b>：寫 fly-blackjack 這個專案的人，本課重現的對象。<b>repo</b>：放在 GitHub（放程式碼的網站）上的一個程式資料夾；<b>clone</b>：把整個資料夾複製到自己電腦；<b>commit</b>：資料夾在某個時間點的快照，<code>004b2e3</code> 是本課固定的那一個（首頁〈出處〉）。<b>MIT 授權</b>：允許任何人複製、修改、散布，所以本頁可以直接引作者的程式。</li>
+    <li><b>環境</b>：一套自成一格的 Python 加套件；<b>conda</b> 是建環境的工具，<b>pip</b> 是往環境裡裝套件的工具。本課只要一個環境，叫 <code>flyplay_bj</code>（PART 2 第 4 節）。</li>
+    <li><b>路徑</b>：檔案在電腦裡的位址，像地址。<b>相對路徑</b>：從目前所在資料夾起算的位址；<code>..</code> 是「上一層資料夾」。作者的程式在 <code>repo/</code> 裡執行，所以我們的程式寫 <code>../results/</code>，指的是 <code>blackjack/results/</code>。</li>
+    <li><b>BJ1 到 BJ5</b>：PART 3 重現作者結果的五步：Dino、切出蕈狀體、制約學習、覓食、21 點；<b>X1 到 X4</b>：PART 4 本課自己加做的四項檢查。代號都是本課編的。</li>
+    <li><b>連結體</b>：一顆腦裡每一顆神經元連到哪些神經元、各有幾個突觸（兩顆神經元之間傳訊號的接點）的完整清單；本課用的是雄果蠅的 MaleCNS。把這份清單寫成一張表，第 i 列第 j 欄是「神經元 i 連到神經元 j 幾個突觸」，就叫<b>連結矩陣</b>。<b>蕈狀體</b>：果蠅形成氣味記憶的腦區，模型從連結體切出它的四群神經元：<b>PN</b>（投射神經元，把氣味訊號送進來）、<b>KC</b>（Kenyon 細胞，把每種氣味編成一組「亮」的細胞）、<b>MBON</b>（輸出神經元）、<b>DAN</b>（多巴胺神經元，分 PAM 獎賞群與 PPL1 懲罰群）（PART 1 第 2 節）。</li>
+    <li><b>好惡值</b>：模型對眼前這個輸入「想靠近還是想躲」的一個分數，正是想靠近、負是想躲。<b>學習指數</b>：訓練後被懲罰氣味的好惡值掉了多少，減掉另一種氣味的變化，愈負學得愈多。<b>T-maze</b>：讓一群模擬果蠅在兩種氣味之間選邊、數人數的測法（PART 1 第 5 節）。</li>
+    <li><b>Dino</b>：一個像 Chrome 離線小恐龍的小遊戲，角色一直往前跑、靠跳或蹲躲障礙物。它用的不是蕈狀體，而是作者另外從同一份連結體切出、預先附在 repo 裡的一個 80 顆神經元的小迴路：32 顆收遊戲畫面的輸入神經元、32 顆中間神經元、16 顆<b>下行神經元</b>（從腦往身體送指令的出口，模型從它們讀訊號）。所以本課有兩套電路：Dino 的 80 顆，和蕈狀體的四群（PART 1 第 5 節）。<b>讀出</b>：把神經元的活動翻成動作的那個小網路；<b>CEM</b>：訓練讀出的方法，每一代抽幾十組參數、留最好的幾組、照它們再抽下一代（PART 1 第 5 節）。<b>關卡</b>：Dino 的一局；哪裡出現障礙物由一個<b>種子</b>決定：程式裡的「隨機」其實是從一個起始數字算出來的一串數，那個起始數字叫種子，同一個種子每次得到同一串，所以結果可以逐位相同。</li>
+    <li><b>寫死</b>：直接把值寫在程式裡，不能從外面改。<b>匯入</b>（import）：把另一支程式裡寫好的東西接進來，在這支裡直接用。<b>模組</b>：一支可以被匯入的 Python 檔；<code>python -m flybrain.train</code> 讀成「執行 flybrain 這個資料夾裡的 train 這個模組」。</li>
+  </ul>
+
+  <h3>程式區塊怎麼看</h3>
+
+  <p>每一段程式都照同一個格式：先用一段話說<b>這段在做什麼、為什麼要有這一段</b>，然後放程式，程式下面逐行解釋。程式區塊左邊的數字是<b>原檔的行號</b>，和你下載下來的檔案完全一致；底色標出的行是接下來要講的行；行號旁的 ①②③ 是解釋裡用的標記。下面拿 <code>run_all.sh</code> 的兩行當例子：</p>
+
+<!-- code: run_all.sh 6-7 hl=6,7 lab=6:①,7:② -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">  6</span><span class="mk">①</span>PY=&quot;$(conda info --base)/envs/flyplay_bj/bin/python&quot;</span><span class="hl"><span class="ln">  7</span><span class="mk">②</span>export PYTHONNOUSERSITE=1 PYTHONPATH=.</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 6–7 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>第 6 行把一個很長的路徑（<code>flyplay_bj</code> 這個環境的 Python 程式在哪裡）存進一個叫 <code>PY</code> 的名字裡，之後要用它時只要寫 <code>$PY</code>。這種「給一個東西取名字、之後用名字代替它」叫<b>變數</b>，程式裡到處都是。<code>$(conda info --base)</code> 是「問 conda 它裝在哪裡，把答案填進來」，不寫死路徑，換一台電腦也能跑。</li>
+    <li><b class="l">②</b>第 7 行設兩個會影響之後每一支 Python 程式的開關（<code>export</code> 就是「之後叫出來的程式都看得到」）。<code>PYTHONNOUSERSITE=1</code> 叫 Python 不要去家目錄的 <code>~/.local</code> 找套件，就是 PART 2 第 6 節那個「悄悄改變結果的陷阱」的擋法；<code>PYTHONPATH=.</code> 讓 Python 在目前資料夾找得到 <code>flybrain</code> 這個套件，因為作者的程式要在 <code>repo/</code> 裡才匯入得到自己。</li>
+  </ul>
+
+  <h3>哪些檔案、各有幾行</h3>
+
+  <p>本課自己寫的八個檔案在<a href="downloads/flyblackjack-code.zip">下載包</a>裡；作者的檔案是 MIT 授權，<code>run_all.sh</code> 第一次跑會把整個 repo 放在 <code>blackjack/repo/</code>。兩邊都只放講到的段落，沒講到的行跳過（行號照原檔，缺的行可以打開檔案對照）。這一頁讀的是下面前兩層的十三個檔：</p>
+
+  <div class="filecard">
+    <div class="f"><span class="nm">setup_envs.sh</span><span class="role">第一層　我們的　11 行</span><p>建一個 conda 環境</p></div>
+    <div class="f"><span class="nm">run_all.sh</span><span class="role">第一層　我們的　22 行</span><p>一鍵重跑：取得程式與資料、BJ1 到 BJ5、X1 到 X4、驗收</p></div>
+    <div class="f"><span class="nm">train.py</span><span class="role">第二層　作者的　134 行</span><p>BJ1：訓練 Dino 的讀出、跑 50 個保留關卡與三個對照</p></div>
+    <div class="f"><span class="nm">fetch.py</span><span class="role">第二層　作者的　189 行</span><p>BJ2：下載 MaleCNS 的連結矩陣、核對八個計數</p></div>
+    <div class="f"><span class="nm">extract.py</span><span class="role">第二層　作者的　140 行</span><p>BJ2：切出蕈狀體四群、算 MBON 的趨近／迴避標記</p></div>
+    <div class="f"><span class="nm">experiment.py</span><span class="role">第二層　作者的　136 行</span><p>BJ3：制約學習，五個條件各 12 個種子</p></div>
+    <div class="f"><span class="nm">tmaze.py</span><span class="role">第二層　作者的　72 行</span><p>BJ3：T-maze 偏好指數</p></div>
+    <div class="f"><span class="nm">bj4_forage.py</span><span class="role">第二層　我們的　17 行</span><p>BJ4：作者的策略直接評估；照 README 重新訓練再評估</p></div>
+    <div class="f"><span class="nm">bj4b_forage_s45.py</span><span class="role">第二層　我們的　13 行</span><p>BJ4b：補上 45 秒重新訓練</p></div>
+    <div class="f"><span class="nm">bj5_blackjack.py</span><span class="role">第二層　我們的　47 行</span><p>BJ5：四個條件 × 3 個種子 × 30,000 手</p></div>
+    <div class="f"><span class="nm">bj5b_author_brain.py</span><span class="role">第二層　我們的　28 行</span><p>BJ5b：把作者附的大腦檔載入 Python 模型重新評分</p></div>
+    <div class="f"><span class="nm">bj_extra.py</span><span class="role">第二層　我們的　103 行</span><p>X1 到 X4</p></div>
+    <div class="f"><span class="nm">check.py</span><span class="role">第二層　我們的　63 行</span><p>驗收：你的結果對本課實跑的結果，19 項</p></div>
+  </div>
+  <p class="figsrc">行數由 <code>scripts/make_code.py</code> 數出，記在 <code>out/code_meta.json</code>。本頁每一個程式區塊都由同一支程式從原檔照抄，<code>make_code.py --check</code> 會逐塊確認和原檔一致。make_code.py 是做這個網頁用的工具，放在課程網站的程式倉庫，不在下載包裡，run_all.sh 不會叫它。</p>
+
+  <div class="callout">
+    <b>不會 Python 也讀得下去。</b>會用到的語法只有幾種：變數（給東西取名）、函式（把幾行打包、取名、之後可以重複叫）、迴圈（同一段程式對一串東西各做一次）、條件（如果…就…）、串列與字典（一串值；一組「名字→值」）、類別與物件（把資料和操作它的函式打包成一種「東西」的定義，叫類別；照定義做出來的每一個叫物件）。每一種第一次出現時就地解釋，之後不再解釋。
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s2"><span class="pt">2</span>第一層：兩支 shell script</h2>
+
+  <h3>setup_envs.sh：建一個環境</h3>
+
+  <p><b>這支在做什麼。</b>PART 2 第 4 節說過，fly-blackjack 只用三個套件、彼此不衝突，所以一個環境就夠；但套件版本要固定成本課實跑時的版本，對不上時才知道差在哪裡。這支腳本就做這一件事。</p>
+
+<!-- code: setup_envs.sh 1-6 hl=4,5,6 lab=4:①,5:②,6:③ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span><span class="cm">#!/usr/bin/env bash</span>
+<span class="ln">  2</span><span class="mk"> </span><span class="cm"># 建立重現 fly-blackjack 需要的一個 conda 環境（只需做一次，需要網路）。用法：bash setup_envs.sh</span>
+<span class="ln">  3</span><span class="mk"> </span><span class="cm"># 版本照本課實跑時的環境固定。</span>
+<span class="hl"><span class="ln">  4</span><span class="mk">①</span>set -e</span><span class="hl"><span class="ln">  5</span><span class="mk">②</span>CONDA_BASE=&quot;$(conda info --base)&quot;</span><span class="hl"><span class="ln">  6</span><span class="mk">③</span>export PYTHONNOUSERSITE=1        <span class="cm"># 不讓使用者家目錄 ~/.local 裡的套件混進環境</span></span></pre><figcaption class="figsrc">下載包的 <code>setup_envs.sh</code> 第 1–6 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>set -e</code>：之後任何一行失敗，整支腳本立刻停。沒有這一行，建環境失敗了腳本還會繼續往下裝套件，錯誤會被埋掉。</li>
+    <li><b class="l">②</b>問 conda 它裝在哪裡，存進變數 <code>CONDA_BASE</code>（第 1 節的例子解釋過 <code>$(…)</code>）。</li>
+    <li><b class="l">③</b>擋家目錄套件的那個開關；<code>#</code> 後面灰色的字是<b>註解</b>：寫給人看的說明，電腦跳過不執行。</li>
+  </ul>
+
+<!-- code: setup_envs.sh 7-9 hl=8,9 lab=8:①,9:② -->
+<figure class="code"><pre class="code"><span class="ln">  7</span><span class="mk"> </span><span class="cm"># conda 預設的 libmamba 求解器在某些安裝裡會壞掉（錯誤訊息含 libmambapy），失敗時改用 classic 求解器再試一次</span>
+<span class="hl"><span class="ln">  8</span><span class="mk">①</span>mk() { conda env list | grep -q &quot;^$1 &quot; || conda create -y -q -n &quot;$1&quot; &quot;python=$2&quot; || conda create -y -q --solver classic -n &quot;$1&quot; &quot;python=$2&quot;</span><span class="hl"><span class="ln">  9</span><span class="mk">②</span>       &quot;$CONDA_BASE/envs/$1/bin/pip&quot; install -q &quot;${@:3}&quot;; }</span></pre><figcaption class="figsrc">下載包的 <code>setup_envs.sh</code> 第 7–9 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>這兩行定義一個叫 <code>mk</code> 的<b>函式</b>：把「建一個環境」這件事打包，之後叫一次就好。<code>$1</code>、<code>$2</code> 是叫它時給的第一、第二個值（環境名、Python 版本）。三個用 <code>||</code> 接起來的指令讀成「或者」：先看環境在不在（<code>conda env list | grep</code>），在就什麼都不做；不在就 <code>conda create</code>；連 create 都失敗，就加 <code>--solver classic</code> 再試一次。最後那個備案是可攜測試時撞到的（可攜測試：把下載包解到一個空資料夾、從建環境開始從頭跑一次，確認在另一台電腦也跑得完，PART 2 第 1 節）：conda 預設的求解器（決定裝哪些版本的那個零件）在某些安裝裡會壞掉。</li>
+    <li><b class="l">②</b>環境建好後，用那個環境自己的 pip 裝套件。<code>${@:3}</code> 是「第三個以後的所有值」，也就是下一行列的套件清單。</li>
+  </ul>
+
+<!-- code: setup_envs.sh 10-11 hl=10,11 lab=10:①,11:② -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 10</span><span class="mk">①</span>mk flyplay_bj  3.11 numpy==2.4.6 scipy==1.17.1 pandas==3.0.6</span><span class="hl"><span class="ln"> 11</span><span class="mk">②</span>for e in flyplay_bj; do &quot;$CONDA_BASE/envs/$e/bin/python&quot; -c &quot;import sys; print(&#x27;$e&#x27;, sys.version.split()[0], &#x27;OK&#x27;)&quot;; done</span></pre><figcaption class="figsrc">下載包的 <code>setup_envs.sh</code> 第 10–11 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>叫 <code>mk</code> 一次：環境名 <code>flyplay_bj</code>、Python 3.11、三個套件各釘在一個版本（<code>==</code>）。numpy 是數字陣列的運算，scipy 這裡只用它的稀疏矩陣（大部分是 0 的表格只存非 0 的格子，連結矩陣就是這種），pandas 讀表格檔。PART 2 第 4 節那張表就是這一行。</li>
+    <li><b class="l">②</b>用新環境的 Python 印一行版本號，讓你確認建好了。</li>
+  </ul>
+
+  <h3>run_all.sh：一鍵重跑</h3>
+
+  <p><b>這支在做什麼。</b>它就是 <a href="part3-repro.html">PART 3</a> 的 BJ1 到 BJ5 與 <a href="part4-checks.html">PART 4</a> 的 X1 到 X4 排成一列，最後驗收。讀它的重點不是指令本身，而是<b>每一步叫哪支程式、輸出寫到哪裡</b>；第二層要讀的程式，就是這支腳本一行一行叫出來的。</p>
+
+<!-- code: run_all.sh 1-8 hl=4,5,8 lab=4:①,5:②,8:③ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span><span class="cm">#!/usr/bin/env bash</span>
+<span class="ln">  2</span><span class="mk"> </span><span class="cm"># fly-blackjack 一鍵重跑：BJ1–BJ5 ＋ 加做檢查 X1–X4。用法：bash run_all.sh（本課實測時間見 PART 2）</span>
+<span class="ln">  3</span><span class="mk"> </span><span class="cm"># 需要先跑過上一層的 setup_envs.sh。每步的終端輸出寫到 logs/，數字寫到 results/，最後由 ../check.py 驗收。</span>
+<span class="hl"><span class="ln">  4</span><span class="mk">①</span>set -e</span><span class="hl"><span class="ln">  5</span><span class="mk">②</span>HERE=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><span class="ln">  6</span><span class="mk"> </span>PY=&quot;$(conda info --base)/envs/flyplay_bj/bin/python&quot;
+<span class="ln">  7</span><span class="mk"> </span>export PYTHONNOUSERSITE=1 PYTHONPATH=.
+<span class="hl"><span class="ln">  8</span><span class="mk">③</span>cd &quot;$HERE&quot;</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 1–8 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>同樣的 <code>set -e</code>：任何一步失敗就停，不會帶著錯的中間結果往下跑。</li>
+    <li><b class="l">②</b>算出這支腳本自己所在的資料夾（<code>blackjack/</code>），存進 <code>HERE</code>。這樣不管你在哪個資料夾打 <code>bash …/run_all.sh</code>，它都知道 <code>scripts/</code>、<code>logs/</code>、<code>results/</code> 在哪。第 6、7 行是第 1 節的例子。</li>
+    <li><b class="l">③</b>先進到腳本自己的資料夾，之後的相對路徑都以它為準。</li>
+  </ul>
+
+<!-- code: run_all.sh 9-12 hl=9,10,11,12 lab=9:①,10:②,11:③,12:④ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">  9</span><span class="mk">①</span>[ -d repo ] || git clone -q https://github.com/WilliamJones/fly-blackjack.git repo</span><span class="hl"><span class="ln"> 10</span><span class="mk">②</span>git -C repo checkout -q 004b2e3e9ccb742f83c5bdc2717c97f5a64b420f</span><span class="hl"><span class="ln"> 11</span><span class="mk">③</span>mkdir -p logs results</span><span class="hl"><span class="ln"> 12</span><span class="mk">④</span>cd repo</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 9–12 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>把作者的程式拿到手，並固定版本。下載包不附作者的程式（原因見 PART 2 第 3 節：讓你跑到的一定是 GitHub 上的那一份），所以是你的電腦自己去 GitHub 取。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>[ -d repo ] ||</code> 讀成「如果 <code>repo</code> 這個資料夾還不存在，就」<code>git clone</code>：把 fly-blackjack 整個 repo 複製下來，放進 <code>repo/</code>。第二次跑就跳過。</li>
+    <li><b class="l">②</b>切到固定的 commit（<code>004b2e3…</code> 是完整的四十個字，首頁〈出處〉寫的是前七個）。沒有這一行，作者之後改了程式，你跑到的就不是本課重現的那一版。</li>
+    <li><b class="l">③</b>建 <code>logs/</code> 與 <code>results/</code> 兩個資料夾，之後每一步的輸出往這裡放。</li>
+    <li><b class="l">④</b>進到 <code>repo/</code>。作者的程式要在這裡執行（第 7 行的 <code>PYTHONPATH=.</code> 指的「目前資料夾」就是它），所以下面每一行寫到我們自己的檔案都是 <code>../</code> 開頭：往上一層回到 <code>blackjack/</code>。</li>
+  </ul>
+
+<!-- code: run_all.sh 13-16 hl=13,14,15,16 lab=13:①,14:②,15:③,16:④ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 13</span><span class="mk">①</span>echo &quot;BJ1 Dino&quot;;                  $PY -m flybrain.train --generations 40 --population 48 --seconds 30 --out ../results/bj1_checkpoint.json &gt; ../logs/bj1_train.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 14</span><span class="mk">②</span>echo &quot;BJ2 下載並切出蕈狀體（下載約 107 MB）&quot;; $PY -m flybrain.mb.fetch &gt; ../logs/bj2_fetch.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 15</span><span class="mk">③</span>for i in 1 2; do $PY -m flybrain.mb.extract &gt; ../logs/bj2_extract_run$i.log 2&gt;&amp;1; md5sum data/mb_circuit.npz; done | tee ../logs/bj2_md5.txt</span><span class="hl"><span class="ln"> 16</span><span class="mk">④</span>echo &quot;BJ3 制約與 T-maze&quot;;         $PY -m flybrain.mb.experiment &gt; ../logs/bj3_experiment.log 2&gt;&amp;1; $PY -m flybrain.mb.tmaze &gt; ../logs/bj3_tmaze.log 2&gt;&amp;1; cp data/mb_results.json data/mb_tmaze.json ../results/</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 13–16 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>BJ1 到 BJ3，全部直接用作者的程式。格式都一樣：<code>echo</code> 印出步驟名，然後 <code>$PY -m</code> 執行作者的某個模組，<code>&gt;</code> 把它印出來的東西存進 <code>logs/</code> 的一個檔案（<code>2&gt;&amp;1</code> 是把錯誤訊息也存進同一個檔）。PART 3 每一節末尾的終端機節錄，就是這些 log 檔的原文。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b>BJ1：執行作者的 <code>flybrain.train</code>，後面三個設定照作者 README 的快速開始指令（40 代、每代 48 組、每局 30 秒），再加 <code>--out</code> 讓訓練結果寫到我們的 <code>results/bj1_checkpoint.json</code>（第 3 節）。</li>
+    <li><b class="l">②</b>BJ2 的前半：<code>flybrain.mb.fetch</code> 下載兩個資料檔（約 107 MB）並核對計數。</li>
+    <li><b class="l">③</b>BJ2 的後半是一個<b>迴圈</b>：<code>for i in 1 2; do … done</code> 讓中間那段對 1、2 各跑一次。每次執行作者的 <code>flybrain.mb.extract</code> 切一次蕈狀體（輸出寫到 <code>bj2_extract_run1.log</code>、<code>run2.log</code>），再用 <code>md5sum</code> 算切出來的檔案 <code>data/mb_circuit.npz</code> 的指紋（md5：從整個檔案算出來的一串字，內容差一個位元就完全不同）。<code>| tee</code> 把兩行指紋同時印在螢幕上和存進 <code>bj2_md5.txt</code>。PART 3 第 4 節「跑兩次、md5 相同」驗的就是這個檔。</li>
+    <li><b class="l">④</b>BJ3：先 <code>flybrain.mb.experiment</code>（制約學習）再 <code>flybrain.mb.tmaze</code>（T-maze）。作者的程式把結果寫在它自己的 <code>data/</code> 底下，所以最後用 <code>cp</code> 把兩個 JSON 複製到我們的 <code>results/</code>，check.py 才找得到。</li>
+  </ul>
+
+<!-- code: run_all.sh 17-22 hl=17,18,19,20,21,22 lab=17:①,18:②,19:③,20:④,21:⑤,22:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 17</span><span class="mk">①</span>echo &quot;BJ4 覓食（照 README 重新訓練）&quot;; $PY ../scripts/bj4_forage.py &gt; ../logs/bj4_forage.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 18</span><span class="mk">②</span>echo &quot;BJ4b 覓食（seconds=45 重新訓練）&quot;; $PY ../scripts/bj4b_forage_s45.py &gt; ../logs/bj4b_forage_s45.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 19</span><span class="mk">③</span>echo &quot;BJ5 21 點&quot;;                 $PY ../scripts/bj5_blackjack.py 30000 0 1 2 &gt; ../logs/bj5_blackjack.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 20</span><span class="mk">④</span>echo &quot;BJ5b 評分作者附的大腦&quot;;     $PY ../scripts/bj5b_author_brain.py &gt; ../logs/bj5b_author_brain.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 21</span><span class="mk">⑤</span>echo &quot;加做檢查 X1–X4&quot;;            $PY ../scripts/bj_extra.py &gt; ../logs/bj_extra.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 22</span><span class="mk">⑥</span>cd &quot;$HERE&quot;; &quot;$PY&quot; ../check.py blackjack</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 17–22 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>BJ4 之後換成跑我們自己寫的程式。原因在 PART 3 第 2 節：覓食與 21 點兩個實驗，作者沒有留下可以直接在終端機打的指令，他是在 Python 裡呼叫函式跑的。所以本課寫了幾支小程式去呼叫作者的函式，不改作者任何一行。這些程式放在 <code>blackjack/scripts/</code>，從 <code>repo/</code> 看過去是 <code>../scripts/</code>。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b>BJ4：<code>bj4_forage.py</code>，拿作者附的策略直接評估，再照 README 的指令重新訓練一次、再評估（第 4 節）。</li>
+    <li><b class="l">②</b>BJ4b：<code>bj4b_forage_s45.py</code>，補上作者策略檔裡記的「每回合 45 秒」重新訓練。這一步是重現時發現 README 少寫一個參數之後加的（PART 3 第 6 節）。</li>
+    <li><b class="l">③</b>BJ5：<code>bj5_blackjack.py</code> 後面跟著四個數字：<code>30000</code> 是每個種子打幾手，<code>0 1 2</code> 是三個種子。PART 2 第 6 節教你手動改成 <code>2000 0</code> 試跑，改的就是這幾個數字。</li>
+    <li><b class="l">④</b>BJ5b：<code>bj5b_author_brain.py</code>，把作者附在 repo 裡的大腦檔載入 Python 模型重新評分（PART 3 第 7 節那張表的第四列）。</li>
+    <li><b class="l">⑤</b>X1 到 X4 都在 <code>bj_extra.py</code> 一支裡（第 5 節）。</li>
+    <li><b class="l">⑥</b>回到 <code>blackjack/</code>，跑上一層的 <code>check.py</code> 驗收，<code>blackjack</code> 是告訴它驗哪一組。PART 2 第 7 節那份 ✓／✗ 的清單就是它印的。</li>
+  </ul>
+
+  <div class="note">
+    <b>讀到這裡你已經有第二層的目錄。</b>run_all.sh 總共叫了十一支 Python 程式：作者的 <code>train.py</code>、<code>fetch.py</code>、<code>extract.py</code>、<code>experiment.py</code>、<code>tmaze.py</code>，我們的 <code>bj4_forage.py</code>、<code>bj4b_forage_s45.py</code>、<code>bj5_blackjack.py</code>、<code>bj5b_author_brain.py</code>、<code>bj_extra.py</code>、<code>check.py</code>。下面四節照這個順序讀。
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s3"><span class="pt">3</span>第二層：BJ1 到 BJ3，作者的五支入口程式</h2>
+
+  <p>這五支都是「有命令列入口」的作者程式：檔案最後一段寫著 <code>if __name__ == "__main__":</code>，意思是「這個檔被直接執行（而不是被別人匯入）時，做下面這些事」。run_all.sh 的 <code>-m</code> 就是從那一段進去。每一支的順序都一樣：先看入口那一段知道它收什麼設定，再往上看被叫到的函式。</p>
+
+  <h3>train.py：BJ1，訓練 Dino 的讀出</h3>
+
+  <p><b>這支在做什麼。</b>PART 1 第 5 節的實驗一：80 顆神經元的迴路（第 1 節詞表）接線不動，只訓練後面那個 243 個數的讀出網路（243 ＝ 16 個輸入 × 12 個中間單元 ＋ 12 ＋ 12 × 3 個動作 ＋ 3；單獨的 12 與 3 是每個中間單元、每個動作各多一個固定加上去的數，叫偏置，PART 7 第 2 節），方法是 CEM；訓練完拿到 50 個訓練時沒用過的關卡上打，連同三個對照一起印成 PART 3 第 3 節那張四列的表。先看入口：</p>
+
+<!-- code: train.py 122-134 hl=123,124,125,126,127,131,132,133,134 lab=123:①,124:②,131:③,133:④,134:⑤ -->
+<figure class="code"><pre class="code"><span class="ln">122</span><span class="mk"> </span>if __name__ == &quot;__main__&quot;:
+<span class="hl"><span class="ln">123</span><span class="mk">①</span>    p = argparse.ArgumentParser()</span><span class="hl"><span class="ln">124</span><span class="mk">②</span>    p.add_argument(&quot;--seed&quot;, type=int, default=20260913)</span><span class="hl"><span class="ln">125</span><span class="mk"> </span>    p.add_argument(&quot;--generations&quot;, type=int, default=40)</span><span class="hl"><span class="ln">126</span><span class="mk"> </span>    p.add_argument(&quot;--population&quot;, type=int, default=48)</span><span class="hl"><span class="ln">127</span><span class="mk"> </span>    p.add_argument(&quot;--seconds&quot;, type=float, default=45.0)</span><span class="ln">128</span><span class="mk"> </span>    p.add_argument(&quot;--out&quot;, default=&quot;checkpoint.json&quot;)
+<span class="ln">129</span><span class="mk"> </span>    a = p.parse_args()
+<span class="ln">130</span><span class="mk"> </span>    t0 = time.time()
+<span class="hl"><span class="ln">131</span><span class="mk">③</span>    theta, val, _ = train(seed=a.seed, generations=a.generations,</span><span class="hl"><span class="ln">132</span><span class="mk"> </span>                          population=a.population, episode_seconds=a.seconds, out=a.out)</span><span class="hl"><span class="ln">133</span><span class="mk">④</span>    print(f&quot;\ntrained in {time.time() - t0:.1f}s, validation {val:.1f} -&gt; {a.out}&quot;)</span><span class="hl"><span class="ln">134</span><span class="mk">⑤</span>    benchmark(theta, episode_seconds=a.seconds)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 122–134 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>argparse</code> 是 Python 內建的「讀指令列設定」工具。第 124 到 128 行各登記一個設定與它的預設值：種子 20260913、40 代、每代 48 組、每局 45 秒、輸出檔名。run_all.sh 給了 <code>--seconds 30</code> 與 <code>--out</code>，其餘用預設。</li>
+    <li><b class="l">②</b>注意種子寫死成 20260913：CEM 每一代「隨機」抽的參數、每一代「隨機」挑的關卡，全部從這個數字算出來，所以 PART 3 說本機訓練出的 243 個數和作者的一樣。</li>
+    <li><b class="l">③</b>叫下面的 <code>train</code> 函式，拿回三樣東西：訓練好的參數 <code>theta</code>、它的驗證分 <code>val</code>、以及每一代的紀錄（這裡用 <code>_</code> 表示不要）。</li>
+    <li><b class="l">④</b>印出「trained in 98.1s, validation 217.7」那一行（PART 3 第 3 節節錄的中間那行）。</li>
+    <li><b class="l">⑤</b>叫 <code>benchmark</code>：用訓練好的參數跑保留關卡與三個對照，印出四列的表。每局秒數沿用同一個 <code>a.seconds</code>，所以 PART 3 表裡「平均存活秒數 29.12」的上限是 30。</li>
+  </ul>
+
+<!-- code: train.py 17-27 hl=17,19,20,23,24,25,26,27 lab=17:①,19:②,24:③,25:④,26:⑤,27:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 17</span><span class="mk">①</span>def rollout(theta, circuit, env, seed, max_seconds):</span><span class="ln"> 18</span><span class="mk"> </span>    env.max_seconds = max_seconds
+<span class="hl"><span class="ln"> 19</span><span class="mk">②</span>    obs = env.reset(seed)</span><span class="hl"><span class="ln"> 20</span><span class="mk"> </span>    circuit.reset()</span><span class="ln"> 21</span><span class="mk"> </span>    done = False
+<span class="ln"> 22</span><span class="mk"> </span>    score = 0.0
+<span class="hl"><span class="ln"> 23</span><span class="mk"> </span>    while not done:</span><span class="hl"><span class="ln"> 24</span><span class="mk">③</span>        activity = circuit.step(obs)</span><span class="hl"><span class="ln"> 25</span><span class="mk">④</span>        a = act(theta, activity, circuit.n_outputs, env.N_ACTIONS)</span><span class="hl"><span class="ln"> 26</span><span class="mk">⑤</span>        obs, score, done = env.step(a)</span><span class="hl"><span class="ln"> 27</span><span class="mk">⑥</span>    return score, env.t</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 17–27 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>玩一局。PART 1 第 1 節的四個零件（連結體、神經元方程式、輸入編碼、讀出規則）在這十一行裡全部出現，遊戲每前進一<b>格</b>（遊戲時間的最小單位，一秒 30 格）各轉一次。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>def rollout(…)</code> 定義一個函式：收一組讀出參數 <code>theta</code>、一個迴路 <code>circuit</code>、一個遊戲 <code>env</code>、這一局的種子、每局最長幾秒。</li>
+    <li><b class="l">②</b>用種子重置遊戲（障礙物會出現在哪由它決定），拿到第一格的 8 個觀測值 <code>obs</code>；第 20 行把迴路裡每顆神經元的活動量歸零。</li>
+    <li><b class="l">③</b><code>while not done</code>：遊戲沒結束就一直做下面三行，每做一次遊戲前進一格。每一格：把 8 個觀測值（例如最近障礙物的距離、寬、高，角色的速度、高度）灌進迴路（每個觀測值接 4 顆輸入神經元，8 × 4 ＝ 32 顆，接法在 PART 7 第 2 節）、算一遍，拿回 80 顆裡那 16 顆下行神經元的活動量 <code>activity</code>。這一行是連結體與神經元方程式在工作（PART 7 的 circuit.py）。</li>
+    <li><b class="l">④</b>把 16 個活動量交給讀出網路 <code>act</code>，拿回一個動作（跑、跳、蹲之一）。這是讀出規則（PART 7 的 readout.py）。</li>
+    <li><b class="l">⑤</b>把動作送進遊戲，遊戲前進一格，回報新的觀測值、目前分數、結束了沒。輸入編碼的另一半（8 個觀測值怎麼從畫面量出來）在 PART 7 的 envs.py；前一半（8 個值怎麼灌進 32 顆神經元）在 circuit.py。</li>
+    <li><b class="l">⑥</b>結束時交回分數與撐了幾秒。</li>
+  </ul>
+
+<!-- code: train.py 37-49 hl=37,38,39,40,41,42,44,45,46,47,48 lab=37:①,39:②,40:③,42:④,44:⑤,46:⑥,47:⑦ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 37</span><span class="mk">①</span>def train(seed=20260913, generations=40, population=48, elites=6,</span><span class="hl"><span class="ln"> 38</span><span class="mk"> </span>          episode_seconds=45.0, courses=3, out=&quot;checkpoint.json&quot;, quiet=False):</span><span class="hl"><span class="ln"> 39</span><span class="mk">②</span>    rng = np.random.default_rng(seed)</span><span class="hl"><span class="ln"> 40</span><span class="mk">③</span>    circuit = load()</span><span class="hl"><span class="ln"> 41</span><span class="mk"> </span>    env = Dodger()</span><span class="hl"><span class="ln"> 42</span><span class="mk">④</span>    d = n_params(circuit.n_outputs, env.N_ACTIONS)</span><span class="ln"> 43</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 44</span><span class="mk">⑤</span>    mean = np.zeros(d)</span><span class="hl"><span class="ln"> 45</span><span class="mk"> </span>    sigma = np.full(d, 0.8)</span><span class="hl"><span class="ln"> 46</span><span class="mk">⑥</span>    champion = rng.normal(0, 0.7, d)</span><span class="hl"><span class="ln"> 47</span><span class="mk">⑦</span>    validation_seeds = [1100001, 1100002, 1100003, 1100004]</span><span class="hl"><span class="ln"> 48</span><span class="mk"> </span>    best_validation = -np.inf</span><span class="ln"> 49</span><span class="mk"> </span>    history = []</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 37–49 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>CEM 開始前的準備。PART 1 說「每一代抽 48 組，留最好的 6 組」，這裡先看抽的時候是「以什麼為中心、散多開」。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>train</code> 函式的八個設定與預設值：種子、40 代、48 組、留 6 組（<code>elites</code>）、每局 45 秒、每代 3 個關卡、輸出檔名、要不要安靜。這些就是 PART 1 說「48、6、40 都是作者定的」的那一行。</li>
+    <li><b class="l">②</b>用種子開一個亂數產生器 <code>rng</code>；之後所有「隨機」都向它要數字。</li>
+    <li><b class="l">③</b><code>load()</code> 讀作者附在 repo 裡的 <code>data/circuit.json</code>（80 顆神經元的接線），做成一個迴路物件。這個檔不是 BJ2 下載的，是作者預先切好放在 repo 裡的；repo 的 NOTICE.md 註明它由另一位開發者（flyjump 專案）從 MaleCNS 切出，切法另外附在 <code>build_your_own_circuit.py</code>，本課沒有跑那一支。第 41 行開一個 Dino 遊戲物件。</li>
+    <li><b class="l">④</b>算讀出網路有幾個參數：16 個輸入、3 個動作，中間還有一層 12 個單元，16 × 12 ＋ 12 ＋ 12 × 3 ＋ 3 ＝ 243，單獨的 12 與 3 是偏置（怎麼接，PART 7 第 2 節）。</li>
+    <li><b class="l">⑤</b>抽樣的中心 <code>mean</code> 一開始全是 0，散開程度 <code>sigma</code> 全是 0.8：每一組參數是「中心 ＋ 0.8 × 一個標準常態亂數」抽出來的。</li>
+    <li><b class="l">⑥</b>第一代的冠軍先隨便抽一組（標準差 0.7）。</li>
+    <li><b class="l">⑦</b>四個固定的驗證關卡種子。訓練關卡每一代換，驗證關卡從頭到尾同一組，才能跨代比較哪一代真的比較好。</li>
+  </ul>
+
+<!-- code: train.py 51-63 hl=51,52,53,54,56,57,60,61,62,63 lab=51:①,52:②,53:③,56:④,60:⑤,62:⑥,63:⑦ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 51</span><span class="mk">①</span>    for g in range(generations):</span><span class="hl"><span class="ln"> 52</span><span class="mk">②</span>        course_seeds = [int(rng.integers(1, 900000)) for _ in range(courses)]</span><span class="hl"><span class="ln"> 53</span><span class="mk">③</span>        candidates = [champion.copy()] + [</span><span class="hl"><span class="ln"> 54</span><span class="mk"> </span>            mean + sigma * rng.standard_normal(d) for _ in range(population - 1)</span><span class="ln"> 55</span><span class="mk"> </span>        ]
+<span class="hl"><span class="ln"> 56</span><span class="mk">④</span>        fitness = np.array([</span><span class="hl"><span class="ln"> 57</span><span class="mk"> </span>            evaluate(c, circuit, env, course_seeds, episode_seconds)[0].mean()</span><span class="ln"> 58</span><span class="mk"> </span>            for c in candidates
+<span class="ln"> 59</span><span class="mk"> </span>        ])
+<span class="hl"><span class="ln"> 60</span><span class="mk">⑤</span>        order = np.argsort(-fitness)</span><span class="hl"><span class="ln"> 61</span><span class="mk"> </span>        elite = np.array([candidates[i] for i in order[:elites]])</span><span class="hl"><span class="ln"> 62</span><span class="mk">⑥</span>        mean = 0.3 * mean + 0.7 * elite.mean(axis=0)</span><span class="hl"><span class="ln"> 63</span><span class="mk">⑦</span>        sigma = np.maximum(0.3 * sigma + 0.7 * elite.std(axis=0), 0.07)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 51–63 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>CEM 的一代，重複 40 次。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>for g in range(generations)</code>：<code>g</code> 從 0 數到 39，中間的事各做一次。</li>
+    <li><b class="l">②</b>這一代抽 3 個關卡種子。每一代的關卡都不同，才不會訓練出只會背這幾關的讀出。</li>
+    <li><b class="l">③</b>候選名單：上一代的冠軍原封不動放第一個，再從目前的中心與散開程度抽 47 組新的（<code>population − 1</code>），一共 48 組。所以 PART 1 說「隨機抽 48 組」，精確地說是冠軍加 47 組新抽的。</li>
+    <li><b class="l">④</b>每一組都用 <code>rollout</code> 玩那 3 個關卡（<code>evaluate</code> 是對一串種子各叫一次 rollout），取平均分當這組的成績 <code>fitness</code>。這一行是整個訓練最花時間的地方：48 組 × 3 局，一代 144 局。</li>
+    <li><b class="l">⑤</b>依成績排序，取前 6 組當 <code>elite</code>。</li>
+    <li><b class="l">⑥</b>中心往這 6 組的平均移動：新中心 ＝ 0.3 × 舊中心 ＋ 0.7 × 6 組的平均。不是直接跳過去，而是留三成舊的，避免一代運氣好就整個偏掉。</li>
+    <li><b class="l">⑦</b>散開程度同樣往 6 組的分散程度收，但最低不低於 0.07：不讓抽樣收到完全不動。這兩行就是 PART 1 說的「照這 6 組的平均與分散程度抽下一代」。</li>
+  </ul>
+
+<!-- code: train.py 65-70 hl=65,66,67,68 lab=65:①,66:②,67:③ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 65</span><span class="mk">①</span>        best = candidates[order[0]]</span><span class="hl"><span class="ln"> 66</span><span class="mk">②</span>        val = evaluate(best, circuit, env, validation_seeds, episode_seconds)[0].mean()</span><span class="hl"><span class="ln"> 67</span><span class="mk">③</span>        if val &gt; best_validation:</span><span class="hl"><span class="ln"> 68</span><span class="mk"> </span>            best_validation, champion = val, best.copy()</span><span class="ln"> 69</span><span class="mk"> </span>        history.append(dict(generation=g, train=float(fitness[order[0]]),
+<span class="ln"> 70</span><span class="mk"> </span>                            validation=float(val), best_validation=float(best_validation)))</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 65–70 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>這一代訓練分最高的那一組。</li>
+    <li><b class="l">②</b>另外讓它跑 4 個固定的驗證關卡，取平均 <code>val</code>。訓練關卡每代不同，所以 PART 3 的節錄說 train 與 val 兩欄不能直接比。</li>
+    <li><b class="l">③</b>驗證分若超過歷來最高，這組就成為新冠軍。40 代結束後交出去的是冠軍，不是最後一代的平均。PART 3 節錄裡 <code>best</code> 那一欄就是這裡的 <code>best_validation</code>。第 69 到 73 行把這一代的三個分數記下來並印成一行「gen … train … val … best …」。</li>
+  </ul>
+
+<!-- code: train.py 75-79 hl=75,76,77,78 lab=75:①,78:② -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 75</span><span class="mk">①</span>    Path(out).write_text(json.dumps(dict(</span><span class="hl"><span class="ln"> 76</span><span class="mk"> </span>        seed=seed, generations=generations, population=population,</span><span class="hl"><span class="ln"> 77</span><span class="mk"> </span>        episode_seconds=episode_seconds, validation=best_validation,</span><span class="hl"><span class="ln"> 78</span><span class="mk">②</span>        theta=champion.tolist(), history=history), indent=1))</span><span class="ln"> 79</span><span class="mk"> </span>    return champion, best_validation, history</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 75–79 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>把結果寫成 JSON：用了哪些設定、驗證分、冠軍的 243 個數（<code>theta</code>）、每一代的紀錄。這就是 <code>results/bj1_checkpoint.json</code>，本課收在 <code>out/blackjack/bj1_checkpoint.json</code>。</li>
+    <li><b class="l">②</b>交回冠軍、它的驗證分與紀錄。</li>
+  </ul>
+
+<!-- code: train.py 82-97 hl=82,84,88,89,90,92,93,95,96,97 lab=84:①,88:②,89:③,92:④,95:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 82</span><span class="mk"> </span>def benchmark(theta, episode_seconds=45.0, n=50, start=2100001):</span><span class="ln"> 83</span><span class="mk"> </span>    &quot;&quot;&quot;Held-out test PLUS the two controls that make the result mean anything.&quot;&quot;&quot;
+<span class="hl"><span class="ln"> 84</span><span class="mk">①</span>    seeds = list(range(start, start + n))</span><span class="ln"> 85</span><span class="mk"> </span>    env = Dodger()
+<span class="ln"> 86</span><span class="mk"> </span>    rows = []
+<span class="ln"> 87</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 88</span><span class="mk">②</span>    circuit = load()</span><span class="hl"><span class="ln"> 89</span><span class="mk">③</span>    s, t = evaluate(theta, circuit, env, seeds, episode_seconds)</span><span class="hl"><span class="ln"> 90</span><span class="mk"> </span>    rows.append((&quot;connectome + trained readout&quot;, s, t))</span><span class="ln"> 91</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 92</span><span class="mk">④</span>    s, t = evaluate(theta, load_silenced(), env, seeds, episode_seconds)</span><span class="hl"><span class="ln"> 93</span><span class="mk"> </span>    rows.append((&quot;SAME readout, circuit silenced&quot;, s, t))</span><span class="ln"> 94</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 95</span><span class="mk">⑤</span>    untrained = np.random.default_rng(7).normal(0, 0.7, theta.shape)</span><span class="hl"><span class="ln"> 96</span><span class="mk"> </span>    s, t = evaluate(untrained, circuit, env, seeds, episode_seconds)</span><span class="hl"><span class="ln"> 97</span><span class="mk"> </span>    rows.append((&quot;untrained readout&quot;, s, t))</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 82–97 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>四列表的前三列。作者在這個函式的說明寫「保留關卡的測試，加上讓結果有意義的對照」。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b>50 個保留關卡的種子：從 2100001 連號到 2100050。訓練用的種子是 1 到 900000 之間抽的，驗證用 1100001 起，保留用 2100001 起，三組刻意不重疊。</li>
+    <li><b class="l">②</b>第一列：完整迴路 ＋ 訓練好的讀出，跑 50 局，記每局分數 <code>s</code> 與秒數 <code>t</code>。</li>
+    <li><b class="l">③</b>每一列是一個三元組：名字、50 個分數、50 個秒數，收進 <code>rows</code>。</li>
+    <li><b class="l">④</b>第二列：同一組讀出參數，但迴路換成 <code>load_silenced()</code>：一個形狀相同、輸出永遠是 0 的迴路（PART 7 的 circuit.py 第 68 到 75 行）。讀出收不到任何東西，看它還能不能過關。</li>
+    <li><b class="l">⑤</b>第三列：沒訓練過的讀出。用另一個寫死的種子 7 抽一組 243 個數（標準差 0.7，和第一代冠軍同樣的抽法），配完整迴路跑。種子寫死，所以這一列也能逐位重現。</li>
+  </ul>
+
+<!-- code: train.py 104-118 hl=105,106,107,110,112,114,116,117,118 lab=106:①,110:②,112:③,116:④,117:⑤ -->
+<figure class="code"><pre class="code"><span class="ln">104</span><span class="mk"> </span>    rs, rt = [], []
+<span class="hl"><span class="ln">105</span><span class="mk"> </span>    for sd in seeds:</span><span class="hl"><span class="ln">106</span><span class="mk">①</span>        rng = np.random.default_rng(sd)</span><span class="hl"><span class="ln">107</span><span class="mk"> </span>        obs = env.reset(sd); env.max_seconds = episode_seconds</span><span class="ln">108</span><span class="mk"> </span>        done = False; sc = 0.0
+<span class="ln">109</span><span class="mk"> </span>        while not done:
+<span class="hl"><span class="ln">110</span><span class="mk">②</span>            obs, sc, done = env.step(int(rng.integers(0, 3)))</span><span class="ln">111</span><span class="mk"> </span>        rs.append(sc); rt.append(env.t)
+<span class="hl"><span class="ln">112</span><span class="mk">③</span>    rows.append((&quot;uniform random actions&quot;, np.array(rs), np.array(rt)))</span><span class="ln">113</span><span class="mk"> </span>
+<span class="hl"><span class="ln">114</span><span class="mk"> </span>    print(f&quot;\n{&#x27;controller&#x27;:34s} {&#x27;survived/&#x27; + str(n):&gt;12s} {&#x27;mean seconds&#x27;:&gt;13s} {&#x27;mean score&#x27;:&gt;11s}&quot;)</span><span class="ln">115</span><span class="mk"> </span>    print(&quot;-&quot; * 74)
+<span class="hl"><span class="ln">116</span><span class="mk">④</span>    for name, sc, tt in rows:</span><span class="hl"><span class="ln">117</span><span class="mk">⑤</span>        print(f&quot;{name:34s} {int((tt &gt;= episode_seconds - 1e-6).sum()):&gt;12d} &quot;</span><span class="hl"><span class="ln">118</span><span class="mk"> </span>              f&quot;{tt.mean():&gt;13.2f} {sc.mean():&gt;11.1f}&quot;)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/train.py</code> 第 104–118 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>第四列：不看畫面亂按。對 50 個關卡各開一個以該關卡種子起頭的亂數產生器。</li>
+    <li><b class="l">②</b>每一格從 0、1、2 隨機挑一個動作送進遊戲，直到結束。</li>
+    <li><b class="l">③</b>收成第四列。</li>
+    <li><b class="l">④</b>印表。對每一列：名字、完成關卡數、平均秒數、平均分數。</li>
+    <li><b class="l">⑤</b>「完成」的定義在這一行：撐到秒數等於每局上限（30 秒）就算完成，<code>1e-6</code> 是容許浮點數尾差。所以 PART 3 表裡「完成關卡 45」是 50 局裡有 45 局撐滿 30 秒。</li>
+  </ul>
+
+  <h3>fetch.py：BJ2，下載連結矩陣並核對</h3>
+
+  <p><b>這支在做什麼。</b>PART 2 第 5 節講的資料固定方式：不是固定版本號，而是下載完核對檔案大小、載入後核對八個計數，有一個不同就停下來。這支程式就是那段話。</p>
+
+<!-- code: fetch.py 14-31 hl=14,15,16,17,18,20,22,23,24,25,26,27,28,29,30 lab=14:①,16:②,20:③,22:④ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 14</span><span class="mk">①</span>BASE = (&quot;https://raw.githubusercontent.com/YijieYin/connectome_data_prep/&quot;</span><span class="hl"><span class="ln"> 15</span><span class="mk"> </span>        &quot;main/data/maleCNS/&quot;)</span><span class="hl"><span class="ln"> 16</span><span class="mk">②</span>FILES = {</span><span class="hl"><span class="ln"> 17</span><span class="mk"> </span>    &quot;mcns_syncount_all_neuron.npz&quot;: 78_770_675,</span><span class="hl"><span class="ln"> 18</span><span class="mk"> </span>    &quot;mcns_all_neuron_meta.csv&quot;: 28_023_979,</span><span class="ln"> 19</span><span class="mk"> </span>}
+<span class="hl"><span class="ln"> 20</span><span class="mk">③</span>DATA = Path(&quot;data/malecns&quot;)</span><span class="ln"> 21</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 22</span><span class="mk">④</span>EXPECTED = {</span><span class="hl"><span class="ln"> 23</span><span class="mk"> </span>    &quot;neurons&quot;: 161_429,</span><span class="hl"><span class="ln"> 24</span><span class="mk"> </span>    &quot;connections&quot;: 25_083_972,</span><span class="hl"><span class="ln"> 25</span><span class="mk"> </span>    &quot;synapses&quot;: 121_933_227,</span><span class="hl"><span class="ln"> 26</span><span class="mk"> </span>    &quot;kenyon_cells&quot;: 4_064,</span><span class="hl"><span class="ln"> 27</span><span class="mk"> </span>    &quot;mbons&quot;: 97,</span><span class="hl"><span class="ln"> 28</span><span class="mk"> </span>    &quot;pam&quot;: 316,</span><span class="hl"><span class="ln"> 29</span><span class="mk"> </span>    &quot;ppl1&quot;: 16,</span><span class="hl"><span class="ln"> 30</span><span class="mk"> </span>    &quot;projection_neurons&quot;: 682,</span><span class="ln"> 31</span><span class="mk"> </span>}</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/fetch.py</code> 第 14–31 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>下載來源：GitHub 上 connectome_data_prep 這個 repo 的 <code>main</code> 分支（主分支：一個 repo 最新的那條版本線，會變）。PART 2 說「作者的下載程式沒有固定那個 repo 的版本」，看的就是這兩行的 <code>main</code>。</li>
+    <li><b class="l">②</b>兩個檔案與各自的位元組數，寫成一個<b>字典</b>（名字對到值）：連結矩陣 78,770,675 位元組、神經元屬性表 28,023,979 位元組。這就是 PART 2 說的「核對位元組數」。</li>
+    <li><b class="l">③</b>存到 <code>repo/data/malecns/</code>。</li>
+    <li><b class="l">④</b>八個預期的計數：神經元 161,429 顆、連結 25,083,972 條、突觸 121,933,227 個、KC 4,064 顆、MBON 97 顆、PAM 316 顆、PPL1 16 顆、PN 682 顆。作者在檔頭說明寫「每個數字都是從檔案量出來的，不是估的；有一項不符，表示資料在我們腳下變了，下游的東西都不該相信」。PART 3 第 4 節的節錄就是這八行核對結果（節錄只取了六行）。</li>
+  </ul>
+
+<!-- code: fetch.py 134-145 hl=134,136,137,140,141,143 lab=136:①,140:②,143:③ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">134</span><span class="mk"> </span>def download(force: bool = False) -&gt; Path:</span><span class="ln">135</span><span class="mk"> </span>    DATA.mkdir(parents=True, exist_ok=True)
+<span class="hl"><span class="ln">136</span><span class="mk">①</span>    for name, size in FILES.items():</span><span class="hl"><span class="ln">137</span><span class="mk"> </span>        target = DATA / name</span><span class="ln">138</span><span class="mk"> </span>        if force and target.exists():
+<span class="ln">139</span><span class="mk"> </span>            target.unlink()
+<span class="hl"><span class="ln">140</span><span class="mk">②</span>        if target.exists() and target.stat().st_size == size:</span><span class="hl"><span class="ln">141</span><span class="mk"> </span>            print(f&quot;  have {name} ({size/1e6:.0f} MB)&quot;)</span><span class="ln">142</span><span class="mk"> </span>            continue
+<span class="hl"><span class="ln">143</span><span class="mk">③</span>        _fetch_one(BASE + name, target, size)</span><span class="ln">144</span><span class="mk"> </span>        print(f&quot;  got {name} ({target.stat().st_size/1e6:.0f} MB)&quot;)
+<span class="ln">145</span><span class="mk"> </span>    return DATA</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/fetch.py</code> 第 134–145 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>對兩個檔案各做一次。</li>
+    <li><b class="l">②</b>檔案已經在、而且位元組數剛好，就印「have」跳過。本課實跑的 log 第一、二行印的是 have，因為可攜測試前已經下載過（<code>out/blackjack/logs/bj2_fetch.log</code>）。</li>
+    <li><b class="l">③</b>否則叫 <code>_fetch_one</code> 下載。那個函式有 60 行（第 73 到 131 行），處理斷線續傳、憑證問題、改用 curl 的備案，本頁跳過：它只影響「下載會不會成功」，不影響任何數字。</li>
+  </ul>
+
+<!-- code: fetch.py 162-175 hl=162,164,165,166,167,168,169,170,171,172,173,174 lab=164:①,165:②,167:③,169:④,170:⑤,174:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">162</span><span class="mk"> </span>def verify(quiet: bool = False) -&gt; bool:</span><span class="ln">163</span><span class="mk"> </span>    import numpy as np
+<span class="hl"><span class="ln">164</span><span class="mk">①</span>    M, meta = load()</span><span class="hl"><span class="ln">165</span><span class="mk">②</span>    t = meta[&quot;type&quot;].fillna(&quot;&quot;)</span><span class="hl"><span class="ln">166</span><span class="mk"> </span>    got = {</span><span class="hl"><span class="ln">167</span><span class="mk">③</span>        &quot;neurons&quot;: M.shape[0],</span><span class="hl"><span class="ln">168</span><span class="mk"> </span>        &quot;connections&quot;: M.nnz,</span><span class="hl"><span class="ln">169</span><span class="mk">④</span>        &quot;synapses&quot;: int(M.sum()),</span><span class="hl"><span class="ln">170</span><span class="mk">⑤</span>        &quot;kenyon_cells&quot;: int(t.str.match(r&quot;^KC&quot;).sum()),</span><span class="hl"><span class="ln">171</span><span class="mk"> </span>        &quot;mbons&quot;: int(t.str.match(r&quot;^MBON&quot;).sum()),</span><span class="hl"><span class="ln">172</span><span class="mk"> </span>        &quot;pam&quot;: int(t.str.match(r&quot;^PAM&quot;).sum()),</span><span class="hl"><span class="ln">173</span><span class="mk"> </span>        &quot;ppl1&quot;: int(t.str.match(r&quot;^PPL1&quot;).sum()),</span><span class="hl"><span class="ln">174</span><span class="mk">⑥</span>        &quot;projection_neurons&quot;: int((meta[&quot;class&quot;].fillna(&quot;&quot;) == &quot;ALPN&quot;).sum()),</span><span class="ln">175</span><span class="mk"> </span>    }</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/fetch.py</code> 第 162–175 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>八個計數怎麼算出來。這裡第一次看到連結矩陣長什麼樣。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>load()</code>（第 148 到 159 行，本頁沒引）把兩個檔讀進來：<code>M</code> 是連結矩陣，一張 161,429 × 161,429 的表，第 i 列第 j 欄是「神經元 i 連到神經元 j 有幾個突觸」，絕大多數格子是 0，所以存成稀疏矩陣；<code>meta</code> 是神經元屬性表，一列一顆，有型（type：每顆神經元的細分名稱，例如 KCab-p、MBON01）、類（class：粗分類）等欄位。</li>
+    <li><b class="l">②</b>把型那一欄拿出來，空白的填成空字串。</li>
+    <li><b class="l">③</b>神經元數是矩陣的列數；連結數是非 0 的格子數（<code>nnz</code>）；突觸數是所有格子加總。</li>
+    <li><b class="l">④</b>KC 的顆數：型以「KC」開頭的列數（<code>^KC</code> 是「開頭是 KC」的寫法）。MBON、PAM、PPL1 同樣用型的開頭。</li>
+    <li><b class="l">⑤</b>這就是 PART 1 第 2 節表裡「四群神經元」怎麼認的：靠屬性表裡的名字，不是靠任何行為或表現。</li>
+    <li><b class="l">⑥</b>PN 用的是「類」這一欄等於 <code>ALPN</code>（觸角葉投射神經元）：PN 的型名各帶自己小球區的名字（小球區：嗅覺訊號進腦第一站裡的分區，每一區收一種受體的訊號，這份資料裡共 83 區；例如 DA1_lPN 是 DA1 區的 PN），不以同一個字開頭，所以只能用粗分類挑。</li>
+  </ul>
+
+<!-- code: fetch.py 177-189 hl=177,178,179,181,186,187,188,189 lab=177:①,179:②,187:③,189:④ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">177</span><span class="mk">①</span>    for key, want in EXPECTED.items():</span><span class="hl"><span class="ln">178</span><span class="mk"> </span>        good = got[key] == want</span><span class="hl"><span class="ln">179</span><span class="mk">②</span>        ok &amp;= good</span><span class="ln">180</span><span class="mk"> </span>        if not quiet:
+<span class="hl"><span class="ln">181</span><span class="mk"> </span>            print(f&quot;  {&#x27;ok &#x27; if good else &#x27;BAD&#x27;} {key:20s} {got[key]:&gt;12,}&quot;</span><span class="ln">182</span><span class="mk"> </span>                  + (&quot;&quot; if good else f&quot;   expected {want:,}&quot;))
+<span class="ln">183</span><span class="mk"> </span>    return bool(ok)
+<span class="ln">184</span><span class="mk"> </span>
+<span class="ln">185</span><span class="mk"> </span>
+<span class="hl"><span class="ln">186</span><span class="mk"> </span>if __name__ == &quot;__main__&quot;:</span><span class="hl"><span class="ln">187</span><span class="mk">③</span>    download(force=&quot;--force&quot; in sys.argv)</span><span class="hl"><span class="ln">188</span><span class="mk"> </span>    print(&quot;\nverifying:&quot;)</span><span class="hl"><span class="ln">189</span><span class="mk">④</span>    sys.exit(0 if verify() else 1)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/fetch.py</code> 第 177–189 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>逐項比對實際算出的和預期的。</li>
+    <li><b class="l">②</b><code>ok &amp;= good</code>：只要有一項不符，<code>ok</code> 就變成不成立。</li>
+    <li><b class="l">③</b>入口：先下載、再印「verifying:」、再核對。</li>
+    <li><b class="l">④</b>核對不過就以失敗結束（<code>exit(1)</code>），run_all.sh 第 4 行的 <code>set -e</code> 會讓整支腳本在這裡停住。這就是 PART 2 說「日後整理版若更新，BJ2 會在這裡停住，而不是悄悄算出不同的蕈狀體」。</li>
+  </ul>
+
+  <h3>extract.py：BJ2，切出蕈狀體</h3>
+
+  <p><b>這支在做什麼。</b>PART 1 第 2 節的那段：從 MaleCNS 切出 PN、KC、MBON、DAN 四群，留四層連結，KC 只取路徑上 3,811 顆中的 1,200 顆；順手替每顆 MBON 算出趨近／迴避標記（PART 1 第 4 節）。</p>
+
+<!-- code: extract.py 42-51 hl=42,43,44,45,46,48,49,50,51 lab=42:①,43:②,46:③,48:④,49:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 42</span><span class="mk">①</span>def extract(kenyon: int | None = 1200, seed: int = 20260913):</span><span class="hl"><span class="ln"> 43</span><span class="mk">②</span>    M, meta = load()</span><span class="hl"><span class="ln"> 44</span><span class="mk"> </span>    t = meta[&quot;type&quot;].fillna(&quot;&quot;)</span><span class="hl"><span class="ln"> 45</span><span class="mk"> </span>    cls = meta[&quot;class&quot;].fillna(&quot;&quot;)</span><span class="hl"><span class="ln"> 46</span><span class="mk">③</span>    where = lambda pat: meta.index[t.str.match(pat, na=False)].to_numpy()</span><span class="ln"> 47</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 48</span><span class="mk">④</span>    PN = meta.index[cls == &quot;ALPN&quot;].to_numpy()</span><span class="hl"><span class="ln"> 49</span><span class="mk">⑤</span>    KC_all = where(r&quot;^KC&quot;)</span><span class="hl"><span class="ln"> 50</span><span class="mk"> </span>    MBON = where(r&quot;^MBON&quot;)</span><span class="hl"><span class="ln"> 51</span><span class="mk"> </span>    PAM, PPL1 = where(r&quot;^PAM&quot;), where(r&quot;^PPL1&quot;)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/extract.py</code> 第 42–51 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>extract</code> 函式收兩個設定：要幾顆 KC（預設 1,200；給 <code>None</code> 就全部）、以及一個種子（這個版本沒用到它）。X3 給 <code>None</code> 切全部 KC 就是走這裡。</li>
+    <li><b class="l">②</b>叫 fetch.py 的 <code>load()</code> 讀連結矩陣與屬性表（上一節）。</li>
+    <li><b class="l">③</b><code>where</code>：一個小工具，給一個「型的開頭」，回傳符合的神經元在矩陣裡的列號。</li>
+    <li><b class="l">④</b>PN 用類等於 ALPN 挑，和 fetch.py 核對時同一條規則。</li>
+    <li><b class="l">⑤</b>KC、MBON、PAM、PPL1 各挑一串列號。注意 <code>KC_all</code>：這是全部 4,064 顆，下面才會篩。</li>
+  </ul>
+
+<!-- code: extract.py 53-65 hl=54,55,56,57,58,64,65 lab=54:①,55:②,56:③,58:④,64:⑤,65:⑥ -->
+<figure class="code"><pre class="code"><span class="ln"> 53</span><span class="mk"> </span>    <span class="cm"># keep only Kenyon cells that actually sit on the pathway</span>
+<span class="hl"><span class="ln"> 54</span><span class="mk">①</span>    pn_in = np.asarray(M[PN][:, KC_all].sum(axis=0)).ravel()</span><span class="hl"><span class="ln"> 55</span><span class="mk">②</span>    mbon_out = np.asarray(M[KC_all][:, MBON].sum(axis=1)).ravel()</span><span class="hl"><span class="ln"> 56</span><span class="mk">③</span>    live = (pn_in &gt; 0) &amp; (mbon_out &gt; 0)</span><span class="hl"><span class="ln"> 57</span><span class="mk"> </span>    KC = KC_all[live]</span><span class="hl"><span class="ln"> 58</span><span class="mk">④</span>    if kenyon and kenyon &lt; len(KC):</span><span class="ln"> 59</span><span class="mk"> </span>        <span class="cm"># Rank by total pathway involvement, then take an evenly spaced sample so</span>
+<span class="ln"> 60</span><span class="mk"> </span>        <span class="cm"># the subset spans the range rather than only the most connected cells.</span>
+<span class="ln"> 61</span><span class="mk"> </span>        <span class="cm"># kind=&quot;stable&quot; matters: most Kenyon cells tie on this score, and an</span>
+<span class="ln"> 62</span><span class="mk"> </span>        <span class="cm"># unstable sort orders ties differently between numpy versions, which</span>
+<span class="ln"> 63</span><span class="mk"> </span>        <span class="cm"># silently gives different machines a different subset of cells.</span>
+<span class="hl"><span class="ln"> 64</span><span class="mk">⑤</span>        order = np.argsort(-(pn_in[live] + mbon_out[live]), kind=&quot;stable&quot;)</span><span class="hl"><span class="ln"> 65</span><span class="mk">⑥</span>        KC = KC[np.sort(order[np.linspace(0, len(order) - 1, kenyon).astype(int)])]</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/extract.py</code> 第 53–65 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>PART 1 說「KC 只留同時接到 PN、又連到 MBON 的 3,811 顆，再依排名等距取 1,200 顆」，就是這十三行。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>M[PN][:, KC_all]</code>：矩陣裡只取「列是 PN、欄是 KC」那一塊；<code>sum(axis=0)</code> 沿著列加總，得到每顆 KC 從全部 PN 收到幾個突觸。</li>
+    <li><b class="l">②</b>同樣算每顆 KC 送到全部 MBON 幾個突觸。</li>
+    <li><b class="l">③</b>兩個都大於 0 的 KC 才算「在路徑上」（<code>&amp;</code> 是「而且」），共 3,811 顆。</li>
+    <li><b class="l">④</b>如果要的顆數比 3,811 少（預設 1,200），就取樣。作者說只取 1,200 顆是為了省計算，是人選的；少用三分之二的細胞結果會不會變，是 PART 4 的 X3 要查的（第 5 節）：換六種選法結果都在同一範圍。</li>
+    <li><b class="l">⑤</b>依「收到 ＋ 送出」的突觸數由大到小排名；<code>kind="stable"</code> 是穩定排序：分數相同的保持原本順序。作者的註解寫得很直接：大多數 KC 在這個分數上同分，不穩定的排序在不同 numpy 版本會把同分的排成不同順序，於是「不同電腦悄悄拿到不同的一批細胞」。README〈Reproducibility〉說的 md5 跨電腦相同，靠的就是這個字。</li>
+    <li><b class="l">⑥</b><code>linspace(0, 3810, 1200)</code> 在排名 0 到 3810 之間等距取 1,200 個位置，所以取到的是「從最常連到最少連」全範圍都有，而不是只取前 1,200 名。這一行是 PART 1 第 6 節總表說「KC 只取 1,200 顆是人選的」的地方。</li>
+  </ul>
+
+<!-- code: extract.py 67-79 hl=67,68,69,70,71,72,75,76,78,79 lab=67:①,68:②,75:③,78:④,79:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 67</span><span class="mk">①</span>    DAN = np.concatenate([PAM, PPL1])</span><span class="hl"><span class="ln"> 68</span><span class="mk">②</span>    blocks = {</span><span class="hl"><span class="ln"> 69</span><span class="mk"> </span>        &quot;pn_kc&quot;: M[PN][:, KC],</span><span class="hl"><span class="ln"> 70</span><span class="mk"> </span>        &quot;kc_mbon&quot;: M[KC][:, MBON],</span><span class="hl"><span class="ln"> 71</span><span class="mk"> </span>        &quot;dan_mbon&quot;: M[DAN][:, MBON],</span><span class="hl"><span class="ln"> 72</span><span class="mk"> </span>        &quot;mbon_mbon&quot;: M[MBON][:, MBON],</span><span class="ln"> 73</span><span class="mk"> </span>    }
+<span class="ln"> 74</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 75</span><span class="mk">③</span>    pam_drive = np.asarray(M[PAM][:, MBON].sum(axis=0)).ravel()</span><span class="hl"><span class="ln"> 76</span><span class="mk"> </span>    ppl_drive = np.asarray(M[PPL1][:, MBON].sum(axis=0)).ravel()</span><span class="ln"> 77</span><span class="mk"> </span>    <span class="cm"># +1 approach-driving (punishment compartment), -1 avoidance-driving (reward)</span>
+<span class="hl"><span class="ln"> 78</span><span class="mk">④</span>    valence = np.where(ppl_drive &gt; pam_drive, 1, -1)</span><span class="hl"><span class="ln"> 79</span><span class="mk">⑤</span>    valence[(pam_drive == 0) &amp; (ppl_drive == 0)] = 0</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/extract.py</code> 第 67–79 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>DAN 是 PAM 接 PPL1 排成一串：前 316 顆是 PAM、後 16 顆是 PPL1。第 94 行據此做一串 0 與 1（0 是 PAM、1 是 PPL1），之後 model.py 用它分「獎賞群」「懲罰群」。</li>
+    <li><b class="l">②</b>四層連結各切一塊：PN→KC、KC→MBON、DAN→MBON、MBON→MBON。每一塊仍是「幾個突觸」的表。PART 1 第 2 節說「KC 之間的連結作者刻意不收」：這裡沒有 <code>kc_kc</code> 那一塊，作者在檔頭說明寫了理由（真實的 KC 壓抑來自 APL 這顆抑制神經元，不是 KC 彼此的連結）。</li>
+    <li><b class="l">③</b>每顆 MBON 從全部 PAM 收到的突觸總數，以及從全部 PPL1 收到的。</li>
+    <li><b class="l">④</b>標記：PPL1（懲罰群）多於 PAM 的標 +1（趨近型），否則 −1（迴避型）。這個 ±1 之後算好惡值時用：好惡值 ＝ 每顆 MBON 的活動量 × 它的標記加總，趨近型加分、迴避型減分（PART 7 第 3 節）。看起來相反，邏輯是：多巴胺只會削弱送進那顆 MBON 的連結；懲罰要讓果蠅躲開，削弱的就必須是「推動趨近」的那些 MBON，所以被懲罰群管的 MBON 是趨近型（PART 1 第 4 節走過一遍）。這條對應在程式裡只有這一行。</li>
+    <li><b class="l">⑤</b>兩群都沒連到的標 0；兩群剛好一樣多的會落到上一行的 −1。實際上 97 顆都沒有碰到這兩種情況：趨近 56 ＋ 迴避 41 ＝ 97，沒有一顆標 0；本課另外拿切出來的檔算過，97 顆裡沒有一顆兩群同分。</li>
+  </ul>
+
+<!-- code: extract.py 99-110 hl=99,101,102,103,104,105,106,107,108,109,110 lab=99:①,102:②,103:③,108:④,110:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 99</span><span class="mk">①</span>def save(blocks, info, path=&quot;data/mb_circuit.npz&quot;, manifest=&quot;data/mb_manifest.json&quot;):</span><span class="ln">100</span><span class="mk"> </span>    Path(path).parent.mkdir(parents=True, exist_ok=True)
+<span class="hl"><span class="ln">101</span><span class="mk"> </span>    arrays = {}</span><span class="hl"><span class="ln">102</span><span class="mk">②</span>    for name, block in blocks.items():</span><span class="hl"><span class="ln">103</span><span class="mk">③</span>        coo = block.tocoo()</span><span class="hl"><span class="ln">104</span><span class="mk"> </span>        arrays[f&quot;{name}_row&quot;] = coo.row.astype(np.int32)</span><span class="hl"><span class="ln">105</span><span class="mk"> </span>        arrays[f&quot;{name}_col&quot;] = coo.col.astype(np.int32)</span><span class="hl"><span class="ln">106</span><span class="mk"> </span>        arrays[f&quot;{name}_val&quot;] = coo.data.astype(np.float32)</span><span class="hl"><span class="ln">107</span><span class="mk"> </span>        arrays[f&quot;{name}_shape&quot;] = np.array(block.shape, np.int32)</span><span class="hl"><span class="ln">108</span><span class="mk">④</span>    arrays[&quot;mbon_valence&quot;] = np.array(info[&quot;mbon_valence&quot;], np.int8)</span><span class="hl"><span class="ln">109</span><span class="mk"> </span>    arrays[&quot;dan_is_punishment&quot;] = np.array(info[&quot;dan_is_punishment&quot;], np.int8)</span><span class="hl"><span class="ln">110</span><span class="mk">⑤</span>    np.savez_compressed(path, **arrays)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/extract.py</code> 第 99–110 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>save</code>：把四塊連結與兩串標記存成一個檔 <code>data/mb_circuit.npz</code>，就是 BJ2 算 md5 的那個檔。</li>
+    <li><b class="l">②</b>對四塊各做一次。</li>
+    <li><b class="l">③</b>每一塊拆成四個陣列：哪一列、哪一欄、幾個突觸、整塊的形狀。只存非 0 的格子，檔案才小。</li>
+    <li><b class="l">④</b>MBON 的標記與 DAN 的群別也存進去。</li>
+    <li><b class="l">⑤</b><code>savez_compressed</code>：numpy 的「把好幾個陣列壓縮存成一個檔」。壓縮方式固定，所以同樣的內容會得到同樣的位元，md5 才比得出來。</li>
+  </ul>
+
+<!-- code: extract.py 112-130 hl=112,113,116,117,118,119,120,126,127,128,129 lab=112:①,116:②,117:③,119:④,126:⑤,127:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">112</span><span class="mk">①</span>    counts = {k: len(v) for k, v in info[&quot;populations&quot;].items()}</span><span class="hl"><span class="ln">113</span><span class="mk"> </span>    man = dict(</span><span class="ln">114</span><span class="mk"> </span>        dataset=&quot;MaleCNS v1.0 (Berg et al. 2025 / Nern et al. 2024), CC BY 4.0&quot;,
+<span class="ln">115</span><span class="mk"> </span>        mirror=&quot;github.com/YijieYin/connectome_data_prep&quot;,
+<span class="hl"><span class="ln">116</span><span class="mk">②</span>        counts=counts,</span><span class="hl"><span class="ln">117</span><span class="mk">③</span>        edges={k: int(b.nnz) for k, b in blocks.items()},</span><span class="hl"><span class="ln">118</span><span class="mk"> </span>        synapses={k: int(b.sum()) for k, b in blocks.items()},</span><span class="hl"><span class="ln">119</span><span class="mk">④</span>        mbon_approach=int(sum(1 for v in info[&quot;mbon_valence&quot;] if v &gt; 0)),</span><span class="hl"><span class="ln">120</span><span class="mk"> </span>        mbon_avoid=int(sum(1 for v in info[&quot;mbon_valence&quot;] if v &lt; 0)),</span><span class="ln">121</span><span class="mk"> </span>        selection=&quot;ALPN by class; KCs with both ALPN input and MBON output, &quot;
+<span class="ln">122</span><span class="mk"> </span>                  &quot;evenly sampled across pathway-involvement rank; all MBONs; &quot;
+<span class="ln">123</span><span class="mk"> </span>                  &quot;all PAM+PPL1. KC-&gt;KC excluded (see extract.py). &quot;
+<span class="ln">124</span><span class="mk"> </span>                  &quot;No behavioural measure used at any point.&quot;,
+<span class="ln">125</span><span class="mk"> </span>    )
+<span class="hl"><span class="ln">126</span><span class="mk">⑤</span>    Path(manifest).write_text(json.dumps(man, indent=2))</span><span class="hl"><span class="ln">127</span><span class="mk">⑥</span>    Path(&quot;data/mb_cells.json&quot;).write_text(json.dumps(</span><span class="hl"><span class="ln">128</span><span class="mk"> </span>        {k: info[k] for k in (&quot;types&quot;, &quot;soma&quot;, &quot;nt&quot;, &quot;mbon_valence&quot;, &quot;dan_is_punishment&quot;)},</span><span class="hl"><span class="ln">129</span><span class="mk"> </span>        separators=(&quot;,&quot;, &quot;:&quot;)))</span><span class="ln">130</span><span class="mk"> </span>    return man</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/extract.py</code> 第 112–130 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>四群各幾顆。</li>
+    <li><b class="l">②</b>把資料集名稱、來源、各群顆數、各層連結數與突觸數、趨近與迴避各幾顆、以及一段「怎麼挑的」文字收成一個字典。這就是 PART 3 第 4 節那張表裡「作者 repo 裡的 manifest」那一欄的來源。</li>
+    <li><b class="l">③</b>連結數是每一塊非 0 的格子數：PN→KC 7,182、KC→MBON 18,183、DAN→MBON 3,123、MBON→MBON 1,606。</li>
+    <li><b class="l">④</b>趨近型 56、迴避型 41 就是在這裡數的。</li>
+    <li><b class="l">⑤</b>寫成 <code>data/mb_manifest.json</code>。作者執行時寫出的這個檔跟著 repo 一起 commit 進去，本課收在 <code>out/upstream/blackjack_mb_manifest_committed.json</code>；本機重切時又寫一次，印在 <code>bj2_extract_run1.log</code>，兩者完全相同。</li>
+    <li><b class="l">⑥</b>另外寫 <code>data/mb_cells.json</code>：每顆神經元的型、位置、傳導物質（神經元放訊號時釋放的化學物質，資料集附的是預測值；第 5 節 X4 會用到）、MBON 標記、DAN 群別。odour.py 讀它決定每顆 PN 屬於哪個小球區（PART 7），X4 讀它拿 MBON 的傳導物質（第 5 節）。</li>
+  </ul>
+
+<!-- code: extract.py 133-140 hl=135,137,138,139,140 lab=135:①,138:②,139:③,140:④ -->
+<figure class="code"><pre class="code"><span class="ln">133</span><span class="mk"> </span>if __name__ == &quot;__main__&quot;:
+<span class="ln">134</span><span class="mk"> </span>    p = argparse.ArgumentParser()
+<span class="hl"><span class="ln">135</span><span class="mk">①</span>    p.add_argument(&quot;--kenyon&quot;, default=&quot;1200&quot;, help=&quot;number of Kenyon cells, or &#x27;all&#x27;&quot;)</span><span class="ln">136</span><span class="mk"> </span>    a = p.parse_args()
+<span class="hl"><span class="ln">137</span><span class="mk"> </span>    n = None if a.kenyon == &quot;all&quot; else int(a.kenyon)</span><span class="hl"><span class="ln">138</span><span class="mk">②</span>    blocks, info = extract(kenyon=n)</span><span class="hl"><span class="ln">139</span><span class="mk">③</span>    man = save(blocks, info)</span><span class="hl"><span class="ln">140</span><span class="mk">④</span>    print(json.dumps(man, indent=2))</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/extract.py</code> 第 133–140 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>入口只有一個設定：<code>--kenyon</code>，預設 1200，可以給 <code>all</code>。run_all.sh 沒給，所以是 1,200。</li>
+    <li><b class="l">②</b>切。</li>
+    <li><b class="l">③</b>存。</li>
+    <li><b class="l">④</b>把 manifest 印在終端機上，這就是 <code>bj2_extract_run1.log</code> 的全部內容。</li>
+  </ul>
+
+  <h3>experiment.py：BJ3，制約學習</h3>
+
+  <p><b>這支在做什麼。</b>PART 1 第 5 節的實驗二：挑兩種氣味，一種配電擊、一種不配，重複 20 次，量學習指數；五個條件各 12 個種子。PART 3 第 5 節那張表的上半就是它印的。</p>
+
+<!-- code: experiment.py 18-31 hl=18,19,22,24,25,26,27,28,29,30 lab=18:①,22:②,24:③,26:④,28:⑤,29:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 18</span><span class="mk">①</span>ODOURS = [&quot;geraniol&quot;, &quot;octanol&quot;, &quot;benzaldehyde&quot;, &quot;ethyl-butyrate&quot;,</span><span class="hl"><span class="ln"> 19</span><span class="mk"> </span>          &quot;methylcyclohexanol&quot;, &quot;isoamyl-acetate&quot;, &quot;pentyl-acetate&quot;, &quot;linalool&quot;]</span><span class="ln"> 20</span><span class="mk"> </span>
+<span class="ln"> 21</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 22</span><span class="mk">②</span>def build(control=&quot;none&quot;, seed=0):</span><span class="ln"> 23</span><span class="mk"> </span>    kw = dict(seed=seed)
+<span class="hl"><span class="ln"> 24</span><span class="mk">③</span>    if control == &quot;plasticity-off&quot;:</span><span class="hl"><span class="ln"> 25</span><span class="mk"> </span>        kw[&quot;learning_rate&quot;] = 0.0</span><span class="hl"><span class="ln"> 26</span><span class="mk">④</span>    if control == &quot;shuffled&quot;:</span><span class="hl"><span class="ln"> 27</span><span class="mk"> </span>        kw[&quot;shuffle_kc_mbon&quot;] = True</span><span class="hl"><span class="ln"> 28</span><span class="mk">⑤</span>    mb = MushroomBody(**kw)</span><span class="hl"><span class="ln"> 29</span><span class="mk">⑥</span>    if control == &quot;dopamine-cut&quot;:</span><span class="hl"><span class="ln"> 30</span><span class="mk"> </span>        mb.W_dan_mbon = np.zeros_like(mb.W_dan_mbon)</span><span class="ln"> 31</span><span class="mk"> </span>    return mb</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/experiment.py</code> 第 18–31 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>八種氣味的名字。名字本身只是一個標籤：每種氣味各活化 83 個小球區裡的 8 個（小球區見第 3 節 fetch.py；PN 就是從這些區往蕈狀體送訊號的神經元），哪 8 個是 odour.py 從名字算出來的（PART 7 第 4 節）。</li>
+    <li><b class="l">②</b><code>build</code>：依條件名建一個蕈狀體。<code>MushroomBody</code> 是第三層 model.py 裡的類別（PART 7 第 3 節），這裡只要知道它收幾個設定、做出一個會學的蕈狀體物件。</li>
+    <li><b class="l">③</b>「關掉可塑性」：可塑性是連結強度會隨經驗改變的性質，學習率是每一次改多少；設 0 就是永遠不改。</li>
+    <li><b class="l">④</b>「KC→MBON 打亂」：把開關 <code>shuffle_kc_mbon</code> 打開，打亂的做法在 model.py。</li>
+    <li><b class="l">⑤</b>做出蕈狀體。</li>
+    <li><b class="l">⑥</b>「切斷多巴胺」：蕈狀體做好之後，把 DAN→MBON 那一層全部改成 0。多巴胺神經元照常放電，但訊號送不到任何 MBON。PART 3 第 5 節的表裡「關掉可塑性」與「切斷多巴胺」兩列的數字一模一樣，原因就在這裡：兩者對模型的效果都是連結不會變。</li>
+  </ul>
+
+<!-- code: experiment.py 34-57 hl=34,35,36,37,38,39,41,43,44,46,47,49,50,51,52,53,56 lab=34:①,37:②,39:③,41:④,43:⑤,46:⑥,49:⑦,50:⑧,52:⑨,56:⑩ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 34</span><span class="mk">①</span>def acquisition(seed=0, trials=20, control=&quot;none&quot;, unpaired=False):</span><span class="hl"><span class="ln"> 35</span><span class="mk"> </span>    od = Odours()</span><span class="hl"><span class="ln"> 36</span><span class="mk"> </span>    rng = np.random.default_rng(seed)</span><span class="hl"><span class="ln"> 37</span><span class="mk">②</span>    a, b = rng.choice(ODOURS, 2, replace=False)</span><span class="hl"><span class="ln"> 38</span><span class="mk"> </span>    A, B = od.vector(str(a)), od.vector(str(b))</span><span class="hl"><span class="ln"> 39</span><span class="mk">③</span>    mb = build(control, seed)</span><span class="ln"> 40</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 41</span><span class="mk">④</span>    base_a, base_b = mb.valence_of(A), mb.valence_of(B)</span><span class="ln"> 42</span><span class="mk"> </span>    curve = []
+<span class="hl"><span class="ln"> 43</span><span class="mk">⑤</span>    for t in range(trials):</span><span class="hl"><span class="ln"> 44</span><span class="mk"> </span>        if unpaired:</span><span class="ln"> 45</span><span class="mk"> </span>            <span class="cm"># shock happens, but never while the odour is present</span>
+<span class="hl"><span class="ln"> 46</span><span class="mk">⑥</span>            mb.present(A, learn=True)</span><span class="hl"><span class="ln"> 47</span><span class="mk"> </span>            mb.present(np.zeros(mb.n_pn), punish=1.0, learn=True)</span><span class="ln"> 48</span><span class="mk"> </span>        else:
+<span class="hl"><span class="ln"> 49</span><span class="mk">⑦</span>            mb.present(A, punish=1.0, learn=True)</span><span class="hl"><span class="ln"> 50</span><span class="mk">⑧</span>        mb.present(B, learn=True)</span><span class="hl"><span class="ln"> 51</span><span class="mk"> </span>        curve.append(dict(trial=t + 1,</span><span class="hl"><span class="ln"> 52</span><span class="mk">⑨</span>                          a=mb.valence_of(A) - base_a,</span><span class="hl"><span class="ln"> 53</span><span class="mk"> </span>                          b=mb.valence_of(B) - base_b,</span><span class="ln"> 54</span><span class="mk"> </span>                          depression=mb.depression))
+<span class="ln"> 55</span><span class="mk"> </span>    return dict(odours=[str(a), str(b)], baseline=[base_a, base_b],
+<span class="hl"><span class="ln"> 56</span><span class="mk">⑩</span>                curve=curve, index=curve[-1][&quot;a&quot;] - curve[-1][&quot;b&quot;], model=mb,</span><span class="ln"> 57</span><span class="mk"> </span>                A=A, B=B)</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/experiment.py</code> 第 34–57 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>一次制約實驗。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>acquisition</code> 收四個設定：種子、重複幾次（預設 20）、條件名、要不要「氣味與電擊不同時」。</li>
+    <li><b class="l">②</b>用種子從八種氣味裡隨機挑兩種 <code>a</code>、<code>b</code>；第 38 行把名字換成 682 顆 PN 的活動量 <code>A</code>、<code>B</code>（odour.py 的工作）。所以 PART 3 說「每個種子抽到的氣味不同」。</li>
+    <li><b class="l">③</b>依條件建蕈狀體。</li>
+    <li><b class="l">④</b>訓練前先量兩種氣味的好惡值當基準。<code>valence_of</code> 是「呈現一次、只讀分數、不學習」。</li>
+    <li><b class="l">⑤</b>重複 20 次。</li>
+    <li><b class="l">⑥</b>「不同時」那個對照：先呈現 A 不電，再在沒有氣味時（全 0 的輸入）電一次。電擊有發生，但 A 不在場。輸入全 0 時沒有任何 KC 在亮，而壓低只作用在「正在亮的 KC」的連結上（PART 7 第 3 節第 137 行），所以這一次電擊什麼都沒改；這就是它和「關掉可塑性」「切斷多巴胺」一樣學不到東西的原因。</li>
+    <li><b class="l">⑦</b>正常訓練：呈現 A 同時給懲罰 1.0，<code>learn=True</code> 讓學習規則生效。<code>present</code> 是 model.py 的核心函式（PART 7 第 3 節）：呈現一個輸入、可選加多巴胺、依規則改連結、回傳好惡值。</li>
+    <li><b class="l">⑧</b>呈現 B，不電。注意 B 也是 <code>learn=True</code>：學習規則有兩項：有多巴胺時把連結壓低，沒有多巴胺時讓被壓低的連結慢慢回復原狀（PART 7 第 3 節）；呈現 B 時沒有多巴胺，所以只做第二項，被壓下去的連結會回復一點。</li>
+    <li><b class="l">⑨</b>每一次之後記下 A、B 的好惡值相對基準變了多少。</li>
+    <li><b class="l">⑩</b>學習指數 ＝ 最後一次 A 的改變量 − B 的改變量。這一行就是學習指數的定義處。</li>
+  </ul>
+
+<!-- code: experiment.py 86-99 hl=86,87,88,91,93,94,95,96,97,98,99 lab=86:①,87:②,93:③,95:④,99:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 86</span><span class="mk">①</span>def pooled(control=&quot;none&quot;, seeds=12, trials=20, unpaired=False):</span><span class="hl"><span class="ln"> 87</span><span class="mk">②</span>    idx = [acquisition(s, trials, control, unpaired)[&quot;index&quot;] for s in range(seeds)]</span><span class="hl"><span class="ln"> 88</span><span class="mk"> </span>    return np.array(idx)</span><span class="ln"> 89</span><span class="mk"> </span>
+<span class="ln"> 90</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 91</span><span class="mk"> </span>def report(seeds=12, trials=20):</span><span class="ln"> 92</span><span class="mk"> </span>    rows = []
+<span class="hl"><span class="ln"> 93</span><span class="mk">③</span>    base = pooled(&quot;none&quot;, seeds, trials)</span><span class="hl"><span class="ln"> 94</span><span class="mk"> </span>    rows.append((&quot;connectome + plasticity&quot;, base))</span><span class="hl"><span class="ln"> 95</span><span class="mk">④</span>    for name, kw in [(&quot;plasticity off&quot;, dict(control=&quot;plasticity-off&quot;)),</span><span class="hl"><span class="ln"> 96</span><span class="mk"> </span>                     (&quot;dopamine disconnected&quot;, dict(control=&quot;dopamine-cut&quot;)),</span><span class="hl"><span class="ln"> 97</span><span class="mk"> </span>                     (&quot;KC-&gt;MBON shuffled&quot;, dict(control=&quot;shuffled&quot;)),</span><span class="hl"><span class="ln"> 98</span><span class="mk"> </span>                     (&quot;unpaired odour and shock&quot;, dict(unpaired=True))]:</span><span class="hl"><span class="ln"> 99</span><span class="mk">⑤</span>        rows.append((name, pooled(seeds=seeds, trials=trials, **kw)))</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/experiment.py</code> 第 86–99 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>pooled</code>：同一個條件跑好幾個種子，收成一串學習指數。X1 把 <code>seeds</code> 從 12 改成 50 叫的就是它（第 5 節）。</li>
+    <li><b class="l">②</b>種子從 0 到 11，各跑一次 <code>acquisition</code>，只留 <code>index</code>。</li>
+    <li><b class="l">③</b><code>report</code>：先跑完整模型 12 個種子。</li>
+    <li><b class="l">④</b>再跑四個對照：關掉可塑性、切斷多巴胺、KC→MBON 打亂、氣味與電擊不同時。這五列就是 PART 3 第 5 節表的五列，順序也一樣。</li>
+    <li><b class="l">⑤</b>每個對照都用 <code>pooled</code> 跑 12 個種子。</li>
+  </ul>
+
+<!-- code: experiment.py 101-109 hl=101,106,107,108,109 lab=101:①,107:②,108:③ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">101</span><span class="mk">①</span>    sd = max(base.std(), 1e-9)</span><span class="ln">102</span><span class="mk"> </span>    print(f&quot;\nACQUISITION  ({seeds} seeds, {trials} trials, learning index &quot;
+<span class="ln">103</span><span class="mk"> </span>          f&quot;= change in punished odour minus change in unpaired odour)\n&quot;)
+<span class="ln">104</span><span class="mk"> </span>    print(f&quot;{&#x27;condition&#x27;:30s} {&#x27;index&#x27;:&gt;10s} {&#x27;sd&#x27;:&gt;8s} {&#x27;vs control&#x27;:&gt;12s}&quot;)
+<span class="ln">105</span><span class="mk"> </span>    print(&quot;-&quot; * 64)
+<span class="hl"><span class="ln">106</span><span class="mk"> </span>    for name, vals in rows:</span><span class="hl"><span class="ln">107</span><span class="mk">②</span>        d = (base.mean() - vals.mean()) / sd if name != rows[0][0] else 0.0</span><span class="hl"><span class="ln">108</span><span class="mk">③</span>        print(f&quot;{name:30s} {vals.mean():&gt;10.3f} {vals.std():&gt;8.3f}&quot;</span><span class="hl"><span class="ln">109</span><span class="mk"> </span>              + (f&quot; {d:&gt;11.1f} sd&quot; if name != rows[0][0] else f&quot; {&#x27;--&#x27;:&gt;14s}&quot;))</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/experiment.py</code> 第 101–109 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>完整模型 12 個指數的標準差 <code>sd</code>，當尺。</li>
+    <li><b class="l">②</b>「vs control」那一欄：(完整模型的平均 − 這個條件的平均) ÷ sd，也就是差幾個標準差。PART 3 節錄裡的「−4.0 sd」「−0.2 sd」就是它。</li>
+    <li><b class="l">③</b>印一列：條件名、平均指數、標準差、差幾個 sd。第 111 到 118 行（本頁沒引）另外用種子 0 跑一次並印出消退與反轉兩個階段的例子，本課的重現沒有用到那段。</li>
+  </ul>
+
+<!-- code: experiment.py 128-136 hl=128,130,131,132,134,135 lab=130:①,132:②,134:③,135:④ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln">128</span><span class="mk"> </span>if __name__ == &quot;__main__&quot;:</span><span class="ln">129</span><span class="mk"> </span>    p = argparse.ArgumentParser()
+<span class="hl"><span class="ln">130</span><span class="mk">①</span>    p.add_argument(&quot;--seeds&quot;, type=int, default=12)</span><span class="hl"><span class="ln">131</span><span class="mk"> </span>    p.add_argument(&quot;--trials&quot;, type=int, default=20)</span><span class="hl"><span class="ln">132</span><span class="mk">②</span>    p.add_argument(&quot;--out&quot;, default=&quot;data/mb_results.json&quot;)</span><span class="ln">133</span><span class="mk"> </span>    a = p.parse_args()
+<span class="hl"><span class="ln">134</span><span class="mk">③</span>    res = report(a.seeds, a.trials)</span><span class="hl"><span class="ln">135</span><span class="mk">④</span>    Path(a.out).write_text(json.dumps(res, indent=1))</span><span class="ln">136</span><span class="mk"> </span>    print(f&quot;\nwrote {a.out}&quot;)</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/experiment.py</code> 第 128–136 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>三個設定：種子數（預設 12）、重複次數（預設 20）、輸出檔。run_all.sh 全用預設。</li>
+    <li><b class="l">②</b>輸出寫在作者 repo 的 <code>data/mb_results.json</code>，所以 run_all.sh 第 16 行要 <code>cp</code> 到我們的 <code>results/</code>。</li>
+    <li><b class="l">③</b>跑 <code>report</code>。</li>
+    <li><b class="l">④</b>存檔：每個條件 12 個指數一串。check.py 的 BJ3 三項就是讀這個檔、取某個條件那一串、算平均，再和 −1.301、−1.232、0.000 比（第 6 節）。</li>
+  </ul>
+
+  <h3>tmaze.py：BJ3，T-maze 偏好指數</h3>
+
+  <p><b>這支在做什麼。</b>PART 3 第 5 節表的右半：訓練前、訓練後各讓 100 隻模擬果蠅在兩種氣味之間選邊。它要先跑一次上面的 <code>acquisition</code> 拿到訓練好的蕈狀體，所以匯入 experiment.py。</p>
+
+<!-- code: tmaze.py 27-35 hl=27,30,32,33,34,35 lab=27:①,30:②,32:③,33:④,34:⑤,35:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 27</span><span class="mk">①</span>CHOICE_SHARPNESS = 2.5      <span class="cm"># how decisively a valence difference drives choice</span></span><span class="ln"> 28</span><span class="mk"> </span>
+<span class="ln"> 29</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 30</span><span class="mk">②</span>def preference_index(mb, A, B, flies=100, rng=None, sharpness=CHOICE_SHARPNESS):</span><span class="ln"> 31</span><span class="mk"> </span>    rng = rng or np.random.default_rng(0)
+<span class="hl"><span class="ln"> 32</span><span class="mk">③</span>    va, vb = mb.valence_of(A), mb.valence_of(B)</span><span class="hl"><span class="ln"> 33</span><span class="mk">④</span>    p_a = 1.0 / (1.0 + np.exp(-sharpness * (va - vb)))     <span class="cm"># chance of the trained arm</span></span><span class="hl"><span class="ln"> 34</span><span class="mk">⑤</span>    chose_a = rng.random(flies) &lt; p_a</span><span class="hl"><span class="ln"> 35</span><span class="mk">⑥</span>    return float((np.sum(~chose_a) - np.sum(chose_a)) / flies)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/tmaze.py</code> 第 27–35 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>一個作者設定的數 2.5：好惡值的差距要「放大多少倍」才決定選邊的機率。愈大，一點點差距就幾乎全部選同一邊。</li>
+    <li><b class="l">②</b><code>preference_index</code>：收一個蕈狀體、兩種氣味、幾隻果蠅（預設 100）、一個亂數產生器。</li>
+    <li><b class="l">③</b>量兩種氣味的好惡值（不學習）。</li>
+    <li><b class="l">④</b>選 A（被訓練那一邊）的機率：差距 × 2.5 丟進一條 S 形曲線，差 0 時正好 0.5，A 比 B 高很多時接近 1。PART 1 第 5 節說「差愈大機率愈偏，差 0 時各半」就是這條式子。</li>
+    <li><b class="l">⑤</b>抽 100 個 0 到 1 的亂數，小於那個機率的算選 A。所以 100 隻不會全選同一邊。</li>
+    <li><b class="l">⑥</b>偏好指數 ＝ (選 B 的隻數 − 選 A 的隻數) ÷ 100。A 是配電擊訓練的那一邊，所以正數代表躲開被訓練的氣味，+1 是全部躲開，0 是不挑。</li>
+  </ul>
+
+<!-- code: tmaze.py 38-48 hl=38,40,41,42,45,46,47,48 lab=40:①,41:②,42:③,45:④,46:⑤,47:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 38</span><span class="mk"> </span>def assay(seeds=12, trials=20, flies=100, control=&quot;none&quot;, unpaired=False):</span><span class="ln"> 39</span><span class="mk"> </span>    naive, trained = [], []
+<span class="hl"><span class="ln"> 40</span><span class="mk">①</span>    for s in range(seeds):</span><span class="hl"><span class="ln"> 41</span><span class="mk">②</span>        rng = np.random.default_rng(1000 + s)</span><span class="hl"><span class="ln"> 42</span><span class="mk">③</span>        run = acquisition(s, trials, control, unpaired)</span><span class="ln"> 43</span><span class="mk"> </span>        od = Odours()
+<span class="ln"> 44</span><span class="mk"> </span>        A, B = run[&quot;A&quot;], run[&quot;B&quot;]
+<span class="hl"><span class="ln"> 45</span><span class="mk">④</span>        fresh = build(control, s)</span><span class="hl"><span class="ln"> 46</span><span class="mk">⑤</span>        naive.append(preference_index(fresh, A, B, flies, rng))</span><span class="hl"><span class="ln"> 47</span><span class="mk">⑥</span>        trained.append(preference_index(run[&quot;model&quot;], A, B, flies, rng))</span><span class="hl"><span class="ln"> 48</span><span class="mk"> </span>    return np.array(naive), np.array(trained)</span></pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/tmaze.py</code> 第 38–48 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>PART 3 第 5 節解釋「對照組的位移是 +0.03 不是 0」時說的「訓練前、訓練後各抽一次，兩次抽到的隨機數不同」，根據就是這十一行。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b>12 個種子各做一次。</li>
+    <li><b class="l">②</b>每個種子開一個亂數產生器，起點是 1000 ＋ 種子；下面訓練前、訓練後兩次抽選擇都用同一個產生器，所以第二次抽到的是「接著的」亂數，不會和第一次相同。</li>
+    <li><b class="l">③</b>跑一次制約，拿到訓練好的蕈狀體（<code>run["model"]</code>）與兩種氣味。</li>
+    <li><b class="l">④</b>另外建一個沒訓練的蕈狀體 <code>fresh</code>。</li>
+    <li><b class="l">⑤</b>訓練前的偏好指數：用 <code>fresh</code> 抽 100 個選擇。</li>
+    <li><b class="l">⑥</b>訓練後：用訓練好的那個再抽 100 個。對照組的模型訓練前後完全沒變，兩個好惡值一樣、機率一樣，但抽到的 100 個亂數不同，所以兩個指數差了 0.03。關掉可塑性、切斷多巴胺、氣味與電擊不同時這三個對照組的數字彼此一樣，是因為它們的模型同樣沒變、又從同一個起點抽同一串亂數；第四個對照「KC→MBON 打亂」的模型有學，所以數字不同。</li>
+  </ul>
+
+<!-- code: tmaze.py 59-72 hl=63,64,65,66,67,68,70,71 lab=63:①,68:②,70:③,71:④ -->
+<figure class="code"><pre class="code"><span class="ln"> 59</span><span class="mk"> </span>    print(f&quot;\nT-MAZE  ({a.seeds} seeds x {a.flies} flies, {a.trials} training trials)\n&quot;)
+<span class="ln"> 60</span><span class="mk"> </span>    print(f&quot;{&#x27;condition&#x27;:30s} {&#x27;naive PI&#x27;:&gt;10s} {&#x27;trained PI&#x27;:&gt;12s} {&#x27;shift&#x27;:&gt;9s}&quot;)
+<span class="ln"> 61</span><span class="mk"> </span>    print(&quot;-&quot; * 64)
+<span class="ln"> 62</span><span class="mk"> </span>    out = {}
+<span class="hl"><span class="ln"> 63</span><span class="mk">①</span>    for label, kw in [(&quot;connectome + plasticity&quot;, {}),</span><span class="hl"><span class="ln"> 64</span><span class="mk"> </span>                      (&quot;plasticity off&quot;, dict(control=&quot;plasticity-off&quot;)),</span><span class="hl"><span class="ln"> 65</span><span class="mk"> </span>                      (&quot;dopamine disconnected&quot;, dict(control=&quot;dopamine-cut&quot;)),</span><span class="hl"><span class="ln"> 66</span><span class="mk"> </span>                      (&quot;KC-&gt;MBON shuffled&quot;, dict(control=&quot;shuffled&quot;)),</span><span class="hl"><span class="ln"> 67</span><span class="mk"> </span>                      (&quot;unpaired odour and shock&quot;, dict(unpaired=True))]:</span><span class="hl"><span class="ln"> 68</span><span class="mk">②</span>        n, t = assay(a.seeds, a.trials, a.flies, **kw)</span><span class="ln"> 69</span><span class="mk"> </span>        out[label] = dict(naive=n.tolist(), trained=t.tolist())
+<span class="hl"><span class="ln"> 70</span><span class="mk">③</span>        print(f&quot;{label:30s} {n.mean():&gt;10.3f} {t.mean():&gt;12.3f} {t.mean()-n.mean():&gt;9.3f}&quot;)</span><span class="hl"><span class="ln"> 71</span><span class="mk">④</span>    Path(a.out).write_text(json.dumps(out, indent=1))</span><span class="ln"> 72</span><span class="mk"> </span>    print(f&quot;\nwrote {a.out}&quot;)</pre><figcaption class="figsrc">fly-blackjack 的 <code>flybrain/mb/tmaze.py</code> 第 59–72 行（commit <code>004b2e3</code>，MIT 授權；run_all.sh 會把整個 repo 放在 <code>blackjack/repo/</code>，同一個檔案在那裡）</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>五個條件，和 experiment.py 同一組。</li>
+    <li><b class="l">②</b>各跑一次 <code>assay</code>，拿回 12 個訓練前與 12 個訓練後的指數。</li>
+    <li><b class="l">③</b>印一列：訓練前平均、訓練後平均、位移。PART 3 第 5 節節錄的下半表。</li>
+    <li><b class="l">④</b>存成 <code>data/mb_tmaze.json</code>，run_all.sh 第 16 行一起 <code>cp</code> 過來。</li>
+  </ul>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s4"><span class="pt">4</span>第二層：BJ4 與 BJ5，我們的四支小程式</h2>
+
+  <p>這四支都在下載包的 <code>blackjack/scripts/</code>。共同原則寫在 PART 3 第 2 節：<b>只匯入作者的函式，不修改它</b>；結果寫到 <code>../results/</code>，不碰作者的 <code>data/</code>。它們都很短，因為工作只是「照作者在 README 或註解裡寫的設定，把他的函式叫一遍，然後把數字存下來」。</p>
+
+  <h3>bj4_forage.py：BJ4，覓食</h3>
+
+  <p><b>實驗是什麼。</b>覓食是 PART 1 第 5 節的實驗三：一隻模擬果蠅在場地裡走，場地裡有兩個氣味源，一種氣味那邊有食物、另一種那邊會電擊；蕈狀體在一場之內自己學哪個氣味危險，數 90 秒內被電幾次、吃到幾次食物。</p>
+  <p><b>兩套電路怎麼接。</b>控制走路的是和 Dino 同一個 80 顆迴路加一個讀出網路。80 顆迴路照樣收 8 個觀測值，其中兩個是蕈狀體算出的好惡值，另外六個是腳下氣味多濃、左右觸角哪邊濃、最近的氣味源在哪個方向、自己的速度（各是什麼在 PART 7 第 5 節）；讀出再從 16 顆下行神經元的活動選一個走路動作。走路動作有 5 個（Dino 是 3 個），所以讀出的參數從 243 變成 269。讀出要先用 CEM 訓練好；訓練好的那組參數作者存在 <code>policies/forage.json</code>，本課叫它<b>策略檔</b>，策略就是訓練好的讀出參數，和 BJ1 的 <code>theta</code> 同類。</p>
+  <p><b>這支在做什麼。</b>PART 3 第 6 節的 A 組與 B 組兩件事：先拿作者附的策略直接評估三個條件，再照 README 第 308 行的指令重新訓練一次、再評估。</p>
+
+<!-- code: bj4_forage.py 1-12 hl=3,4,6,8,9,10,11,12 lab=4:①,6:②,8:③,9:④,10:⑤ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;BJ4：覓食。先用作者附的 policies/forage.json 評估，再用 README 指令自己訓練一次（存到 results/）並評估。
+<span class="ln">  2</span><span class="mk"> </span>在 repo/ 目錄下執行。&quot;&quot;&quot;
+<span class="hl"><span class="ln">  3</span><span class="mk"> </span>import json, sys, numpy as np</span><span class="hl"><span class="ln">  4</span><span class="mk">①</span>from flybrain.mb.embodied import train, evaluate</span><span class="ln">  5</span><span class="mk"> </span>
+<span class="hl"><span class="ln">  6</span><span class="mk">②</span>def ev(theta, tag):</span><span class="ln">  7</span><span class="mk"> </span>    out = {}
+<span class="hl"><span class="ln">  8</span><span class="mk">③</span>    for label, kw in [(&quot;learning&quot;, {}), (&quot;dopamine cut&quot;, dict(dopamine=False)), (&quot;plasticity off&quot;, dict(plasticity=False))]:</span><span class="hl"><span class="ln">  9</span><span class="mk">④</span>        thirds, food = evaluate(theta, seeds=40, seconds=90.0, **kw)</span><span class="hl"><span class="ln"> 10</span><span class="mk">⑤</span>        out[label] = dict(shocks=float(thirds.sum(axis=1).mean()), shocks_sd=float(thirds.sum(axis=1).std()), food=float(food.mean()))</span><span class="hl"><span class="ln"> 11</span><span class="mk"> </span>        print(tag, label, &quot;shocks %.2f  food %.2f&quot; % (out[label][&quot;shocks&quot;], out[label][&quot;food&quot;]), flush=True)</span><span class="hl"><span class="ln"> 12</span><span class="mk"> </span>    return out</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj4_forage.py</code> 第 1–12 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>只匯入作者 embodied.py 的兩個函式：<code>train</code>（用 CEM 訓練走路的讀出）與 <code>evaluate</code>（用一組讀出參數跑幾場、數被電幾次）。兩個函式的內容在 PART 7 第 5 節。</li>
+    <li><b class="l">②</b><code>ev</code>：我們自己的小函式，給一組讀出參數 <code>theta</code>，三個條件各評估一次。</li>
+    <li><b class="l">③</b>三個條件：學習（完整）、切斷多巴胺（<code>dopamine=False</code>）、關掉可塑性（<code>plasticity=False</code>）。這兩個開關是作者 <code>evaluate</code> 本來就有的。</li>
+    <li><b class="l">④</b>叫作者的 <code>evaluate</code>：40 個種子（40 場，每場起始位置與氣味源位置不同）、每場 90 秒。這兩個數字照 README 第 313 行。回來兩樣東西：<code>thirds</code> 是 40 場 × 3 段（每場分前中後三段各被電幾次），<code>food</code> 是 40 場各吃到幾次。</li>
+    <li><b class="l">⑤</b>每場被電的總次數（三段加起來）取 40 場平均，就是 PART 3 說的「學習組每場被電 3.85 次」；另外記標準差與食物平均。</li>
+  </ul>
+
+<!-- code: bj4_forage.py 14-17 hl=14,15,16,17 lab=14:①,15:②,16:③,17:④ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 14</span><span class="mk">①</span>res = {&quot;author_policy&quot;: ev(np.array(json.load(open(&quot;policies/forage.json&quot;))[&quot;theta&quot;]), &quot;author&quot;)}</span><span class="hl"><span class="ln"> 15</span><span class="mk">②</span>train(generations=32, quiet=False, out=&quot;../results/bj4_forage_retrained.json&quot;)</span><span class="hl"><span class="ln"> 16</span><span class="mk">③</span>res[&quot;retrained&quot;] = ev(np.array(json.load(open(&quot;../results/bj4_forage_retrained.json&quot;))[&quot;theta&quot;]), &quot;retrained&quot;)</span><span class="hl"><span class="ln"> 17</span><span class="mk">④</span>json.dump(res, open(&quot;../results/bj4_forage.json&quot;, &quot;w&quot;), indent=1)</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj4_forage.py</code> 第 14–17 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>A 組：讀作者附的 <code>policies/forage.json</code>，取出 <code>theta</code>（269 個數），評估。</li>
+    <li><b class="l">②</b>B 組的訓練：<code>train(generations=32, …)</code>，就是 README 第 308 行那條指令，只多了 <code>out=</code> 把結果寫到我們的 <code>results/</code>。沒有給 <code>seconds</code>（訓練時每一場跑幾秒，和評估用的 90 秒是兩回事），所以用作者函式的預設 40 秒；作者自己訓練時用 45 秒。PART 3 第 6 節發現的那個少寫的參數，就是這一行沒寫的東西。為什麼只差 5 秒訓練出來的讀出就幾乎不去找氣味源，本課沒有追，PART 3 第 6 節照實寫了。</li>
+    <li><b class="l">③</b>讀回剛訓練好的參數，評估。</li>
+    <li><b class="l">④</b>兩組結果存成 <code>results/bj4_forage.json</code>（本課收在 <code>out/blackjack/bj4_forage.json</code>）。</li>
+  </ul>
+
+  <h3>bj4b_forage_s45.py：BJ4b，補上 45 秒</h3>
+
+<!-- code: bj4b_forage_s45.py 1-13 hl=5,6,8,9,12,13 lab=5:①,9:②,12:③ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;BJ4b：README 指令（seconds 預設 40）訓練出的策略不會覓食；作者附的 forage.json 記錄 seconds=45。
+<span class="ln">  2</span><span class="mk"> </span>用 seconds=45、其他照 README（generations=32），看能否接近作者的 validation 2942。在 repo/ 下以 PYTHONPATH=. 執行。&quot;&quot;&quot;
+<span class="ln">  3</span><span class="mk"> </span>import json, numpy as np
+<span class="ln">  4</span><span class="mk"> </span>from flybrain.mb.embodied import train, evaluate
+<span class="hl"><span class="ln">  5</span><span class="mk">①</span>train(generations=32, seconds=45.0, quiet=False, out=&quot;../results/bj4b_forage_s45.json&quot;)</span><span class="hl"><span class="ln">  6</span><span class="mk"> </span>th = np.array(json.load(open(&quot;../results/bj4b_forage_s45.json&quot;))[&quot;theta&quot;])</span><span class="ln">  7</span><span class="mk"> </span>res = {}
+<span class="hl"><span class="ln">  8</span><span class="mk"> </span>for label, kw in [(&quot;learning&quot;, {}), (&quot;dopamine cut&quot;, dict(dopamine=False)), (&quot;plasticity off&quot;, dict(plasticity=False))]:</span><span class="hl"><span class="ln">  9</span><span class="mk">②</span>    thirds, food = evaluate(th, seeds=40, seconds=90.0, **kw)</span><span class="ln"> 10</span><span class="mk"> </span>    res[label] = dict(shocks=float(thirds.sum(axis=1).mean()), food=float(food.mean()))
+<span class="ln"> 11</span><span class="mk"> </span>    print(&quot;s45&quot;, label, &quot;shocks %.2f  food %.2f&quot; % (res[label][&quot;shocks&quot;], res[label][&quot;food&quot;]), flush=True)
+<span class="hl"><span class="ln"> 12</span><span class="mk">③</span>res[&quot;validation&quot;] = json.load(open(&quot;../results/bj4b_forage_s45.json&quot;))[&quot;validation&quot;]</span><span class="hl"><span class="ln"> 13</span><span class="mk"> </span>json.dump(res, open(&quot;../results/bj4b_forage_s45_eval.json&quot;, &quot;w&quot;), indent=1)</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj4b_forage_s45.py</code> 第 1–13 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>和上一支的 B 組只差一個設定：<code>seconds=45.0</code>，照作者策略檔裡記的值。PART 3 第 6 節的 C 組。</li>
+    <li><b class="l">②</b>同樣三個條件、40 場、90 秒。</li>
+    <li><b class="l">③</b>多存一項：訓練結束時的驗證分 <code>validation</code>。check.py 拿它和本課實跑的值比（第 6 節）；本課實跑的值和作者策略檔記的 2942.24 相同，PART 3 第 6 節靠這一點確認補上 45 秒就重現得了。</li>
+  </ul>
+
+  <h3>bj5_blackjack.py：BJ5，21 點</h3>
+
+  <p><b>這支在做什麼。</b>PART 3 第 7 節：四個條件 × 3 個種子 × 30,000 手，設定照作者寫在 blackjack.py 檔尾的註解。21 點本身的規則、牌面怎麼編成氣味、怎麼選動作、怎麼學，全部在作者的 blackjack.py（PART 7 第 6 節）；這支只負責排條件、跑、記數字。</p>
+
+<!-- code: bj5_blackjack.py 1-15 hl=4,5,6,8,9,10,11,12,13,14 lab=6:①,8:②,9:③,10:④,11:⑤,12:⑥,13:⑦,14:⑧ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;BJ5：21 點。blackjack.py 沒有命令列入口，依其檔尾 RESULT 註解的設定重跑：
+<span class="ln">  2</span><span class="mk"> </span>3 種子 × 30,000 手，四個條件，對照組先跑。在 repo/ 目錄下以 PYTHONPATH=. 執行。
+<span class="ln">  3</span><span class="mk"> </span>用法：python bj5_blackjack.py [hands] [seeds...]&quot;&quot;&quot;
+<span class="hl"><span class="ln">  4</span><span class="mk"> </span>import json, sys, time</span><span class="hl"><span class="ln">  5</span><span class="mk"> </span>import numpy as np</span><span class="hl"><span class="ln">  6</span><span class="mk">①</span>from flybrain.mb.blackjack import FlyPlayer, session, reference_winrates, chart_cells, basic_strategy, HIT, STAND, DOUBLE</span><span class="ln">  7</span><span class="mk"> </span>
+<span class="hl"><span class="ln">  8</span><span class="mk">②</span>HANDS = int(sys.argv[1]) if len(sys.argv) &gt; 1 else 30000</span><span class="hl"><span class="ln">  9</span><span class="mk">③</span>SEEDS = [int(s) for s in sys.argv[2:]] or [0, 1, 2]</span><span class="hl"><span class="ln"> 10</span><span class="mk">④</span>CONDS = [  <span class="cm"># 註解中的順序：對照組先跑</span></span><span class="hl"><span class="ln"> 11</span><span class="mk">⑤</span>    (&quot;untrained greedy&quot;, dict(learn=False, explore=0.0, explore_floor=0.0)),</span><span class="hl"><span class="ln"> 12</span><span class="mk">⑥</span>    (&quot;no learning + exploration decay&quot;, dict(learn=False)),</span><span class="hl"><span class="ln"> 13</span><span class="mk">⑦</span>    (&quot;dopamine cut + exploration decay&quot;, dict(dopamine=False)),</span><span class="hl"><span class="ln"> 14</span><span class="mk">⑧</span>    (&quot;connectome + dopamine&quot;, dict()),</span><span class="ln"> 15</span><span class="mk"> </span>]</pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj5_blackjack.py</code> 第 1–15 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>從作者的 blackjack.py 匯入七樣東西：<code>FlyPlayer</code>（會打牌的蕈狀體，一個類別）、<code>session</code>（讓它連打幾萬手）、<code>reference_winrates</code>（三種固定策略的參考勝率）、<code>chart_cells</code>（基本策略表的 260 格）、<code>basic_strategy</code>（每一格的正確動作）、以及三個動作的代號。基本策略是賭場數學算出來、公開的一張表：自己的牌面（26 種）對莊家亮出來的那張牌（10 種）共 260 種情況，每一格寫明該要牌、停牌還是加倍（加倍：賭注加倍、只再抽一張就停，只能在剛拿到前兩張牌時做）；<b>一致率</b>是果蠅在這 260 格的選擇有多少比例和表相同。牌面怎麼分 26 種、三個動作的規則，在 PART 7 第 6 節。</li>
+    <li><b class="l">②</b>手數從指令列的第一個數字讀，沒給就 30,000。run_all.sh 給了 30000。</li>
+    <li><b class="l">③</b>種子從第二個數字起全部讀進來，沒給就 0、1、2。</li>
+    <li><b class="l">④</b>四個條件排成一串，每一項是「名字」加「給 FlyPlayer 的設定」。作者註解寫「對照組先跑」，所以完整模型排最後。</li>
+    <li><b class="l">⑤</b>未訓練：不學習、探索比例 0、下限 0，每一手都選目前好惡值最高的動作。<b>探索</b>：有一定比例的手不看好惡值、隨機選一個動作，否則一個一開始偏好「要牌」的蕈狀體永遠不會發現停牌更好；完整模型的比例從 35% 隨手數遞減到下限 3%（PART 7 第 6 節）。</li>
+    <li><b class="l">⑥</b>關掉學習但探索照常遞減。</li>
+    <li><b class="l">⑦</b>切斷多巴胺（<code>dopamine=False</code>），探索照常。</li>
+    <li><b class="l">⑧</b>完整模型：什麼都不改，用 FlyPlayer 的預設值。</li>
+  </ul>
+
+<!-- code: bj5_blackjack.py 18-29 hl=18,20,21,22,23,25,26,27,28 lab=18:①,21:②,22:③,26:④,28:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 18</span><span class="mk">①</span>def spot_counts(fly):</span><span class="ln"> 19</span><span class="mk"> </span>    &quot;&quot;&quot;訓練後 greedy 在 260 格的選擇：hit / stand / double 各幾格。&quot;&quot;&quot;
+<span class="hl"><span class="ln"> 20</span><span class="mk"> </span>    c = {HIT: 0, STAND: 0, DOUBLE: 0}</span><span class="hl"><span class="ln"> 21</span><span class="mk">②</span>    for (t, soft, up) in chart_cells():</span><span class="hl"><span class="ln"> 22</span><span class="mk">③</span>        c[fly.greedy(t, soft, up, True, [HIT, STAND, DOUBLE])] += 1</span><span class="hl"><span class="ln"> 23</span><span class="mk"> </span>    out = {&quot;hit&quot;: c[HIT], &quot;stand&quot;: c[STAND], &quot;double&quot;: c[DOUBLE]}</span><span class="ln"> 24</span><span class="mk"> </span>    <span class="cm"># 依基本策略分類：圖表說該 hit／stand／double 的格子裡，蒼蠅選對幾格（作者稱 double 0/39）</span>
+<span class="hl"><span class="ln"> 25</span><span class="mk"> </span>    for want_a, nm in [(HIT, &quot;hit&quot;), (STAND, &quot;stand&quot;), (DOUBLE, &quot;double&quot;)]:</span><span class="hl"><span class="ln"> 26</span><span class="mk">④</span>        cells = [(t, s, u) for (t, s, u) in chart_cells() if basic_strategy(t, s, u, True) == want_a]</span><span class="hl"><span class="ln"> 27</span><span class="mk"> </span>        out[f&quot;chart_{nm}_cells&quot;] = len(cells)</span><span class="hl"><span class="ln"> 28</span><span class="mk">⑤</span>        out[f&quot;chart_{nm}_matched&quot;] = sum(fly.greedy(t, s, u, True, [HIT, STAND, DOUBLE]) == want_a for (t, s, u) in cells)</span><span class="ln"> 29</span><span class="mk"> </span>    return out</pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj5_blackjack.py</code> 第 18–29 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>PART 3 第 7 節那張「260 格裡的選擇」表（要牌幾格、停牌幾格、加倍幾格）是這裡數的。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>spot_counts</code>：給一個打完的 FlyPlayer，數它在 260 格各選什麼。</li>
+    <li><b class="l">②</b>對 260 格的每一格（自己的點數、軟手或硬手、莊家明牌）。軟手是手裡有一張 A 算成 11 點而沒爆的牌，再抽一張也不會爆；其餘是硬手。莊家明牌是莊家亮出來的那一張。</li>
+    <li><b class="l">③</b>問它的 <code>greedy</code>（不探索、純照好惡值選）會選哪個動作，三種動作的計數各加一。<code>True</code> 是「當作前兩張」，所以加倍也在候選裡。</li>
+    <li><b class="l">④</b>再依基本策略分類：表上說該要牌的那些格裡，它選對幾格；停牌、加倍同樣。作者註解說「加倍 0/39」，39 就是表上該加倍的格數。</li>
+    <li><b class="l">⑤</b>選對的格數。bj5b 那支裡的 <code>chart_double_matched: 1/39</code> 就是同一種算法。</li>
+  </ul>
+
+<!-- code: bj5_blackjack.py 32-47 hl=32,33,35,37,38,39,41,43,44,45,47 lab=33:①,35:②,37:③,38:④,39:⑤,41:⑥,43:⑦,45:⑧,47:⑨ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 32</span><span class="mk"> </span>out = {&quot;hands&quot;: HANDS, &quot;seeds&quot;: SEEDS, &quot;conditions&quot;: {}}</span><span class="hl"><span class="ln"> 33</span><span class="mk">①</span>for name, kw in CONDS:</span><span class="ln"> 34</span><span class="mk"> </span>    runs = []
+<span class="hl"><span class="ln"> 35</span><span class="mk">②</span>    for s in SEEDS:</span><span class="ln"> 36</span><span class="mk"> </span>        t0 = time.time()
+<span class="hl"><span class="ln"> 37</span><span class="mk">③</span>        fly = FlyPlayer(seed=s, **kw)</span><span class="hl"><span class="ln"> 38</span><span class="mk">④</span>        nets, blocks, agree = session(fly, hands=HANDS, seed=s)</span><span class="hl"><span class="ln"> 39</span><span class="mk">⑤</span>        runs.append(dict(seed=s, first_block=blocks[0], last_block=blocks[-1], agree_first=agree[0],</span><span class="ln"> 40</span><span class="mk"> </span>                         agree_last=agree[-1], blocks=blocks, agree=agree, spots=spot_counts(fly)))
+<span class="hl"><span class="ln"> 41</span><span class="mk">⑥</span>        print(f&quot;{name:34s} seed {s}  winrate {blocks[0]:+.3f} -&gt; {blocks[-1]:+.3f}  &quot;</span><span class="ln"> 42</span><span class="mk"> </span>              f&quot;agree {agree[0]:.3f} -&gt; {agree[-1]:.3f}  spots {runs[-1][&#x27;spots&#x27;]}  ({time.time() - t0:.0f}s)&quot;, flush=True)
+<span class="hl"><span class="ln"> 43</span><span class="mk">⑦</span>    out[&quot;conditions&quot;][name] = dict(runs=runs, mean_last=float(np.mean([r[&quot;last_block&quot;] for r in runs])),</span><span class="hl"><span class="ln"> 44</span><span class="mk"> </span>                                   mean_agree_last=float(np.mean([r[&quot;agree_last&quot;] for r in runs])))</span><span class="hl"><span class="ln"> 45</span><span class="mk">⑧</span>out[&quot;reference&quot;] = {k: float(v) for k, v in reference_winrates(np.random.default_rng(0)).items()}</span><span class="ln"> 46</span><span class="mk"> </span>print(&quot;reference&quot;, out[&quot;reference&quot;])
+<span class="hl"><span class="ln"> 47</span><span class="mk">⑨</span>json.dump(out, open(f&quot;../results/bj5_blackjack_{HANDS}.json&quot;, &quot;w&quot;), indent=1)</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj5_blackjack.py</code> 第 32–47 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>對四個條件各做一次。</li>
+    <li><b class="l">②</b>對三個種子各做一次（兩層迴圈，共 12 次）。</li>
+    <li><b class="l">③</b>做一個 FlyPlayer：種子 <code>s</code>，加上這個條件的設定。<code>**kw</code> 是「把字典裡的設定全部展開當參數」。</li>
+    <li><b class="l">④</b>叫作者的 <code>session</code> 打 30,000 手，發牌的亂數也用同一個種子。回來三樣：每一手的淨輸贏 <code>nets</code>、每 2,000 手一塊的平均 <code>blocks</code>（15 塊）、每一塊結束時與基本策略的一致率 <code>agree</code>。</li>
+    <li><b class="l">⑤</b>記這個種子的結果：第一塊與最後一塊的平均、頭尾一致率、整條曲線、260 格的計數。PART 3 第 7 節的圖 2 畫的就是 <code>blocks</code>。</li>
+    <li><b class="l">⑥</b>印一行：條件、種子、勝率從第一塊到最後一塊、一致率從頭到尾、格數統計、花了幾秒。PART 3 節錄的每一行就是它。</li>
+    <li><b class="l">⑦</b>這個條件三個種子的「最後一塊平均」再取平均，就是 PART 3 表最右欄的 −48.0%、−47.5%、−47.5%、−14.8%。作者叫它勝率，但它是每手平均淨輸贏、以一注為單位：−48% 是平均每手輸 0.48 注，不是贏的百分比，所以是負的。check.py 的 BJ5 四項比的就是這四個數。</li>
+    <li><b class="l">⑧</b>三條參考線：照基本策略打、亂選、永遠停牌各打 20,000 手的平均輸贏，用種子 0。圖 2 的三條灰色虛線。</li>
+    <li><b class="l">⑨</b>存成 <code>results/bj5_blackjack_30000.json</code>，檔名帶手數。</li>
+  </ul>
+
+  <h3>bj5b_author_brain.py：BJ5b，重新評分作者附的大腦</h3>
+
+  <p><b>這支在做什麼。</b>PART 3 第 7 節那張「作者的三份資料互相矛盾」表的第四列：作者除了 Python 程式，還用 JavaScript 寫了一個在瀏覽器裡跑的版本（repo 的 <code>site/</code>，首頁〈出處〉提到的線上牌桌），本頁叫它網頁版。作者附了一個訓練完的蕈狀體狀態檔 <code>data/brain_seed.json</code>：檔內標明它是從「Python 跑完 30,000 手、種子 0」的蕈狀體轉存成網頁版的格式（所以這支程式的說明寫 python session），檔內那個 53.1% 的一致率則是網頁版的 JavaScript 評分程式算的；本課把那份狀態載入作者的 Python 模型，用同一套 <code>agreement</code> 重算，得到 51.9%。要先弄清楚那個檔存了什麼。</p>
+
+<!-- code: bj5b_author_brain.py 1-12 hl=8,9,10,11,12 lab=8:①,9:②,10:③,11:④,12:⑤ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;BJ5b：作者附的 30,000 手大腦（data/brain_seed.json，標記為 python 30k-hand session, seed 0）
+<span class="ln">  2</span><span class="mk"> </span>載入 Python 模型後重新評分，與作者自述（stand 約 227、double 0/39、一致率 53.1%）及本機 BJ5 比較。
+<span class="ln">  3</span><span class="mk"> </span>gain 只存 18,183 條 KC→MBON 連結，順序依 site/mb.json 的 w_kc_mbon (r, c)。在 repo/ 下以 PYTHONPATH=. 執行。&quot;&quot;&quot;
+<span class="ln">  4</span><span class="mk"> </span>import json, base64
+<span class="ln">  5</span><span class="mk"> </span>import numpy as np
+<span class="ln">  6</span><span class="mk"> </span>from flybrain.mb.blackjack import FlyPlayer, chart_cells, basic_strategy, HIT, STAND, DOUBLE
+<span class="ln">  7</span><span class="mk"> </span>
+<span class="hl"><span class="ln">  8</span><span class="mk">①</span>b = json.load(open(&quot;data/brain_seed.json&quot;))</span><span class="hl"><span class="ln">  9</span><span class="mk">②</span>w = json.load(open(&quot;site/mb.json&quot;))[&quot;w_kc_mbon&quot;]</span><span class="hl"><span class="ln"> 10</span><span class="mk">③</span>g = np.frombuffer(base64.b64decode(b[&quot;gain&quot;]), np.uint8) / 255.0</span><span class="hl"><span class="ln"> 11</span><span class="mk">④</span>fly = FlyPlayer(seed=0)</span><span class="hl"><span class="ln"> 12</span><span class="mk">⑤</span>assert fly.mb.gain.shape == tuple(w[&quot;shape&quot;]) and len(g) == b[&quot;n&quot;] == len(w[&quot;r&quot;])</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj5b_author_brain.py</code> 第 1–12 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>讀大腦檔。它有 <code>gain</code>（<b>增益</b>：乘在每條 KC→MBON 連結上的一個倍率，1 是原始強度，學習只會把它往下壓、最低到 0；PART 1 第 4 節說學習改的就是這個數）、<code>n</code>（幾條）、<code>agreement</code>（檔內記的一致率）、<code>units</code> 與 <code>hands</code>（總輸贏與手數）。</li>
+    <li><b class="l">②</b>讀作者網頁版用的電路檔 <code>site/mb.json</code> 裡 KC→MBON 那一層的「哪一列、哪一欄」清單。大腦檔的 <code>gain</code> 只存了 18,183 條有連結的格子、沒存位置，位置要靠這份清單。</li>
+    <li><b class="l">③</b>把 <code>gain</code> 解碼：它用 base64（把一串位元組寫成可印字元的編法）存了 18,183 個 0 到 255 的整數，除以 255 還原成 0 到 1 的增益。所以網頁版存的增益精度只有 1/255。</li>
+    <li><b class="l">④</b>做一個全新的 FlyPlayer（種子 0，大腦檔標的種子）。</li>
+    <li><b class="l">⑤</b>兩個檢查（<code>assert</code>：不成立就立刻停）：本機蕈狀體的增益矩陣形狀要和 mb.json 說的一樣，三個長度要相等。</li>
+  </ul>
+
+<!-- code: bj5b_author_brain.py 13-19 hl=14,15,16,17,18,19 lab=14:①,15:②,16:③,17:④,18:⑤,19:⑥ -->
+<figure class="code"><pre class="code"><span class="ln"> 13</span><span class="mk"> </span><span class="cm"># 先確認 site/mb.json 的連結位置與本機切出的電路相同</span>
+<span class="hl"><span class="ln"> 14</span><span class="mk">①</span>raw = fly.mb.W_kc_mbon_raw</span><span class="hl"><span class="ln"> 15</span><span class="mk">②</span>same_edges = bool(np.all(raw[w[&quot;r&quot;], w[&quot;c&quot;]] &gt; 0) and (raw &gt; 0).sum() == len(w[&quot;r&quot;]))</span><span class="hl"><span class="ln"> 16</span><span class="mk">③</span>gain = np.ones_like(fly.mb.gain); gain[w[&quot;r&quot;], w[&quot;c&quot;]] = g</span><span class="hl"><span class="ln"> 17</span><span class="mk">④</span>fly.mb.gain = gain</span><span class="hl"><span class="ln"> 18</span><span class="mk">⑤</span>out = dict(stored_agreement=b[&quot;agreement&quot;], stored_units_per_hand=b[&quot;units&quot;] / b[&quot;hands&quot;], same_edges=same_edges,</span><span class="hl"><span class="ln"> 19</span><span class="mk">⑥</span>           python_agreement=fly.agreement())</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj5b_author_brain.py</code> 第 13–19 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>本機切出來的 KC→MBON 原始突觸數矩陣。</li>
+    <li><b class="l">②</b>確認 mb.json 列的每一個位置在本機矩陣裡都有連結、而且本機有連結的格子數也剛好是這麼多：兩邊的電路是同一個。結果存成 <code>same_edges</code>，本課實跑是 true（<code>out/blackjack/bj5b_author_brain.json</code>）。沒有這一步，重算的一致率就沒有意義。</li>
+    <li><b class="l">③</b>做一個全是 1 的增益矩陣，把大腦檔的 18,183 個值填進對應位置。</li>
+    <li><b class="l">④</b>換掉本機蕈狀體的增益。從這一刻起，這個 FlyPlayer 就是作者那個「打過 30,000 手的大腦」。</li>
+    <li><b class="l">⑤</b>記下檔內的一致率、檔內的每手平均輸贏（總輸贏 ÷ 手數）、電路是否相同。</li>
+    <li><b class="l">⑥</b>用作者的 <code>agreement</code> 函式重算一致率，就是表裡的 51.9%。</li>
+  </ul>
+
+  <p>第 20 到 28 行和 bj5_blackjack.py 的 <code>spot_counts</code> 同一件事（260 格各選什麼、各類選對幾格），印出來並存成 <code>results/bj5b_author_brain.json</code>，不再重複講。表裡「要牌 97、停牌 149、加倍 14」出自這裡。</p>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s5"><span class="pt">5</span>第二層：X1 到 X4，bj_extra.py</h2>
+
+  <p><b>這支在做什麼。</b>PART 4 的四項檢查。它比前面四支長，因為 X2、X3 要「換一個不同的電路給作者的實驗用」，而作者的 experiment.py 把電路檔的路徑寫死在 model.py 裡。不改作者程式又要換電路，用的辦法在第 30 到 36 行。</p>
+
+<!-- code: bj_extra.py 10-21 hl=16,17,18,20,21 lab=16:①,17:②,18:③,20:④ -->
+<figure class="code"><pre class="code"><span class="ln"> 10</span><span class="mk"> </span>import json, functools
+<span class="ln"> 11</span><span class="mk"> </span>from pathlib import Path
+<span class="ln"> 12</span><span class="mk"> </span>from collections import Counter
+<span class="ln"> 13</span><span class="mk"> </span>import numpy as np
+<span class="ln"> 14</span><span class="mk"> </span>import scipy.sparse as sp
+<span class="ln"> 15</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 16</span><span class="mk">①</span>from flybrain.mb import experiment as ex</span><span class="hl"><span class="ln"> 17</span><span class="mk">②</span>from flybrain.mb.model import MushroomBody</span><span class="hl"><span class="ln"> 18</span><span class="mk">③</span>from flybrain.mb.extract import extract</span><span class="ln"> 19</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 20</span><span class="mk">④</span>OUT = Path(&quot;../results&quot;); (OUT / &quot;circuits&quot;).mkdir(parents=True, exist_ok=True)</span><span class="hl"><span class="ln"> 21</span><span class="mk"> </span>res = {}</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 10–21 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>把作者的 experiment 模組整個匯入，取短名 <code>ex</code>。之後 <code>ex.pooled</code> 就是上一節的 <code>pooled</code>。</li>
+    <li><b class="l">②</b>匯入 model.py 的 <code>MushroomBody</code> 類別。</li>
+    <li><b class="l">③</b>匯入 extract.py 的 <code>extract</code> 函式：X3 要用它切「全部 KC」的電路。</li>
+    <li><b class="l">④</b>結果放 <code>../results/</code>，另開一個 <code>circuits/</code> 子資料夾放 X3 切出來的幾個電路檔。</li>
+  </ul>
+
+<!-- code: bj_extra.py 24-36 hl=24,25,26,27,30,32,33,34,35,36 lab=24:①,25:②,30:③,32:④,33:⑤,34:⑥,36:⑦ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 24</span><span class="mk">①</span>def stats(v):</span><span class="hl"><span class="ln"> 25</span><span class="mk">②</span>    v = np.asarray(v); se = v.std(ddof=1) / np.sqrt(len(v))</span><span class="hl"><span class="ln"> 26</span><span class="mk"> </span>    return dict(n=len(v), mean=float(v.mean()), sd=float(v.std(ddof=1)),</span><span class="hl"><span class="ln"> 27</span><span class="mk"> </span>                ci95=[float(v.mean() - 1.96 * se), float(v.mean() + 1.96 * se)])</span><span class="ln"> 28</span><span class="mk"> </span>
+<span class="ln"> 29</span><span class="mk"> </span>
+<span class="hl"><span class="ln"> 30</span><span class="mk">③</span>def use_circuit(path=None, post=None):</span><span class="ln"> 31</span><span class="mk"> </span>    &quot;&quot;&quot;讓 experiment.build() 用指定的 npz，並可在建好後對 model 動手腳（post）。&quot;&quot;&quot;
+<span class="hl"><span class="ln"> 32</span><span class="mk">④</span>    def make(**kw):</span><span class="hl"><span class="ln"> 33</span><span class="mk">⑤</span>        mb = MushroomBody(path=path or &quot;data/mb_circuit.npz&quot;, **kw)</span><span class="hl"><span class="ln"> 34</span><span class="mk">⑥</span>        if post: post(mb, kw.get(&quot;seed&quot;, 0))</span><span class="hl"><span class="ln"> 35</span><span class="mk"> </span>        return mb</span><span class="hl"><span class="ln"> 36</span><span class="mk">⑦</span>    ex.MushroomBody = make</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 24–36 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>stats</code>：給一串學習指數，算四樣：幾個、平均、標準差、95% 信賴區間。</li>
+    <li><b class="l">②</b>標準差用 <code>ddof=1</code>（樣本標準差，除以 n − 1），標準誤 ＝ 標準差 ÷ √n；區間 ＝ 平均 ± 1.96 × 標準誤。PART 4 第 2 節那條公式。</li>
+    <li><b class="l">③</b><code>use_circuit</code>：這支程式的關鍵。作者的 <code>experiment.build</code>（上一節第 22 到 31 行）建蕈狀體時寫的是 <code>MushroomBody(**kw)</code>，去找的是 experiment 模組裡那個叫 <code>MushroomBody</code> 的名字。</li>
+    <li><b class="l">④</b>我們定義一個自己的 <code>make</code> 函式，收同樣的設定。</li>
+    <li><b class="l">⑤</b>它建一個 MushroomBody，但多給一個 <code>path</code>：要用哪個電路檔。沒給就用作者預設的 <code>data/mb_circuit.npz</code>。</li>
+    <li><b class="l">⑥</b>建好之後若有 <code>post</code>（一個「事後動手腳」的函式），就叫它一次，傳進蕈狀體與種子。X2 的打亂就從這裡進去。</li>
+    <li><b class="l">⑦</b>把 experiment 模組裡的 <code>MushroomBody</code> 名字換成我們的 <code>make</code>。之後作者的 <code>build</code> 叫 <code>MushroomBody(**kw)</code> 時，叫到的其實是 <code>make</code>。作者的檔案一個字都沒改，改的只是執行時那個名字指向誰。PART 4 第 1 節說「不改作者的模型」，做法就是這一行。</li>
+  </ul>
+
+<!-- code: bj_extra.py 39-44 hl=40,41,42,43 lab=40:①,41:②,42:③,43:④ -->
+<figure class="code"><pre class="code"><span class="ln"> 39</span><span class="mk"> </span><span class="cm"># ---------------- X1</span>
+<span class="hl"><span class="ln"> 40</span><span class="mk">①</span>use_circuit()</span><span class="hl"><span class="ln"> 41</span><span class="mk">②</span>x1 = {c: ex.pooled(control=c, seeds=50).tolist() for c in [&quot;none&quot;, &quot;shuffled&quot;]}</span><span class="hl"><span class="ln"> 42</span><span class="mk">③</span>res[&quot;X1_50_seeds&quot;] = {c: stats(v) for c, v in x1.items()}</span><span class="hl"><span class="ln"> 43</span><span class="mk">④</span>res[&quot;X1_50_seeds&quot;][&quot;none_first12&quot;] = stats(x1[&quot;none&quot;][:12])</span><span class="ln"> 44</span><span class="mk"> </span>print(&quot;X1&quot;, json.dumps(res[&quot;X1_50_seeds&quot;]), flush=True)</pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 39–44 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>X1：先把電路設回作者預設（沒有 path、沒有 post）。</li>
+    <li><b class="l">②</b>完整模型（<code>none</code>）與 KC→MBON 打亂（<code>shuffled</code>）各跑 50 個種子。<code>seeds=50</code> 是 <code>pooled</code> 原本就收的設定，作者預設 12。</li>
+    <li><b class="l">③</b>兩串各算 stats。PART 4 第 2 節表的後兩列。</li>
+    <li><b class="l">④</b>另外取完整模型前 12 個種子（就是作者的 12 個）算 stats，表的第一列 −1.30 與它的區間。</li>
+  </ul>
+
+<!-- code: bj_extra.py 46-55 hl=47,48,49,50,51,52,53,54,55 lab=48:①,49:②,50:③,51:④,52:⑤,53:⑥,55:⑦ -->
+<figure class="code"><pre class="code"><span class="ln"> 46</span><span class="mk"> </span><span class="cm"># ---------------- X2</span>
+<span class="hl"><span class="ln"> 47</span><span class="mk"> </span>x2 = []</span><span class="hl"><span class="ln"> 48</span><span class="mk">①</span>for k in range(10):</span><span class="hl"><span class="ln"> 49</span><span class="mk">②</span>    def perm_dan(mb, seed, k=k):</span><span class="hl"><span class="ln"> 50</span><span class="mk">③</span>        rng = np.random.default_rng(1000 + k)</span><span class="hl"><span class="ln"> 51</span><span class="mk">④</span>        mb.W_dan_mbon = mb.W_dan_mbon[:, rng.permutation(mb.n_mbon)]</span><span class="hl"><span class="ln"> 52</span><span class="mk">⑤</span>    use_circuit(post=perm_dan)</span><span class="hl"><span class="ln"> 53</span><span class="mk">⑥</span>    v = ex.pooled(seeds=12)</span><span class="hl"><span class="ln"> 54</span><span class="mk"> </span>    x2.append(stats(v)); print(&quot;X2 perm&quot;, k, x2[-1][&quot;mean&quot;], flush=True)</span><span class="hl"><span class="ln"> 55</span><span class="mk">⑦</span>res[&quot;X2_dan_mbon_shuffled&quot;] = dict(per_permutation=x2, mean_of_means=float(np.mean([s[&quot;mean&quot;] for s in x2])))</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 46–55 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>X2：把 DAN→MBON 那一層的接線打亂，PART 4 說的「把每顆多巴胺神經元連到的 MBON 隨機重排」。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b>做 10 種不同的重排。</li>
+    <li><b class="l">②</b>定義這一種重排的 <code>perm_dan</code>：收蕈狀體與種子（<code>k=k</code> 是把目前的 k 鎖進這個函式，Python 的迴圈變數不這樣寫會全部指到最後一個值）。</li>
+    <li><b class="l">③</b>重排的亂數起點 1000 ＋ k，10 種各不同、但固定。</li>
+    <li><b class="l">④</b>DAN→MBON 矩陣的欄（MBON）隨機換位：<code>permutation(97)</code> 是 0 到 96 的隨機排列，<code>[:, …]</code> 是「列不動、欄照這個排列重排」。效果是每顆 DAN 原本連到的那組 MBON，整組被換成另一組，連結強度不變、MBON 的趨近／迴避標記也不動。</li>
+    <li><b class="l">⑤</b>用作者預設的電路檔，但建好後做這個重排。</li>
+    <li><b class="l">⑥</b>作者的 <code>pooled</code>，12 個種子（和作者比用同一組種子）。</li>
+    <li><b class="l">⑦</b>10 種的平均再取平均 <code>mean_of_means</code>，就是 PART 4 說的 −0.31。</li>
+  </ul>
+
+<!-- code: bj_extra.py 57-59 hl=58,59 lab=58:①,59:② -->
+<figure class="code"><pre class="code"><span class="ln"> 57</span><span class="mk"> </span><span class="cm"># ---------------- X3</span>
+<span class="hl"><span class="ln"> 58</span><span class="mk">①</span>blocks, info = extract(kenyon=None)          <span class="cm"># 全部在路徑上的 KC</span></span><span class="hl"><span class="ln"> 59</span><span class="mk">②</span>n_live = blocks[&quot;pn_kc&quot;].shape[1]</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 57–59 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>X3 的起點：叫作者的 <code>extract(kenyon=None)</code>，切一次全部 3,811 顆路徑上的 KC（第 3 節 extract.py 第 58 行那個條件不成立，就不取樣）。回來四塊連結與細胞資訊。</li>
+    <li><b class="l">②</b>PN→KC 那一塊的欄數就是 KC 數 3,811。</li>
+  </ul>
+
+  <p>第 62 到 70 行的 <code>save_npz</code> 是作者 extract.py 第 99 到 110 行 <code>save</code> 的翻版（同樣四個陣列、同樣的壓縮），只是存到我們指定的路徑，不再重講。</p>
+
+<!-- code: bj_extra.py 73-83 hl=74,75,76,77,78,79,80,81,83 lab=74:①,76:②,78:③,79:④,80:⑤,81:⑥ -->
+<figure class="code"><pre class="code"><span class="ln"> 73</span><span class="mk"> </span>x3 = {}
+<span class="hl"><span class="ln"> 74</span><span class="mk">①</span>variants = {&quot;all_live_kc&quot;: np.arange(n_live)}</span><span class="hl"><span class="ln"> 75</span><span class="mk"> </span>for k in range(5):</span><span class="hl"><span class="ln"> 76</span><span class="mk">②</span>    variants[f&quot;random1200_{k}&quot;] = np.sort(np.random.default_rng(500 + k).choice(n_live, 1200, replace=False))</span><span class="hl"><span class="ln"> 77</span><span class="mk"> </span>for name, idx in variants.items():</span><span class="hl"><span class="ln"> 78</span><span class="mk">③</span>    bl = dict(blocks); bl[&quot;pn_kc&quot;] = blocks[&quot;pn_kc&quot;][:, idx]; bl[&quot;kc_mbon&quot;] = blocks[&quot;kc_mbon&quot;][idx, :]</span><span class="hl"><span class="ln"> 79</span><span class="mk">④</span>    p = OUT / &quot;circuits&quot; / f&quot;mb_{name}.npz&quot;; save_npz(p, bl, info)</span><span class="hl"><span class="ln"> 80</span><span class="mk">⑤</span>    use_circuit(path=str(p))</span><span class="hl"><span class="ln"> 81</span><span class="mk">⑥</span>    x3[name] = dict(n_kc=len(idx), full=stats(ex.pooled(seeds=12)), dopamine_cut=stats(ex.pooled(&quot;dopamine-cut&quot;, seeds=12)))</span><span class="ln"> 82</span><span class="mk"> </span>    print(&quot;X3&quot;, name, x3[name][&quot;full&quot;][&quot;mean&quot;], x3[name][&quot;dopamine_cut&quot;][&quot;mean&quot;], flush=True)
+<span class="hl"><span class="ln"> 83</span><span class="mk"> </span>res[&quot;X3_kc_subsets&quot;] = dict(n_live_kc=int(n_live), variants=x3)</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 73–83 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>六種選法。第一種：全部 3,811 顆。</li>
+    <li><b class="l">②</b>另外五種：各從 3,811 顆裡隨機抽 1,200 顆（不重複），亂數起點 500 ＋ k。</li>
+    <li><b class="l">③</b>對每一種：從全 KC 的四塊裡只留選到的那些 KC：PN→KC 留那些欄、KC→MBON 留那些列。其他兩塊（DAN→MBON、MBON→MBON）不涉及 KC，照舊。</li>
+    <li><b class="l">④</b>存成一個電路檔。</li>
+    <li><b class="l">⑤</b>叫 <code>use_circuit</code> 讓作者的實驗改用這個檔。</li>
+    <li><b class="l">⑥</b>完整模型與切斷多巴胺各跑 12 個種子。PART 4 第 3 節那張七列的表（作者選法那一列直接用 BJ3 的結果）。</li>
+  </ul>
+
+<!-- code: bj_extra.py 85-100 hl=86,87,88,90,91,92,93,94,95,98,99 lab=86:①,87:②,88:③,91:④,93:⑤,98:⑥ -->
+<figure class="code"><pre class="code"><span class="ln"> 85</span><span class="mk"> </span><span class="cm"># ---------------- X4</span>
+<span class="hl"><span class="ln"> 86</span><span class="mk">①</span>cells = json.loads(Path(&quot;data/mb_cells.json&quot;).read_text())</span><span class="hl"><span class="ln"> 87</span><span class="mk">②</span>types, nts, val = cells[&quot;types&quot;][&quot;mbon&quot;], cells[&quot;nt&quot;][&quot;mbon&quot;], cells[&quot;mbon_valence&quot;]</span><span class="hl"><span class="ln"> 88</span><span class="mk">③</span>lit = {&quot;glutamate&quot;: -1, &quot;acetylcholine&quot;: 1, &quot;gaba&quot;: 1}</span><span class="ln"> 89</span><span class="mk"> </span>rows, tab = [], Counter()
+<span class="hl"><span class="ln"> 90</span><span class="mk"> </span>for t, nt, v in zip(types, nts, val):</span><span class="hl"><span class="ln"> 91</span><span class="mk">④</span>    exp = lit.get(nt.lower())</span><span class="hl"><span class="ln"> 92</span><span class="mk"> </span>    tab[(nt, v)] += 1</span><span class="hl"><span class="ln"> 93</span><span class="mk">⑤</span>    rows.append(dict(type=t, nt=nt, author=v, nt_rule=exp, agree=(exp == v) if exp is not None and v != 0 else None))</span><span class="hl"><span class="ln"> 94</span><span class="mk"> </span>judged = [r for r in rows if r[&quot;agree&quot;] is not None]</span><span class="hl"><span class="ln"> 95</span><span class="mk"> </span>res[&quot;X4_mbon_valence&quot;] = dict(</span><span class="ln"> 96</span><span class="mk"> </span>    rule=&quot;Aso et al. 2014 eLife：麩胺酸 MBON 活化促迴避（−1），乙醯膽鹼／GABA 促趨近（+1）；簡化規則，有已知例外&quot;,
+<span class="ln"> 97</span><span class="mk"> </span>    crosstab={f&quot;{nt}|{v:+d}&quot;: n for (nt, v), n in sorted(tab.items())},
+<span class="hl"><span class="ln"> 98</span><span class="mk">⑥</span>    judged=len(judged), agree=sum(r[&quot;agree&quot;] for r in judged),</span><span class="hl"><span class="ln"> 99</span><span class="mk"> </span>    disagree=[r for r in judged if not r[&quot;agree&quot;]], cells=rows)</span><span class="ln">100</span><span class="mk"> </span>print(&quot;X4&quot;, res[&quot;X4_mbon_valence&quot;][&quot;crosstab&quot;], res[&quot;X4_mbon_valence&quot;][&quot;agree&quot;], &quot;/&quot;, len(judged), flush=True)</pre><figcaption class="figsrc">下載包的 <code>blackjack/scripts/bj_extra.py</code> 第 85–100 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>X4：MBON 的趨近／迴避標記對文獻規則。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b>讀 extract.py 寫的 <code>data/mb_cells.json</code>。</li>
+    <li><b class="l">②</b>取 97 顆 MBON 的型、傳導物質預測值、作者的標記。傳導物質是神經元放電時釋放給下游的化學物質，每顆主要用一種；文獻發現 MBON 用哪一種和它推動趨近或迴避有關，所以可以拿來對照。這裡的值是資料集用影像預測的，可能猜錯。</li>
+    <li><b class="l">③</b>文獻規則寫成一個字典：麩胺酸 → −1（迴避）、乙醯膽鹼 → +1、GABA → +1（趨近）。PART 4 第 4 節說的 Aso 等人 2014 年的簡化規則。</li>
+    <li><b class="l">④</b>規則對這顆的預期值（傳導物質不在三種之內的得到「沒有」）。</li>
+    <li><b class="l">⑤</b>每顆記一列：型、傳導物質、作者的標記、規則的預期、一致與否。規則給不出預期、或作者標 0 的那些，一致欄是「不判」。</li>
+    <li><b class="l">⑥</b>一致的顆數：97 顆全部判得了（三種傳導物質都在規則裡、沒有一顆標 0），一致 62 顆，占 64%。check.py 的 X4 那一項比的就是這個數。交叉表（傳導物質 × 作者標記各幾顆）是 PART 4 那張三列的表。</li>
+  </ul>
+
+  <p>第 102、103 行把四項結果一起寫成 <code>results/bj_extra.json</code>，本課收在 <code>out/blackjack/bj_extra.json</code>，PART 4 每一節末尾標的「X1_50_seeds」「X2_dan_mbon_shuffled」等就是這個檔裡的四個段落。</p>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s6"><span class="pt">6</span>第二層：check.py，驗收</h2>
+
+  <p><b>這支在做什麼。</b>run_all.sh 跑完的最後一步。它讀 <code>expected.json</code>（本課實跑的結果，每一項寫著「去哪個檔、取哪個值、用哪種標準比」），逐項去你的 <code>results/</code> 與 <code>logs/</code> 取值，比對後印 ✓ 或 ✗，共 19 項。PART 3 第 1 節講的三種判定標準，在這裡變成五種程式判法，本課用到其中三種。</p>
+
+<!-- code: check.py 1-10 hl=5,6,7,9,10 lab=5:①,9:②,10:③ -->
+<figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;驗收：把 run_all.sh 跑出來的數字跟 expected.json（本課實跑的結果）逐項比對。
+<span class="ln">  2</span><span class="mk"> </span>用法：python check.py blackjack   （在 pack 根目錄或子資料夾都可以）
+<span class="ln">  3</span><span class="mk"> </span>判定有五種：exact（逐位相同）、rel（相對誤差在容許範圍內）、
+<span class="ln">  4</span><span class="mk"> </span>same（兩個檔案內容相同）、contains（終端輸出裡出現預期的那幾行）、md5_twice（同一支程式跑兩次的 md5 相同且等於預期）。&quot;&quot;&quot;
+<span class="hl"><span class="ln">  5</span><span class="mk">①</span>import json</span><span class="hl"><span class="ln">  6</span><span class="mk"> </span>import os</span><span class="hl"><span class="ln">  7</span><span class="mk"> </span>import sys</span><span class="ln">  8</span><span class="mk"> </span>
+<span class="hl"><span class="ln">  9</span><span class="mk">②</span>ROOT = os.path.dirname(os.path.abspath(__file__))</span><span class="hl"><span class="ln"> 10</span><span class="mk">③</span>SUB = {&quot;blackjack&quot;: &quot;blackjack&quot;}</span></pre><figcaption class="figsrc">下載包的 <code>check.py</code> 第 1–10 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>開頭三個 <code>import</code>：把 Python 內建的三個套件接進來用。<code>json</code> 讀寫 JSON 檔，<code>os</code> 處理路徑，<code>sys</code> 讀指令列給的參數。第 1 到 4 行三個引號夾的是這支程式的說明文字，和註解一樣不執行。</li>
+    <li><b class="l">②</b><code>ROOT</code>：這支程式自己所在的資料夾（下載包的最上層），和 run_all.sh 的 <code>HERE</code> 同一個想法。</li>
+    <li><b class="l">③</b>一個字典：<code>"blackjack"</code> 這一組對到子資料夾 <code>blackjack</code>。本課原本和另一個重現專題（fruitfly-lab，Doom）合成一門課，這支程式那時同時驗兩個專案，字典是那時留下的形狀；拆成兩門課之後本課只有一組。</li>
+  </ul>
+
+<!-- code: check.py 13-22 hl=13,14,15,16,17,18,19,20,21 lab=13:①,14:②,16:③,18:④,20:⑤ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 13</span><span class="mk">①</span>def get(path, keys, pluck=None, mean=False):</span><span class="hl"><span class="ln"> 14</span><span class="mk">②</span>    with open(path) as f:</span><span class="hl"><span class="ln"> 15</span><span class="mk"> </span>        d = json.load(f) if path.endswith(&quot;.json&quot;) else f.read()</span><span class="hl"><span class="ln"> 16</span><span class="mk">③</span>    for k in keys:</span><span class="hl"><span class="ln"> 17</span><span class="mk"> </span>        d = d[k]</span><span class="hl"><span class="ln"> 18</span><span class="mk">④</span>    if pluck:                      <span class="cm"># 一串 dict 裡取同一個欄位，例如每一局的 kills</span></span><span class="hl"><span class="ln"> 19</span><span class="mk"> </span>        d = [x[pluck] for x in d]</span><span class="hl"><span class="ln"> 20</span><span class="mk">⑤</span>    if mean:</span><span class="hl"><span class="ln"> 21</span><span class="mk"> </span>        d = round(sum(d) / len(d), 6)</span><span class="ln"> 22</span><span class="mk"> </span>    return d</pre><figcaption class="figsrc">下載包的 <code>check.py</code> 第 13–22 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>def get(…)</code>：定義一個函式，叫 <code>get</code>，工作是「打開一個檔，沿著一串鍵走進去，取出一個值」。括號裡是它收的四樣東西：檔案路徑、鍵的串列、可選的 <code>pluck</code> 與 <code>mean</code>。</li>
+    <li><b class="l">②</b>打開檔案。檔名以 <code>.json</code> 結尾就當 JSON 解析，否則整個當文字讀進來（log 檔走這條）。</li>
+    <li><b class="l">③</b><code>for k in keys</code>：對鍵的串列裡每一個鍵做一次 <code>d = d[k]</code>，也就是一層一層往裡面走。例如 BJ5 那四項寫 <code>["conditions", "connectome + dopamine", "mean_last"]</code>，就是先進 <code>conditions</code>、再進那個條件、再取 <code>mean_last</code>。</li>
+    <li><b class="l">④</b><code>pluck</code>：遇到「一串東西」時從每一個裡取同一個欄位。本課 19 項沒有一項用到，是拆課前留下的。</li>
+    <li><b class="l">⑤</b><code>mean</code>：把那串數字取平均。BJ3 的三項用它：mb_results.json 裡每個條件存的是 12 個種子的 12 個指數，取平均再比 −1.301。</li>
+  </ul>
+
+<!-- code: check.py 25-31 hl=26,27,29,31 lab=26:①,27:②,29:③,31:④ -->
+<figure class="code"><pre class="code"><span class="ln"> 25</span><span class="mk"> </span>def main(which):
+<span class="hl"><span class="ln"> 26</span><span class="mk">①</span>    exp = json.load(open(os.path.join(ROOT, &quot;expected.json&quot;)))[which]</span><span class="hl"><span class="ln"> 27</span><span class="mk">②</span>    base = os.path.join(ROOT, SUB[which])</span><span class="ln"> 28</span><span class="mk"> </span>    ok = bad = known = 0
+<span class="hl"><span class="ln"> 29</span><span class="mk">③</span>    for c in exp:</span><span class="ln"> 30</span><span class="mk"> </span>        try:
+<span class="hl"><span class="ln"> 31</span><span class="mk">④</span>            got = get(os.path.join(base, c[&quot;file&quot;]), c.get(&quot;keys&quot;, []), c.get(&quot;pluck&quot;), c.get(&quot;mean&quot;, False))</span></pre><figcaption class="figsrc">下載包的 <code>check.py</code> 第 25–31 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>讀 expected.json，取出要驗的那一組（<code>which</code> 是 run_all.sh 第 22 行給的 <code>blackjack</code>）。</li>
+    <li><b class="l">②</b>結果資料夾：<code>ROOT/blackjack</code>。</li>
+    <li><b class="l">③</b>對 expected.json 裡每一項（<code>c</code>）做一次下面的事；<code>ok</code>、<code>bad</code>、<code>known</code> 三個計數器從 0 開始。</li>
+    <li><b class="l">④</b>叫上面的 <code>get</code> 取值，存進 <code>got</code>。<code>try</code> 的意思是「試著做，失敗了跳到第 47 行」，檔案不存在也不會讓整支程式當掉，而是記成一項不符。</li>
+  </ul>
+
+<!-- code: check.py 32-48 hl=32,34,37,40,42,47,48 lab=32:①,34:②,37:③,40:④,42:⑤,47:⑥ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 32</span><span class="mk">①</span>            if c[&quot;kind&quot;] == &quot;exact&quot;:</span><span class="ln"> 33</span><span class="mk"> </span>                good = got == c[&quot;value&quot;]
+<span class="hl"><span class="ln"> 34</span><span class="mk">②</span>            elif c[&quot;kind&quot;] == &quot;rel&quot;:</span><span class="ln"> 35</span><span class="mk"> </span>                v = c[&quot;value&quot;]
+<span class="ln"> 36</span><span class="mk"> </span>                good = abs(got - v) &lt;= c[&quot;tol&quot;] * max(abs(v), 1e-9)
+<span class="hl"><span class="ln"> 37</span><span class="mk">③</span>            elif c[&quot;kind&quot;] == &quot;same&quot;:</span><span class="ln"> 38</span><span class="mk"> </span>                other = get(os.path.join(base, c[&quot;other&quot;]), [])
+<span class="ln"> 39</span><span class="mk"> </span>                good = got == other
+<span class="hl"><span class="ln"> 40</span><span class="mk">④</span>            elif c[&quot;kind&quot;] == &quot;contains&quot;:</span><span class="ln"> 41</span><span class="mk"> </span>                good = all(v in got for v in c[&quot;value&quot;])
+<span class="hl"><span class="ln"> 42</span><span class="mk">⑤</span>            elif c[&quot;kind&quot;] == &quot;md5_twice&quot;:     <span class="cm"># 同一支程式跑兩次，兩行 md5 相同且等於預期</span></span><span class="ln"> 43</span><span class="mk"> </span>                h = got.split()[0::2]
+<span class="ln"> 44</span><span class="mk"> </span>                good = len(h) == 2 and h[0] == h[1] == c[&quot;value&quot;]
+<span class="ln"> 45</span><span class="mk"> </span>            else:
+<span class="ln"> 46</span><span class="mk"> </span>                good = False
+<span class="hl"><span class="ln"> 47</span><span class="mk">⑥</span>        except (OSError, KeyError, IndexError, ValueError) as e:</span><span class="hl"><span class="ln"> 48</span><span class="mk"> </span>            got, good = f&quot;讀不到（{type(e).__name__}）&quot;, False</span></pre><figcaption class="figsrc">下載包的 <code>check.py</code> 第 32–48 行</figcaption></figure>
+<!-- /code -->
+
+  <p><b>這段在做什麼。</b>五種判法。<code>if … elif … else</code> 讀成「如果是這種…否則如果是那種…都不是就…」。</p>
+
+  <ul class="walk">
+    <li><b class="l">①</b><code>exact</code>：逐位相同，取到的值要和預期一模一樣。本課 19 項裡 17 項用它：BJ3 的三個平均、BJ4 與 BJ4b 的電擊次數與驗證分、BJ5 的四個平均、X1、X2、X4。可以要求逐位相同，是因為 check.py 比的對象是本課的實跑結果，不是作者的數字；而 fly-blackjack 每一步都固定了種子（PART 3 第 1 節）。</li>
+    <li><b class="l">②</b><code>rel</code>：相對誤差。<code>abs(got − v)</code> 是差距的絕對值，不能超過預期值乘上容許比例 <code>tol</code>。本課沒有用到：沒有哪一步沒固定種子。</li>
+    <li><b class="l">③</b><code>same</code>：兩個檔案內容相同。本課沒有用到。</li>
+    <li><b class="l">④</b><code>contains</code>：檔案裡要出現預期的那幾段文字。BJ1 用它：<code>bj1_train.log</code> 裡要出現四列表的四行原文（連同 45、29.12、210.7 這些數字）。</li>
+    <li><b class="l">⑤</b><code>md5_twice</code>：同一支程式跑兩次，兩行 md5 要相同、而且等於預期。BJ2 用它：讀 <code>bj2_md5.txt</code>，<code>split()[0::2]</code> 是把檔案切成一個個字、每隔一個取一個，也就是兩行各自開頭的那串指紋；兩串要相同且等於 <code>32dc4935…</code>。</li>
+    <li><b class="l">⑥</b>第 31 行失敗時跳到這裡：記下錯誤的種類，判成不符。</li>
+  </ul>
+
+<!-- code: check.py 49-59 hl=49,50,51,55,56,58 lab=49:①,55:②,58:③ -->
+<figure class="code"><pre class="code"><span class="hl"><span class="ln"> 49</span><span class="mk">①</span>        if not good and c.get(&quot;known&quot;):         <span class="cm"># 本課實跑時就不符、頁面上已說明的項目</span></span><span class="hl"><span class="ln"> 50</span><span class="mk"> </span>            known += 1</span><span class="hl"><span class="ln"> 51</span><span class="mk"> </span>            print(f&quot;△ {c[&#x27;step&#x27;]:6s} {c[&#x27;what&#x27;]}　本次 {got!r}；已知：{c[&#x27;known&#x27;]}&quot;)</span><span class="ln"> 52</span><span class="mk"> </span>            continue
+<span class="ln"> 53</span><span class="mk"> </span>        ok += good
+<span class="ln"> 54</span><span class="mk"> </span>        bad += not good
+<span class="hl"><span class="ln"> 55</span><span class="mk">②</span>        mark = &quot;✓&quot; if good else &quot;✗&quot;</span><span class="hl"><span class="ln"> 56</span><span class="mk"> </span>        print(f&quot;{mark} {c[&#x27;step&#x27;]:6s} {c[&#x27;what&#x27;]}&quot; + (&quot;&quot; if good else f&quot;　本次 {got!r}，預期 {c.get(&#x27;value&#x27;, c.get(&#x27;other&#x27;))!r}&quot;))</span><span class="ln"> 57</span><span class="mk"> </span>    tail = f&quot;，{known} 項已知不符（△，本課實跑時也一樣）&quot; if known else &quot;&quot;
+<span class="hl"><span class="ln"> 58</span><span class="mk">③</span>    print(f&quot;\n{which}：{ok} 項通過，{bad} 項不符{tail}（共 {ok + bad + known} 項）&quot;)</span><span class="ln"> 59</span><span class="mk"> </span>    return bad</pre><figcaption class="figsrc">下載包的 <code>check.py</code> 第 49–59 行</figcaption></figure>
+<!-- /code -->
+
+  <ul class="walk">
+    <li><b class="l">①</b>△ 那一類：expected.json 裡標了 <code>known</code> 的項目，本課實跑時就不符、頁面上已經說明。這一包 19 項沒有一項標 known，所以 PART 2 第 7 節的最後一行只有「通過」與「不符」兩個數。<code>continue</code> 是跳到下一項。</li>
+    <li><b class="l">②</b>其他項目印 ✓ 或 ✗；✗ 的後面附上本次的值和預期值，讓你知道差在哪。</li>
+    <li><b class="l">③</b>最後一行總結：幾項通過、幾項不符。可攜測試印的是「blackjack：19 項通過，0 項不符（共 19 項）」（<code>out/porttest.json</code>）。第 59 行把不符的數目交回去，第 62、63 行（本頁沒引）用它決定程式的結束碼（程式結束時告訴終端機成功或失敗的一個數：0 是成功、1 是失敗）：有不符就回 1。</li>
+  </ul>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2 id="s7"><span class="pt">7</span>總表：每個檔案誰叫它、讀什麼、寫什麼</h2>
+
+  <div class="tblwrap">
+  <table>
+    <tr><th>檔案</th><th>層</th><th>誰叫它</th><th>讀什麼</th><th>寫什麼（本課 <code>out/</code> 裡的對應）</th></tr>
+    <tr><td><code>setup_envs.sh</code></td><td>一</td><td>你</td><td>—</td><td>一個 conda 環境 <code>flyplay_bj</code></td></tr>
+    <tr><td><code>run_all.sh</code></td><td>一</td><td>你</td><td>—</td><td><code>repo/</code>、<code>logs/</code> 每一步一個 log（<code>out/blackjack/logs/</code>）、<code>results/</code></td></tr>
+    <tr><td><code>train.py</code></td><td>二</td><td>run_all.sh 第 13 行</td><td>作者附的 <code>data/circuit.json</code>（80 顆）</td><td><code>results/bj1_checkpoint.json</code>（<code>out/blackjack/bj1_checkpoint.json</code>）；四列表印在 <code>bj1_train.log</code></td></tr>
+    <tr><td><code>fetch.py</code></td><td>二</td><td>run_all.sh 第 14 行；extract.py 匯入它的 <code>load</code></td><td>GitHub 上的兩個資料檔</td><td><code>data/malecns/</code> 兩個檔；八行核對印在 <code>bj2_fetch.log</code></td></tr>
+    <tr><td><code>extract.py</code></td><td>二</td><td>run_all.sh 第 15 行（兩次）；bj_extra.py 匯入它的 <code>extract</code></td><td>連結矩陣、屬性表</td><td><code>data/mb_circuit.npz</code>（md5 在 <code>bj2_md5.txt</code>）、<code>mb_manifest.json</code>（印在 <code>bj2_extract_run1.log</code>）、<code>mb_cells.json</code></td></tr>
+    <tr><td><code>experiment.py</code></td><td>二</td><td>run_all.sh 第 16 行；tmaze.py 與 bj_extra.py 匯入它</td><td><code>mb_circuit.npz</code>、<code>mb_cells.json</code>（經 model.py 與 odour.py）</td><td><code>data/mb_results.json</code> → <code>results/</code>（<code>out/blackjack/mb_results.json</code>）；表印在 <code>bj3_experiment.log</code></td></tr>
+    <tr><td><code>tmaze.py</code></td><td>二</td><td>run_all.sh 第 16 行</td><td>同上</td><td><code>data/mb_tmaze.json</code> → <code>results/</code>；表印在 <code>bj3_tmaze.log</code></td></tr>
+    <tr><td><code>bj4_forage.py</code></td><td>二</td><td>run_all.sh 第 17 行</td><td>作者的 <code>policies/forage.json</code>；embodied.py 的 <code>train</code>、<code>evaluate</code></td><td><code>results/bj4_forage_retrained.json</code>、<code>bj4_forage.json</code>（<code>out/blackjack/</code> 同名）</td></tr>
+    <tr><td><code>bj4b_forage_s45.py</code></td><td>二</td><td>run_all.sh 第 18 行</td><td>同上</td><td><code>results/bj4b_forage_s45.json</code>、<code>bj4b_forage_s45_eval.json</code></td></tr>
+    <tr><td><code>bj5_blackjack.py</code></td><td>二</td><td>run_all.sh 第 19 行</td><td>blackjack.py 的 <code>FlyPlayer</code>、<code>session</code> 等</td><td><code>results/bj5_blackjack_30000.json</code>；每行一個條件一個種子印在 <code>bj5_blackjack.log</code></td></tr>
+    <tr><td><code>bj5b_author_brain.py</code></td><td>二</td><td>run_all.sh 第 20 行</td><td>作者的 <code>data/brain_seed.json</code>、<code>site/mb.json</code></td><td><code>results/bj5b_author_brain.json</code></td></tr>
+    <tr><td><code>bj_extra.py</code></td><td>二</td><td>run_all.sh 第 21 行</td><td>experiment.py、model.py、extract.py；<code>mb_cells.json</code></td><td><code>results/bj_extra.json</code>、<code>results/circuits/</code> 六個電路檔</td></tr>
+    <tr><td><code>check.py</code></td><td>二</td><td>run_all.sh 第 22 行</td><td><code>expected.json</code>、上面所有輸出</td><td>終端機上的 ✓／✗ 清單（<code>out/blackjack/runall_test.out</code>）</td></tr>
+  </table>
+  </div>
+
+  <p class="figsrc">行數與常數出自 <code>out/code_meta.json</code>（由 <code>scripts/make_code.py</code> 從原檔抓）；頁面上每一個程式區塊由同一支程式產生，<code>--check</code> 逐塊對回原檔。</p>
+
+  <div class="note">
+    <b>讀到這裡，第二層都讀完了。</b>剩下的問題是第三層：<code>circuit.step</code> 怎麼算 80 顆神經元的活動量、<code>act</code> 怎麼從 16 個數選出一個動作、<code>MushroomBody.present</code> 怎麼算好惡值又怎麼改連結、<code>FlyPlayer</code> 怎麼把一手牌變成氣味。這些就是 PART 1 的四個零件與學習規則在程式裡的樣子，在 <a href="part7-model.html">PART 7</a>。
+  </div>
+
+  <div class="pager">
+    <a href="part5-demo.html">← PART 5　逐手看蕈狀體怎麼打</a>
+    <a href="part7-model.html">PART 7　讀程式（下）→</a>
+  </div>
+
+</div>
+<div class="foot">BSC 腦空間體研究中心 · 專題課程 蕈狀體學 21 點 · 教材由 Claude Code 產生　·　<a href="index.html">回課程首頁</a></div>
+</body>
+</html>

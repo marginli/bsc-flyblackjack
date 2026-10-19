@@ -1,0 +1,333 @@
+{
+ "author_commit": "004b2e3",
+ "files": {
+  "setup_envs.sh": {
+   "kind": "ours",
+   "path": "setup_envs.sh",
+   "lines": 11,
+   "sha256_8": "0fdfe7cc"
+  },
+  "run_all.sh": {
+   "kind": "ours",
+   "path": "blackjack/run_all.sh",
+   "lines": 22,
+   "sha256_8": "f44b80ba"
+  },
+  "check.py": {
+   "kind": "ours",
+   "path": "check.py",
+   "lines": 63,
+   "sha256_8": "4ce1effc"
+  },
+  "bj4_forage.py": {
+   "kind": "ours",
+   "path": "blackjack/scripts/bj4_forage.py",
+   "lines": 17,
+   "sha256_8": "436fb804"
+  },
+  "bj4b_forage_s45.py": {
+   "kind": "ours",
+   "path": "blackjack/scripts/bj4b_forage_s45.py",
+   "lines": 13,
+   "sha256_8": "0d8381a7"
+  },
+  "bj5_blackjack.py": {
+   "kind": "ours",
+   "path": "blackjack/scripts/bj5_blackjack.py",
+   "lines": 47,
+   "sha256_8": "2f9ea85e"
+  },
+  "bj5b_author_brain.py": {
+   "kind": "ours",
+   "path": "blackjack/scripts/bj5b_author_brain.py",
+   "lines": 28,
+   "sha256_8": "1cf55241"
+  },
+  "bj_extra.py": {
+   "kind": "ours",
+   "path": "blackjack/scripts/bj_extra.py",
+   "lines": 103,
+   "sha256_8": "2f701a76"
+  },
+  "train.py": {
+   "kind": "author",
+   "path": "flybrain/train.py",
+   "lines": 134,
+   "sha256_8": "5928e15c"
+  },
+  "circuit.py": {
+   "kind": "author",
+   "path": "flybrain/circuit.py",
+   "lines": 85,
+   "sha256_8": "5a182e04"
+  },
+  "readout.py": {
+   "kind": "author",
+   "path": "flybrain/readout.py",
+   "lines": 30,
+   "sha256_8": "2b608f46"
+  },
+  "envs.py": {
+   "kind": "author",
+   "path": "flybrain/envs.py",
+   "lines": 150,
+   "sha256_8": "005d0318"
+  },
+  "fetch.py": {
+   "kind": "author",
+   "path": "flybrain/mb/fetch.py",
+   "lines": 189,
+   "sha256_8": "686b514a"
+  },
+  "extract.py": {
+   "kind": "author",
+   "path": "flybrain/mb/extract.py",
+   "lines": 140,
+   "sha256_8": "840f6922"
+  },
+  "model.py": {
+   "kind": "author",
+   "path": "flybrain/mb/model.py",
+   "lines": 153,
+   "sha256_8": "2ea69ac7"
+  },
+  "odour.py": {
+   "kind": "author",
+   "path": "flybrain/mb/odour.py",
+   "lines": 63,
+   "sha256_8": "08d55251"
+  },
+  "experiment.py": {
+   "kind": "author",
+   "path": "flybrain/mb/experiment.py",
+   "lines": 136,
+   "sha256_8": "9b7616bb"
+  },
+  "tmaze.py": {
+   "kind": "author",
+   "path": "flybrain/mb/tmaze.py",
+   "lines": 72,
+   "sha256_8": "709bf745"
+  },
+  "embodied.py": {
+   "kind": "author",
+   "path": "flybrain/mb/embodied.py",
+   "lines": 280,
+   "sha256_8": "d2d6a9e9"
+  },
+  "blackjack.py": {
+   "kind": "author",
+   "path": "flybrain/mb/blackjack.py",
+   "lines": 295,
+   "sha256_8": "f4028c66"
+  },
+  "arenas.py": {
+   "kind": "author",
+   "path": "flybrain/body/arenas.py",
+   "lines": 304,
+   "sha256_8": "51709d47"
+  },
+  "gait.py": {
+   "kind": "author",
+   "path": "flybrain/body/gait.py",
+   "lines": 109,
+   "sha256_8": "7ca40693"
+  }
+ },
+ "constants": {
+  "model": {
+   "KC_SPARSITY": 0.06,
+   "LEARNING_RATE": 0.55,
+   "DECAY": 0.012,
+   "GAIN_FLOOR": 0.0,
+   "LATERAL": 0.25
+  },
+  "odour": {
+   "ACTIVE_GLOMERULI": 8.0
+  },
+  "tmaze": {
+   "CHOICE_SHARPNESS": 2.5,
+   "flies": 100
+  },
+  "readout": {
+   "HIDDEN": 12.0,
+   "INPUT_GAIN": 4.0,
+   "dino_params": 243,
+   "forage_params": 269
+  },
+  "embodied": {
+   "ANTENNA": 14.0,
+   "SOURCE_SIGMA": 95.0,
+   "REACH": 30.0,
+   "MB_EVERY": 5.0,
+   "MIN_SEPARATION": 230.0,
+   "SHOCK_PAIRINGS": 4.0,
+   "FOOD": 500.0,
+   "SHOCK": 250.0,
+   "HUNGER": 8.0,
+   "ENGAGE": 900.0
+  },
+  "envs": {
+   "N_OBS": 8.0,
+   "N_ACTIONS": 3.0,
+   "TICK": 0.016666666666666666,
+   "DECISION_EVERY": 2.0,
+   "GRAVITY": 2000.0,
+   "JUMP_VELOCITY": 780.0,
+   "FAST_FALL": 2600.0,
+   "PLAYER_X": 50.0,
+   "PLAYER_W": 20.0,
+   "STAND_H": 44.0,
+   "DUCK_H": 24.0,
+   "WIDTH": 600.0,
+   "SIGHT": 300.0,
+   "speed0": 200.0,
+   "speed_max": 620.0
+  },
+  "fetch_files_bytes": {
+   "mcns_syncount_all_neuron.npz": 78770675,
+   "mcns_all_neuron_meta.csv": 28023979,
+   "neurons": 161429,
+   "connections": 25083972,
+   "synapses": 121933227,
+   "kenyon_cells": 4064,
+   "mbons": 97,
+   "pam": 316,
+   "ppl1": 16,
+   "projection_neurons": 682
+  },
+  "fetch_expected": {
+   "neurons": 161429,
+   "connections": 25083972,
+   "synapses": 121933227,
+   "kenyon_cells": 4064,
+   "mbons": 97,
+   "pam": 316,
+   "ppl1": 16,
+   "projection_neurons": 682
+  },
+  "circuit": {
+   "gain": 1.4,
+   "leak": 0.3,
+   "steps": 3
+  },
+  "train": {
+   "seed": 20260913,
+   "generations": 40,
+   "population": 48,
+   "elites": 6,
+   "episode_seconds": 45.0,
+   "courses": 3,
+   "sigma0": 0.8,
+   "champion_sd": 0.7,
+   "sigma_floor": 0.07,
+   "keep": 0.3,
+   "move": 0.7,
+   "validation_seeds": [
+    1100001,
+    1100002,
+    1100003,
+    1100004
+   ],
+   "benchmark_start": 2100001,
+   "benchmark_n": 50,
+   "untrained_seed": 7,
+   "random_seed": 11,
+   "course_seed_max": 900000,
+   "benchmark_last": 2100050
+  },
+  "embodied_train": {
+   "seed": 20260913,
+   "generations": 30,
+   "population": 36,
+   "elites": 5,
+   "seconds": 40.0,
+   "courses": 2,
+   "validation_seeds": [
+    1100001,
+    1100002,
+    1100003
+   ],
+   "evaluate_seed0": 2100001,
+   "shock_cooldown": 1.5,
+   "spot_r": [
+    120,
+    190
+   ],
+   "spot_tries": 40,
+   "sense_gain": [
+    12.0,
+    60.0
+   ],
+   "forage_default_seconds": 40.0
+  },
+  "blackjack_width": {
+   "total": 26,
+   "upcard": 22,
+   "action": 36,
+   "soft": 12,
+   "first": 8
+  },
+  "blackjack_player": {
+   "seed": 0,
+   "lr": 0.05,
+   "decay": 5e-05,
+   "explore": 0.35,
+   "explore_floor": 0.03,
+   "explore_halflife": 3000,
+   "situation_seed": 20260914,
+   "ordered_overlap": 0.55,
+   "action_amp": 1.3,
+   "pn_uniform": [
+    0.7,
+    1.0
+   ],
+   "strength_min": 0.15,
+   "strength_div": 2.0,
+   "block": 2000,
+   "session_hands_default": 20000,
+   "chart_cells": 260,
+   "hard_totals": 17,
+   "soft_totals": 9,
+   "upcards": 10,
+   "blackjack_pays": 1.5
+  },
+  "arena": {
+   "ARENA": 220.0,
+   "side": 440.0,
+   "DT": 0.016666666666666666,
+   "CONTROL_EVERY": 2,
+   "N_OBS": 8
+  },
+  "walker": {
+   "MAX_SPEED": 22.0,
+   "MAX_TURN": 4.2,
+   "RESPONSE": 0.28,
+   "N_ACTIONS": 5,
+   "speeds": [
+    0.0,
+    1.0,
+    0.75,
+    -0.6
+   ]
+  },
+  "experiment": {
+   "seeds": 12,
+   "trials": 20,
+   "odours": 8,
+   "glomeruli": 83
+  },
+  "derived": {
+   "kc_active": 72,
+   "mb_hz": 6.0,
+   "control_hz": 30,
+   "physics_hz": 60,
+   "dino_decision_hz": 30,
+   "byte_max": 255,
+   "live_kc_last_rank": 3810,
+   "tick": 0.016666666666666666
+  }
+ },
+ "ours_total_lines": 304,
+ "author_total_lines": 2140
+}

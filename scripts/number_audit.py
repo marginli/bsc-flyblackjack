@@ -56,11 +56,13 @@ EXEMPT = {
     "269": "覓食讀出網路的參數數：8 個輸入… 作者 readout.py 的 16×12＋12＋12×5＋5 ＝ 269（5 個動作）；Dino 的 243 是 16×12＋12＋12×3＋3。",
     "117": "未訓練的 260 格表與基本策略相同的格數：106 格要牌 ＋ 11 格停牌（spots 在 out/blackjack/bj5_blackjack_30000.json 的 untrained greedy）。",
     "0.447": "PART 3 BJ5 節錄的終端輸出第一行（untrained greedy winrate −0.447），在 out/blackjack/logs/bj5_blackjack.log。",
+    "42.7": "BJ5 兩個有探索的對照組三個種子「第一個 2,000 手區塊」的平均：−0.393、−0.440、−0.448 的平均 −0.4267（各值在 out/blackjack/bj5_blackjack_30000.json 的 first_block）；PART 3 第 7 節引用。",
 }
 
 # ── 不是資料的數字：節次、日期、授權版本、文獻出處 ──────────────────────
 SKIP_CONTEXT = [
     (r'第\s*$',            "第 N 節／第 N 步"),
+    (r'第\s*\d+\s*到\s*$',  "第 a 到 b 行（PART 6、7 的行號範圍）"),
     (r'PART\s*$',          "PART 編號"),
     (r'id="s$',            "章節錨點"),
     (r'CC-BY[-A-Z]*[_ ]$', "授權版本號"),
@@ -73,7 +75,7 @@ SKIP_CONTEXT = [
     (r'[–-]$',             "頁碼範圍的後半"),
 ]
 SKIP_TOKEN = {
-    "2010", "2014", "2018", "2020", "2023", "2025", "2026",   # 文獻與抓取年份
+    "2010", "2014", "2016", "2018", "2020", "2023", "2025", "2026",   # 文獻與抓取年份
     "4.0", "3.0",                                             # 授權版本
     "21",                                                     # 「21 點」是遊戲名，不是資料
 }
@@ -180,6 +182,8 @@ def audit(path, hay, where=False):
     b = os.path.basename(path)
     src = io.open(path, encoding="utf-8").read()
     src = re.sub(r'<(script|style)\b.*?</\1>', ' ', src, flags=re.S)
+    # PART 6、7 的程式區塊（<pre class="code">）是原始碼的照抄，數字由 scripts/make_code.py --check 逐行對回原檔
+    src = re.sub(r'<pre class="code">.*?</pre>', ' ', src, flags=re.S)
     bad = 0
     print(f"══════ {b}")
 
