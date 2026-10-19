@@ -4,7 +4,7 @@
   assets/demo/data.json       播放台用的逐格資料（只取 bj_episodes 與 blackjack 兩個鍵；out/demo_data.json 是同一份）
   out/bj_demo_summary.json    頁面上引用的檢查點：各條件開頭與結尾各 6 手的紀錄、幾個時點的 260 格統計、基本策略表各動作的格數
 
-錄製與畫圖的程式在 ~/claude_bscai/fly_play_game/demo/（record_bj.py、render_bj.py），錄製時已對照 BJ5 的種子 0 結果。
+錄製與畫圖的程式在 ~/claude_bscai/fly_play_game/demo/（record_bj.py、render_bj.py），錄製時已對照 BJ2 的種子 0 結果。
 用法：python3 scripts/build_demo_data.py
 """
 import collections
@@ -27,7 +27,7 @@ def main():
     s = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     for p in ("assets/demo/data.json", "out/demo_data.json"):
         open(os.path.join(D, p), "w").write(s)
-    summary = {"source": "fly_play_game/demo/rec/bj_*.json（record_bj.py，seed 0，30,000 手，與 bj5 結果逐塊核對）", "conditions": {}}
+    summary = {"source": "fly_play_game/demo/rec/bj_*.json（record_bj.py，seed 0，30,000 手，與 bj2 結果逐塊核對）", "conditions": {}}
     for k in KEYS:
         r = json.load(open(os.path.join(SRC, "rec", f"{k}.json")))
         n = r["hands"]

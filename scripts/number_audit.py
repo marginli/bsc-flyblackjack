@@ -51,12 +51,12 @@ EXEMPT = {
     "28,023,979": "作者 fetch.py 寫死的第二個資料檔位元組數；同上。",
     "107": "兩個資料檔共約 107 MB（78,770,675 ＋ 28,023,979 位元組 ≈ 106.8 MB），作者 README 也寫 107 MB。",
     "1.2": "MaleCNS 原始下載約 1.2 GB，出自作者 README（out/upstream/blackjack_README.md）。",
-    "138": "53.1% × 260 格 ＝ 138 格（作者大腦檔記錄的一致率 stored_agreement 0.5308，在 out/blackjack/bj5b_author_brain.json）。",
+    "138": "53.1% × 260 格 ＝ 138 格（作者大腦檔記錄的一致率 stored_agreement 0.5308，在 out/blackjack/bj3_author_brain.json）。",
     "135": "51.9% × 260 格 ＝ 135 格（python_agreement 0.5192，同上）。",
-    "269": "覓食讀出網路的參數數：8 個輸入… 作者 readout.py 的 16×12＋12＋12×5＋5 ＝ 269（5 個動作）；Dino 的 243 是 16×12＋12＋12×3＋3。",
-    "117": "未訓練的 260 格表與基本策略相同的格數：106 格要牌 ＋ 11 格停牌（spots 在 out/blackjack/bj5_blackjack_30000.json 的 untrained greedy）。",
-    "0.447": "PART 3 BJ5 節錄的終端輸出第一行（untrained greedy winrate −0.447），在 out/blackjack/logs/bj5_blackjack.log。",
-    "42.7": "BJ5 兩個有探索的對照組三個種子「第一個 2,000 手區塊」的平均：−0.393、−0.440、−0.448 的平均 −0.4267（各值在 out/blackjack/bj5_blackjack_30000.json 的 first_block）；PART 3 第 7 節引用。",
+    "243": "PART 1 第 7 節簡介 Dino 時提到的讀出網路參數數：作者 readout.py 的 16×12＋12＋12×3＋3（本課不重現 Dino，out/ 沒有它的輸出）。",
+    "117": "未訓練的 260 格表與基本策略相同的格數：106 格要牌 ＋ 11 格停牌（spots 在 out/blackjack/bj2_blackjack_30000.json 的 untrained greedy）。",
+    "0.447": "PART 3 BJ2 節錄的終端輸出第一行（untrained greedy winrate −0.447），在 out/blackjack/logs/bj2_blackjack.log。",
+    "42.7": "BJ2 兩個有探索的對照組三個種子「第一個 2,000 手區塊」的平均：−0.393、−0.440、−0.448 的平均 −0.4267（各值在 out/blackjack/bj2_blackjack_30000.json 的 first_block）；PART 3 第 7 節引用。",
 }
 
 # ── 不是資料的數字：節次、日期、授權版本、文獻出處 ──────────────────────

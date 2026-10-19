@@ -1,6 +1,6 @@
-"""BJ5：21 點。blackjack.py 沒有命令列入口，依其檔尾 RESULT 註解的設定重跑：
+"""BJ2：21 點。blackjack.py 沒有命令列入口，依其檔尾 RESULT 註解的設定重跑：
 3 種子 × 30,000 手，四個條件，對照組先跑。在 repo/ 目錄下以 PYTHONPATH=. 執行。
-用法：python bj5_blackjack.py [hands] [seeds...]"""
+用法：python bj2_blackjack.py [hands] [seeds...]"""
 import json, sys, time
 import numpy as np
 from flybrain.mb.blackjack import FlyPlayer, session, reference_winrates, chart_cells, basic_strategy, HIT, STAND, DOUBLE
@@ -44,4 +44,4 @@ for name, kw in CONDS:
                                    mean_agree_last=float(np.mean([r["agree_last"] for r in runs])))
 out["reference"] = {k: float(v) for k, v in reference_winrates(np.random.default_rng(0)).items()}
 print("reference", out["reference"])
-json.dump(out, open(f"../results/bj5_blackjack_{HANDS}.json", "w"), indent=1)
+json.dump(out, open(f"../results/bj2_blackjack_{HANDS}.json", "w"), indent=1)

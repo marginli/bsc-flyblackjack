@@ -18,7 +18,7 @@ import hashlib, html, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 D = os.path.dirname(HERE)
-PAGES = [os.path.join(D, "part6-code.html"), os.path.join(D, "part7-model.html")]
+PAGES = [os.path.join(D, "part6-code.html")]
 AUTHOR = os.path.expanduser("~/claude_bscai/fly_play_game/blackjack/repo")
 COMMIT = "004b2e3"
 
@@ -27,26 +27,14 @@ SOURCES = {
     "setup_envs.sh":        ("ours",   os.path.join(D, "pack/setup_envs.sh"),                          "setup_envs.sh"),
     "run_all.sh":           ("ours",   os.path.join(D, "pack/blackjack/run_all.sh"),                   "blackjack/run_all.sh"),
     "check.py":             ("ours",   os.path.join(D, "pack/check.py"),                               "check.py"),
-    "bj4_forage.py":        ("ours",   os.path.join(D, "pack/blackjack/scripts/bj4_forage.py"),        "blackjack/scripts/bj4_forage.py"),
-    "bj4b_forage_s45.py":   ("ours",   os.path.join(D, "pack/blackjack/scripts/bj4b_forage_s45.py"),   "blackjack/scripts/bj4b_forage_s45.py"),
-    "bj5_blackjack.py":     ("ours",   os.path.join(D, "pack/blackjack/scripts/bj5_blackjack.py"),     "blackjack/scripts/bj5_blackjack.py"),
-    "bj5b_author_brain.py": ("ours",   os.path.join(D, "pack/blackjack/scripts/bj5b_author_brain.py"), "blackjack/scripts/bj5b_author_brain.py"),
+    "bj2_blackjack.py":     ("ours",   os.path.join(D, "pack/blackjack/scripts/bj2_blackjack.py"),     "blackjack/scripts/bj2_blackjack.py"),
+    "bj3_author_brain.py":  ("ours",   os.path.join(D, "pack/blackjack/scripts/bj3_author_brain.py"),  "blackjack/scripts/bj3_author_brain.py"),
     "bj_extra.py":          ("ours",   os.path.join(D, "pack/blackjack/scripts/bj_extra.py"),          "blackjack/scripts/bj_extra.py"),
-    # 作者的（fly-blackjack @ 004b2e3，MIT 授權）
-    "train.py":      ("author", os.path.join(AUTHOR, "flybrain/train.py"),         "flybrain/train.py"),
-    "circuit.py":    ("author", os.path.join(AUTHOR, "flybrain/circuit.py"),       "flybrain/circuit.py"),
-    "readout.py":    ("author", os.path.join(AUTHOR, "flybrain/readout.py"),       "flybrain/readout.py"),
-    "envs.py":       ("author", os.path.join(AUTHOR, "flybrain/envs.py"),          "flybrain/envs.py"),
+    # 作者的（fly-blackjack @ 004b2e3，MIT 授權）；只放 21 點這條鏈上的四個檔
     "fetch.py":      ("author", os.path.join(AUTHOR, "flybrain/mb/fetch.py"),      "flybrain/mb/fetch.py"),
     "extract.py":    ("author", os.path.join(AUTHOR, "flybrain/mb/extract.py"),    "flybrain/mb/extract.py"),
     "model.py":      ("author", os.path.join(AUTHOR, "flybrain/mb/model.py"),      "flybrain/mb/model.py"),
-    "odour.py":      ("author", os.path.join(AUTHOR, "flybrain/mb/odour.py"),      "flybrain/mb/odour.py"),
-    "experiment.py": ("author", os.path.join(AUTHOR, "flybrain/mb/experiment.py"), "flybrain/mb/experiment.py"),
-    "tmaze.py":      ("author", os.path.join(AUTHOR, "flybrain/mb/tmaze.py"),      "flybrain/mb/tmaze.py"),
-    "embodied.py":   ("author", os.path.join(AUTHOR, "flybrain/mb/embodied.py"),   "flybrain/mb/embodied.py"),
     "blackjack.py":  ("author", os.path.join(AUTHOR, "flybrain/mb/blackjack.py"),  "flybrain/mb/blackjack.py"),
-    "arenas.py":     ("author", os.path.join(AUTHOR, "flybrain/body/arenas.py"),   "flybrain/body/arenas.py"),
-    "gait.py":       ("author", os.path.join(AUTHOR, "flybrain/body/gait.py"),     "flybrain/body/gait.py"),
 }
 
 MARK = re.compile(r'<!-- code: (\S+) (\d+)-(\d+)((?: \w+=\S+)*) -->\n(.*?)<!-- /code -->', re.S)
@@ -123,29 +111,7 @@ def meta():
     # 頁面上會以文字引用的常數，直接從原始碼抓，讓 number_audit 對得到（它掃 out/ 底下所有 JSON 的值）
     c = {}
     c["model"] = grab("model.py", r'^([A-Z_]+) = ([\d.]+)')
-    c["odour"] = grab("odour.py", r'^([A-Z_]+) = ([\d.]+)')
-    c["tmaze"] = grab("tmaze.py", r'^([A-Z_]+) = ([\d.]+)')
-    c["readout"] = grab("readout.py", r'^([A-Z_]+) = ([\d.]+)')
-    c["embodied"] = grab("embodied.py", r'^([A-Z_]+) = ([\d.]+)')
-    c["envs"] = grab("envs.py", r'^    ([A-Z_]+) = ([\d.]+)')
     c["fetch_files_bytes"] = grab("fetch.py", r'"([\w.]+)": ([\d_]+),', lambda v: int(v.replace("_", "")))
-    c["fetch_expected"] = grab("fetch.py", r'"(\w+)": ([\d_]+),\n', lambda v: int(v.replace("_", "")))
-    cp = open(SOURCES["circuit.py"][1], encoding="utf-8").read()
-    m = re.search(r'gain: float = ([\d.]+), leak: float = ([\d.]+), steps: int = (\d+)', cp)
-    c["circuit"] = {"gain": float(m.group(1)), "leak": float(m.group(2)), "steps": int(m.group(3))}
-    tp = open(SOURCES["train.py"][1], encoding="utf-8").read()
-    m = re.search(r'def train\(seed=(\d+), generations=(\d+), population=(\d+), elites=(\d+),\n\s+episode_seconds=([\d.]+), courses=(\d+)', tp)
-    c["train"] = {"seed": int(m.group(1)), "generations": int(m.group(2)), "population": int(m.group(3)), "elites": int(m.group(4)),
-                  "episode_seconds": float(m.group(5)), "courses": int(m.group(6)),
-                  "sigma0": 0.8, "champion_sd": 0.7, "sigma_floor": 0.07, "keep": 0.3, "move": 0.7,
-                  "validation_seeds": [1100001, 1100002, 1100003, 1100004], "benchmark_start": 2100001, "benchmark_n": 50,
-                  "untrained_seed": 7, "random_seed": 11, "course_seed_max": 900000, "benchmark_last": 2100050}
-    ep = open(SOURCES["embodied.py"][1], encoding="utf-8").read()
-    m = re.search(r'def train\(seed=(\d+), generations=(\d+), population=(\d+), elites=(\d+),\n\s+seconds=([\d.]+), courses=(\d+)', ep)
-    c["embodied_train"] = {"seed": int(m.group(1)), "generations": int(m.group(2)), "population": int(m.group(3)), "elites": int(m.group(4)),
-                           "seconds": float(m.group(5)), "courses": int(m.group(6)), "validation_seeds": [1100001, 1100002, 1100003],
-                           "evaluate_seed0": 2100001, "shock_cooldown": 1.5, "spot_r": [120, 190], "spot_tries": 40,
-                           "sense_gain": [12.0, 60.0], "forage_default_seconds": 40.0}
     bp = open(SOURCES["blackjack.py"][1], encoding="utf-8").read()
     c["blackjack_width"] = {k: int(v) for k, v in re.findall(r'"(\w+)": (\d+)', bp.split("WIDTH = ")[1].split("\n")[0])}
     m = re.search(r'def __init__\(self, seed=(\d+), lr=([\d.]+), decay=([\d.]+), explore=([\d.]+),\n\s+explore_floor=([\d.]+), explore_halflife=(\d+)', bp)
@@ -154,15 +120,11 @@ def meta():
                              "situation_seed": 20260914, "ordered_overlap": 0.55, "action_amp": 1.3, "pn_uniform": [0.7, 1.0],
                              "strength_min": 0.15, "strength_div": 2.0, "block": 2000, "session_hands_default": 20000,
                              "chart_cells": 260, "hard_totals": 17, "soft_totals": 9, "upcards": 10, "blackjack_pays": 1.5}
-    c["arena"] = {"ARENA": 220.0, "side": 440.0, "DT": 1 / 60, "CONTROL_EVERY": 2, "N_OBS": 8}
-    c["envs"]["speed0"], c["envs"]["speed_max"], c["envs"]["TICK"] = 200.0, 620.0, 1 / 60
-    c["walker"] = {"MAX_SPEED": 22.0, "MAX_TURN": 4.2, "RESPONSE": 0.28, "N_ACTIONS": 5, "speeds": [0.0, 1.0, 0.75, -0.6]}
-    c["experiment"] = {"seeds": 12, "trials": 20, "odours": 8, "glomeruli": 83}
-    c["tmaze"]["flies"] = 100
-    c["readout"]["dino_params"] = 16 * 12 + 12 + 12 * 3 + 3
-    c["readout"]["forage_params"] = 16 * 12 + 12 + 12 * 5 + 5
-    c["derived"] = {"kc_active": round(1200 * c["model"]["KC_SPARSITY"]), "mb_hz": 30 / c["embodied"]["MB_EVERY"],
-                    "control_hz": 30, "physics_hz": 60, "dino_decision_hz": 30, "byte_max": 255, "live_kc_last_rank": 3810, "tick": 1/60}
+    c["extra"] = {"seeds20": 20, "kc_shuffle_seeds": 5, "dan_perms": 5, "x3_seeds": 3, "random_subsets": 3,
+                  "perm_seed_base": 1000, "subset_seed_base": 500, "glomeruli": 83}
+    c["derived"] = {"kc_active": round(1200 * c["model"]["KC_SPARSITY"]), "kc_active_all": round(3811 * c["model"]["KC_SPARSITY"]),
+                    "byte_max": 255, "live_kc_last_rank": 3810, "dino_readout_params": 16 * 12 + 12 + 12 * 3 + 3, "dino_cells": 80,
+                    "dino_input_cells": 32, "dino_output_cells": 16, "conditioning_trials": 20, "tmaze_flies": 100}
     return {"author_commit": COMMIT, "files": files, "constants": c,
             "ours_total_lines": sum(v["lines"] for v in files.values() if v["kind"] == "ours"),
             "author_total_lines": sum(v["lines"] for v in files.values() if v["kind"] == "author")}

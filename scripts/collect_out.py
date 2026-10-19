@@ -21,7 +21,6 @@ PLAN = [
     ("blackjack/logs", "blackjack/logs", ("*.log", "*.txt")),
     ("blackjack", "blackjack", ("env.txt", "runall_test.out")),
     ("blackjack/repo", "upstream", ("README.md",)),          # MIT 授權，作者宣稱的數字以這份為準
-    ("blackjack/repo/data", "blackjack", ("mb_results.json", "mb_tmaze.json")),   # BJ3 的輸出寫在 repo/data/
 ]
 
 
@@ -44,9 +43,6 @@ def main():
                 os.makedirs(os.path.dirname(t), exist_ok=True)
                 shutil.copy2(f, t)
                 n += 1
-    # 作者策略檔的訓練設定（不收 theta 本身）：seconds=45 這件事的出處
-    pol = json.load(open(os.path.join(SRC, "blackjack/repo/policies/forage.json")))
-    json.dump({k: v for k, v in pol.items() if k != "theta"}, open(os.path.join(OUT, "upstream/blackjack_forage_policy_meta.json"), "w"), indent=1)
     # 作者 commit 進 repo 的蕈狀體 manifest，以及 blackjack.py 檔尾的 RESULT 註解
     man = subprocess.run(["git", "-C", os.path.join(SRC, "blackjack/repo"), "show", "HEAD:data/mb_manifest.json"],
                          capture_output=True, text=True, check=True).stdout
@@ -55,14 +51,14 @@ def main():
     i = next(k for k, t in enumerate(src) if t.startswith("# RESULT"))
     open(os.path.join(OUT, "upstream/blackjack_py_RESULT_comment.txt"), "w").write(
         f"# flybrain/mb/blackjack.py lines {i + 1}-{i + 24} @ 004b2e3\n" + "\n".join(src[i:i + 24]) + "\n")
-    # BJ2：README 的連結數對不上 1,200 顆 KC 的電路；量一下用全部 KC 切出的電路（加做檢查 X3 存下的）有幾條
+    # BJ1：README 的連結數對不上 1,200 顆 KC 的電路；量一下用全部 KC 切出的電路（加做檢查 X3 存下的）有幾條
     cnt = {}
     for tag, f in [("kc1200_committed_circuit", "blackjack/repo/data/mb_circuit.npz"),
                    ("all_live_kc_circuit", "blackjack/results/circuits/mb_all_live_kc.npz")]:
         z = np.load(os.path.join(SRC, f))
         cnt[tag] = {k: int(z[k + "_val"].size) for k in ("pn_kc", "kc_mbon", "dan_mbon", "mbon_mbon")}
-    json.dump(cnt, open(os.path.join(OUT, "blackjack/bj2_edge_counts.json"), "w"), indent=1)
-    n += 4
+    json.dump(cnt, open(os.path.join(OUT, "blackjack/bj1_edge_counts.json"), "w"), indent=1)
+    n += 3
     for f, b in keep.items():
         open(os.path.join(OUT, f), "wb").write(b)
     meta = {"source": "~/claude_bscai/fly_play_game/blackjack", "files": n,

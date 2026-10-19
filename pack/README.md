@@ -13,7 +13,7 @@ BSC 專題課程〈蕈狀體學 21 點：重現 fly-blackjack〉的下載包。
 
 ```
 bash setup_envs.sh              # 建一個 conda 環境（只需一次）
-bash blackjack/run_all.sh       # BJ1–BJ5、加做檢查 X1–X4
+bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4
 ```
 
 `run_all.sh` 跑完會自動執行 `check.py`，逐項對照 `expected.json`（本課實跑的結果），
@@ -26,7 +26,7 @@ bash blackjack/run_all.sh       # BJ1–BJ5、加做檢查 X1–X4
 | `setup_envs.sh` | 建環境，套件版本照本課實跑時固定 |
 | `check.py`、`expected.json` | 驗收程式與預期值 |
 | `blackjack/run_all.sh` | 一鍵重跑 |
-| `blackjack/scripts/` | 作者沒有命令列入口的步驟（覓食、21 點）與加做檢查 X1–X4 |
+| `blackjack/scripts/` | 作者沒有命令列入口的步驟（21 點、評分作者的大腦檔）與加做檢查 X1–X4 |
 
 跑完之後，每一步的終端輸出在 `blackjack/logs/`，數字在 `blackjack/results/`。
 
