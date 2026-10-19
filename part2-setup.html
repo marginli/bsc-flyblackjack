@@ -28,16 +28,18 @@
       <li><a href="#s2">需要什麼</a></li>
       <li><a href="#s3">下載包裡有什麼</a></li>
       <li><a href="#s4">一個環境</a></li>
-      <li><a href="#s5">兩個要固定版本的地方</a></li>
+      <li><a href="#s5">兩個要釘住的地方：程式碼固定版本、資料靠核對</a></li>
       <li><a href="#s6">一個會讓結果悄悄改變的陷阱</a></li>
       <li><a href="#s7">跑完之後怎麼看</a></li>
     </ol>
   </nav>
 
   <!-- ══════════════════════════════════════════════════════ -->
+  <p>先說本頁會一直用到的幾個詞。<b>fly-blackjack</b> 是 WilliamJones 在 GitHub 上公開的程式，本頁的「作者」都指他；它拿果蠅腦裡一個叫<b>蕈狀體</b>的區域的連結體（哪顆神經元接到哪顆、接幾個突觸的資料）去學 21 點（<a href="part1-what.html">PART 1</a>）。<b>大腦檔</b>是程式學會打 21 點之後留下來的那組數值（每一條連結的強弱），作者存成一個檔附在程式裡。<b>種子</b>是亂數的起始值，同一個種子每次跑出一樣的結果。<b>KC</b>、<b>MBON</b> 是蕈狀體裡的兩類神經元（PART 1 第 2 節）。<b>腳本</b>是一個裝著一串指令的檔案（副檔名 .sh 或 .py），下面說的「程式」「指令」多半就是它。</p>
+
   <h2 id="s1"><span class="pt">1</span>兩個指令</h2>
 
-  <p>這一頁會一直用到幾個詞，先認識一次：</p>
+  <p>上面是這個專案的詞；下面是電腦操作的詞，也先認識一次：</p>
   <div class="tblwrap">
   <table>
     <tr><th>詞</th><th>意思</th></tr>
@@ -49,7 +51,7 @@
   </table>
   </div>
 
-  <p>下載 <a href="downloads/flyblackjack-code.zip">flyblackjack-code.zip</a>（首頁〈需要什麼基礎〉那一格也有同一個連結），解壓縮到一個空資料夾，在那個資料夾裡開終端機。想先確認檔案完整，可以執行 <code>sha256sum -c SHA256SUMS.txt</code>（第 3 節）；然後依序執行：</p>
+  <p>下載 <a href="downloads/flyblackjack-code.zip">flyblackjack-code.zip</a>（首頁〈需要什麼基礎〉那一格也有同一個連結），解壓縮到一個空資料夾，開終端機後打 <code>cd 那個資料夾的路徑</code> 進到裡面（macOS 可以把資料夾拖進終端機視窗，路徑會自己貼上）。想先確認檔案完整，可以執行 <code>sha256sum -c SHA256SUMS.txt</code>（第 3 節）；然後依序執行：</p>
 
 <pre><code>bash setup_envs.sh              # 建一個 conda 環境（只需一次）
 bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
@@ -59,12 +61,12 @@ bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
   <table>
     <tr><th>代號</th><th>意思</th><th>在哪一頁</th></tr>
     <tr><td>BJ1–BJ3</td><td>重現的三步：下載資料並切出蕈狀體、21 點 30,000 手、評分作者附的大腦檔</td><td><a href="part3-repro.html">PART 3</a></td></tr>
-    <tr><td>X1–X4</td><td>作者沒做的四項檢查，都在 21 點上做：加到 20 個種子、打亂哪一層接線、換 KC 選法、MBON 標記對文獻</td><td><a href="part4-checks.html">PART 4</a></td></tr>
+    <tr><td>X1–X4</td><td>作者沒做的四項檢查：加到 20 個種子、打亂哪一層接線、換 KC 選法、MBON 標記對文獻</td><td><a href="part4-checks.html">PART 4</a></td></tr>
   </table>
   </div>
 
-  <p>本課在一台 Linux、12 核 CPU 的電腦上，從解壓縮開始實測：建環境 16 秒，<code>run_all.sh</code> 24 分 45 秒。建環境的秒數要打個折：它是在一台已經下載過所有套件的電腦上測的（先把原有的環境改名讓開、再從零建一次，套件直接從本機快取拿）。你的電腦若是第一次建，要把套件全部下載下來（裝好後約 499 MB），時間取決於網速，請預期比這久。</p>
-  <p class="figsrc">實測時間出自 <code>out/porttest.json</code>。這個檔和本頁其他引用的 <code>out/…</code> 都是本課實跑後存在<b>課程網站</b> repo 裡的紀錄，給你對照用；不是你跑完會在自己電腦上長出來的檔案（你的結果在 <code>results/</code>，第 7 節）。</p>
+  <p>本課在一台 Linux、12 核 CPU 的電腦上，從解壓縮開始實測：建環境 16 秒，<code>run_all.sh</code> 24 分 45 秒。這些程式一次只用一個核心，所以核心數不影響快慢、也不影響結果，快慢只看單一核心的速度。建環境的 16 秒是低估：它是在一台已經下載過所有套件的電腦上測的（先把原有的環境改名讓開、再從零建一次，套件直接從本機快取拿）。你的電腦若是第一次建，要把套件全部下載下來（裝好後約 499 MB），時間取決於網速，請預期比這久。</p>
+  <p class="figsrc">實測時間出自 <code>out/porttest.json</code>。這個檔和本頁其他引用的 <code>out/…</code> 都是本課實跑後存在<b>課程網站</b> repo（<a href="https://github.com/marginli/bsc-flyblackjack">github.com/marginli/bsc-flyblackjack</a>）裡的紀錄，不必特地去看，給你對照用；不是你跑完會在自己電腦上長出來的檔案（你的結果在 <code>results/</code>，第 7 節）。</p>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s2"><span class="pt">2</span>需要什麼</h2>
@@ -72,9 +74,9 @@ bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
   <div class="tblwrap">
   <table>
     <tr><th>項目</th><th>說明</th></tr>
-    <tr><td>作業系統</td><td>Linux 或 macOS。本課在 Linux 上跑；fly-blackjack 的 21 點把發牌與探索的亂數種子都固定了（<a href="part3-repro.html#s1">PART 3 第 1 節</a>），照理在另一個系統上也會得到相同數字</td></tr>
-    <tr><td><b>conda</b></td><td>Anaconda 或 Miniconda 都可以（Miniconda 比較小，只含 conda 本身，建議選它）；到官方網站下載安裝程式照步驟裝。裝好後在終端機打 <code>conda --version</code>，印出版本號就表示可以用</td></tr>
-    <tr><td>git、curl</td><td>git 從 GitHub 取得程式碼，curl 下載資料檔。多數 Linux 與 macOS 已內建；打 <code>git --version</code>、<code>curl --version</code> 看有沒有印出版本號，沒有就用系統的套件管理工具安裝</td></tr>
+    <tr><td>作業系統</td><td>Linux 或 macOS。本課在 Linux 上跑；fly-blackjack 的 21 點把發牌與探索的亂數種子都固定了（<a href="part3-repro.html#s1">PART 3 第 1 節</a>），照理在另一個系統上也會得到相同數字；macOS 本課沒有實測。若在 macOS 上只有小數點末幾位不同、其他全部相同，多半是系統的浮點運算差異，不是你弄錯，第 7 節 ✗ 那格也有說</td></tr>
+    <tr><td><b>conda</b></td><td>Anaconda 或 Miniconda 都可以（Miniconda 比較小，只含 conda 本身，建議選它）；到官方網站（<a href="https://www.anaconda.com/download/success">anaconda.com</a>，Miniconda 的下載連結也在那一頁）下載安裝程式照步驟裝。裝好後在終端機打 <code>conda --version</code>，印出版本號就表示可以用</td></tr>
+    <tr><td>git、curl</td><td>git 從 GitHub 取得程式碼，curl 下載資料檔。多數 Linux 與 macOS 已內建；打 <code>git --version</code>、<code>curl --version</code> 看有沒有印出版本號，沒有就用系統的安裝工具裝（Linux 多半是 apt，macOS 是 Homebrew；這是裝系統程式用的，和第 1 節裝 Python 套件的 pip 不同）</td></tr>
     <tr><td>網路與硬碟</td><td>跑完後下載的程式碼與資料共約 129 MB，環境約 499 MB</td></tr>
     <tr><td>GPU</td><td>不需要</td></tr>
   </table>
@@ -84,16 +86,16 @@ bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s3"><span class="pt">3</span>下載包裡有什麼</h2>
 
-  <p>下載包<b>只有本課自己寫的程式</b>。被重現的 fly-blackjack 由 <code>run_all.sh</code> 從 GitHub 取得並切換到固定的版本；它是 MIT 授權（允許任何人複製、修改、散布），本課不附它的檔案只是為了讓你跑到的一定是 GitHub 上的那一份。</p>
+  <p>下載包<b>只有本課自己寫的程式</b>。被重現的 fly-blackjack 由 <code>run_all.sh</code> 從 GitHub 取得並切換到固定的版本；不是不能附進來（它是 MIT 授權，允許任何人複製、修改、散布），而是故意不附：你拿到的直接來自作者公開的那個 commit，不是經過本課的副本，要核對「本課有沒有改過作者的程式」時，對著 GitHub 就能核。</p>
 
   <div class="tblwrap">
   <table>
     <tr><th>檔案</th><th>做什麼</th></tr>
     <tr><td><code>setup_envs.sh</code></td><td>建一個 conda 環境，套件版本照本課實跑時固定</td></tr>
-    <tr><td><code>blackjack/run_all.sh</code></td><td>取得 fly-blackjack、下載 MaleCNS 連結體整理好的連結矩陣（切蕈狀體的來源，<a href="part1-what.html#s2">PART 1 第 2 節</a>），依序跑 BJ1–BJ3、X1–X4</td></tr>
-    <tr><td><code>blackjack/scripts/</code></td><td>21 點實驗在作者的程式裡沒有可以直接從終端機執行的指令（沒有「命令列入口」，作者是在 Python 裡呼叫函式跑的），所以本課寫了兩支小程式去呼叫作者的函式，不改作者任何一行；X1–X4 也在這裡</td></tr>
+    <tr><td><code>blackjack/run_all.sh</code></td><td>取得 fly-blackjack；下載連結體（一整顆果蠅腦裡哪顆神經元接到哪顆的資料，這一份叫 MaleCNS）整理好的表格，從中切出蕈狀體那一塊（<a href="part1-what.html#s2">PART 1 第 2 節</a>）；依序跑 BJ1–BJ3、X1–X4。跑過一次之後，fly-blackjack 的程式會放在 <code>blackjack/repo/</code></td></tr>
+    <tr><td><code>blackjack/scripts/</code></td><td>21 點實驗在作者的程式裡沒有可以直接從終端機執行的指令（沒有「命令列入口」，作者是在 Python 裡呼叫函式跑的），所以本課寫了三支小程式去呼叫作者的函式，不改作者任何一行：<code>bj2_blackjack.py</code>（BJ2）、<code>bj3_author_brain.py</code>（BJ3）、<code>bj_extra.py</code>（X1–X4）；BJ1 直接用作者的程式，不需要</td></tr>
     <tr><td><code>check.py</code>、<code>expected.json</code></td><td><b>驗收</b>：逐項比對你跑出來的數字與本課實跑的結果（第 7 節）</td></tr>
-    <tr><td><code>SHA256SUMS.txt</code></td><td>每個檔案的 SHA-256 指紋：由檔案內容算出來的一串 64 個字，內容改一個位元組就完全不同。執行 <code>sha256sum -c SHA256SUMS.txt</code> 會重算每個檔案的指紋並與這份清單比對，確認下載的檔案沒有損壞或被改過</td></tr>
+    <tr><td><code>SHA256SUMS.txt</code></td><td>每個檔案的 SHA-256 指紋：由檔案內容算出來的一串 64 個字，內容改一個位元組就完全不同。執行 <code>sha256sum -c SHA256SUMS.txt</code> 會重算每個檔案的指紋並與這份清單比對，確認下載的檔案沒有損壞或被改過。每個檔案後面印 OK 就是通過；出現 FAILED 就重新下載</td></tr>
   </table>
   </div>
 
@@ -102,7 +104,7 @@ bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s4"><span class="pt">4</span>一個環境</h2>
 
-  <p>fly-blackjack 只用三個套件，彼此沒有版本衝突，所以一個環境就夠。版本照本課實跑時固定——不是因為別的版本一定會出錯，而是重現的第一條規矩是把能固定的都固定，對不上時才知道差在哪裡。</p>
+  <p>fly-blackjack 直接用到的只有三個套件，彼此沒有版本衝突，所以一個環境就夠（有些專案的套件要求互相矛盾的版本，才要分成幾個環境）。這三個套件自己還會拉進一串它們依賴的套件，所以環境裡實際裝了幾十個、約 499 MB，完整清單在下面說的 <code>env.txt</code>；本課只固定直接用到的三個。版本照本課實跑時固定——不是因為別的版本一定會出錯，而是重現的第一條規矩是把能固定的都固定，對不上時才知道差在哪裡。</p>
 
   <div class="tblwrap">
   <table>
@@ -113,23 +115,23 @@ bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
   <p class="figsrc">Python 版本出自 <code>out/porttest.json</code> 的 <code>python_versions</code>；完整套件清單在 <code>out/blackjack/env.txt</code>。</p>
 
   <!-- ══════════════════════════════════════════════════════ -->
-  <h2 id="s5"><span class="pt">5</span>兩個要固定版本的地方</h2>
+  <h2 id="s5"><span class="pt">5</span>兩個要釘住的地方：程式碼固定版本、資料靠核對</h2>
 
   <h3>一、程式碼：固定到某一個 commit</h3>
   <p>GitHub 上的專案會一直更新，今天下載的和半年後下載的可能不是同一份程式。<b>commit</b> 是專案每一次存檔的版本編號（像 <code>004b2e3</code> 這樣一串字）；<code>run_all.sh</code> 取得程式碼之後會切到本課用的那一版。作者日後改了程式，你跑出來的仍然是本課的那一版。</p>
 
-  <h3>二、資料：下載時核對大小與筆數</h3>
-  <p>蕈狀體的連結矩陣不是從 MaleCNS 原始資料（1.2 GB）切的，而是從另一位研究者 Yijie Yin 公開的整理版 connectome_data_prep 下載兩個檔（約 107 MB）。作者的下載程式沒有固定那個 repo 的版本，取的是它當下的主分支；代替的做法是<b>核對</b>：下載完先比對兩個檔案的位元組數（78,770,675 與 28,023,979），載入時再核對神經元數、突觸數、各群細胞數都等於作者寫死在程式裡的值，有一項不同就停下來報錯。所以日後整理版若更新，BJ1 會在這裡停住，而不是悄悄算出不同的蕈狀體；到時要去 connectome_data_prep 找回舊版的那兩個檔。</p>
-  <p class="figsrc">檔案大小與核對項目出自作者的 <code>flybrain/mb/fetch.py</code>；BJ1 下載時印出的核對行收在 <code>out/blackjack/logs/bj1_fetch.log</code>（<a href="part3-repro.html#s3">PART 3 第 3 節</a>有節錄）。</p>
+  <h3>二、資料：作者的程式沒固定版本，沿用他的核對</h3>
+  <p>蕈狀體的連結矩陣（第 3 節說的那張表：從連結體切出蕈狀體那一塊）不是從 MaleCNS 原始資料（1.2 GB）切的，而是從另一位研究者 Yijie Yin 公開的整理版 connectome_data_prep 下載兩個檔（約 107 MB）。作者的下載程式沒有固定那個 repo 的版本，取的是它當下的主分支（最新的那一份）。技術上可以釘住版本，但本課不改作者的程式（第 3 節的原則），所以沿用他的做法：不釘版本，改靠<b>核對</b>。核對是作者的程式自己做的：下載完先比對兩個檔案的位元組數（78,770,675 與 28,023,979），載入時再核對神經元數、突觸數（神經元之間的接點數）、各群細胞數（蕈狀體裡幾類神經元各有幾顆）都等於作者寫死在程式裡的值，有一項不同就停下來報錯。所以日後整理版若更新，BJ1 會在這裡停住，而不是悄悄算出不同的蕈狀體；到時候要從 <a href="https://github.com/YijieYin/connectome_data_prep">connectome_data_prep</a> 的舊版本裡找回位元組數相符的那兩個檔，這一步需要會用 git 與 GitHub，不在本課的範圍；這裡只告訴你會卡在哪、原因是什麼，真遇到請找會的人幫忙或回報課程。本課沒有遇到這種情況，沒有實測。</p>
+  <p class="figsrc">檔案大小與核對項目出自作者的 <code>flybrain/mb/fetch.py</code>（flybrain 是 fly-blackjack 自己程式碼的資料夾名，不是要另外裝的套件）；BJ1 下載時印出的核對行收在 <code>out/blackjack/logs/bj1_fetch.log</code>（<a href="part3-repro.html#s3">PART 3 第 3 節</a>有節錄）。</p>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s6"><span class="pt">6</span>一個會讓結果悄悄改變的陷阱</h2>
 
   <p>如果你曾經用 <code>pip install --user</code> 裝過套件，它們會被放在家目錄（你的個人資料夾，終端機裡寫成 <code>~</code>）的 <code>~/.local</code> 底下（打 <code>ls ~/.local/lib</code>，有 <code>python3.x</code> 開頭的資料夾就表示有）；而 Python 預設會把這個資料夾也加進搜尋範圍——<b>包括 conda 環境裡同一個版本的 Python</b>。結果是：你以為在用環境裡固定好的 numpy 2.4.6，實際上載入的可能是 <code>~/.local</code> 裡的另一個版本，而且不會有任何警告。</p>
-  <p>下載包的每一支腳本都先設定 <code>PYTHONNOUSERSITE=1</code>，讓 Python 不去讀 <code>~/.local</code>。照第 1 節的兩個指令跑就不必管它。只有當你想自己單獨重跑某一步、或改個參數試試時（例如 21 點只跑 2,000 手、只用種子 0），才需要手動下指令，這時也要在前面加上它。下面這條就是例子，要在 <code>blackjack/repo/</code> 裡執行；兩個數字依序是手數與種子：</p>
+  <p>下載包的每一支腳本（第 1 節前面說的：裝著一串指令的檔案）都先設定 <code>PYTHONNOUSERSITE=1</code>，讓 Python 不去讀 <code>~/.local</code>。照第 1 節的兩個指令跑就不必管它。只有當你想自己單獨重跑某一步、或改個參數試試時（例如 21 點只跑 2,000 手、只用種子 0），才需要手動下指令，這時也要在前面加上它。下面這條就是例子，要在 <code>blackjack/repo/</code> 裡執行；兩個數字依序是手數與種子：</p>
 
 <pre><code>PYTHONNOUSERSITE=1 PYTHONPATH=. $(conda info --base)/envs/flyplay_bj/bin/python ../scripts/bj2_blackjack.py 2000 0</code></pre>
-  <p><code>$(conda info --base)</code> 會自動換成 conda 安裝的位置，後面接的是 <code>flyplay_bj</code> 這個環境自己的 Python；直接指定環境裡的 Python 來執行，就不必先用 <code>conda activate</code>（切換到某個環境的常見指令）。<code>PYTHONPATH=.</code> 是讓 Python 在目前資料夾（作者的 repo）找得到 <code>flybrain</code> 這個套件。</p>
+  <p><code>$(conda info --base)</code> 會自動換成 conda 安裝的位置，後面接的是 <code>flyplay_bj</code> 這個環境自己的 Python；直接指定環境裡的 Python 來執行，就不必先用 <code>conda activate</code>（切換到某個環境的常見指令）。<code>PYTHONPATH=.</code> 是讓 Python 在目前資料夾（作者的 repo）找得到 <code>flybrain</code> 這個資料夾裡的程式。</p>
 
   <p class="figsrc">numpy 2.4.6 是 <code>flyplay_bj</code> 環境固定的版本（<code>out/blackjack/env.txt</code>）。</p>
 
@@ -141,16 +143,26 @@ bash blackjack/run_all.sh       # BJ1–BJ3、加做檢查 X1–X4</code></pre>
   <div class="tblwrap">
   <table>
     <tr><th>符號</th><th>意思</th></tr>
-    <tr><td>✓</td><td>對上了。<code>check.py</code> 比的對象是本課的實跑結果，不是作者的數字，所以每一項都可以要求逐位相同（對作者的三種判定標準見 <a href="part3-repro.html#s1">PART 3 第 1 節</a>）</td></tr>
-    <tr><td>✗</td><td>對不上。後面會印出本次的值與預期的值。看到它先做兩件事：打開那一步的 <code>logs/</code> 檔看最後幾行有沒有錯誤訊息（最常見是網路中斷、下載不完整）；然後重跑一次 <code>run_all.sh</code>。還是 ✗ 的話，對照第 5 節看是不是某個版本變了</td></tr>
+    <tr><td>✓</td><td>對上了。<code>check.py</code> 比的對象是本課的實跑結果，不是作者的數字，所以每一項都可以要求逐位相同：作者的數字是在別台電腦、可能不同版本上跑的，只能要求接近；本課的實跑和你用的是同一套固定版本，理應一模一樣（至於你的結果和作者的數字怎麼比、算不算一致，<a href="part3-repro.html#s1">PART 3 第 1 節</a>會講）</td></tr>
+    <tr><td>✗</td><td>對不上。後面會印出本次的值與預期的值。看到它先做兩件事：打開那一步的 <code>logs/</code> 檔看最後幾行有沒有錯誤訊息（最常見是網路中斷、下載不完整）；然後重跑一次 <code>run_all.sh</code>。還是 ✗ 的話，對照第 5 節看是不是某個版本變了；若只有小數點末幾位不同、其他全對，多半是作業系統的浮點運算差異（第 2 節），不是跑錯</td></tr>
   </table>
   </div>
 
   <p>本課的可攜測試（解到空資料夾、從建環境開始跑）最後一行是：</p>
 <pre><code>blackjack：17 項通過，0 項不符（共 17 項）</code></pre>
+  <p class="figsrc">17 項是 17 個數字，不是 7 個步驟：一步會比對好幾個數字（例如 BJ2 四個條件各一個、X1 三個條件各一個）。</p>
   <p class="figsrc">出自 <code>out/porttest.json</code>。開頭的 blackjack 是驗收表（<code>expected.json</code>）的分組名，這一包只有這一組。</p>
 
-  <p>想看某一步的細節，打開 <code>blackjack/logs/</code>（在你解壓縮的資料夾底下；<code>results/</code> 也在同一層）：每一步一個檔案，是那一步的完整終端輸出，最後幾行通常就是結果表。所有數字另外以 JSON 存在 <code>results/</code>，PART 3 與 PART 4 的每一張表都標了它對應哪一個檔案。</p>
+  <p>跑完之後解壓縮資料夾長這樣：</p>
+<pre><code>解壓縮的資料夾/
+├─ setup_envs.sh、check.py、expected.json、SHA256SUMS.txt、README.md
+└─ blackjack/
+   ├─ run_all.sh
+   ├─ scripts/     本課的三支小程式
+   ├─ repo/        run_all.sh 取回來的 fly-blackjack（跑過一次才有）
+   ├─ logs/        每一步的終端輸出（跑過一次才有）
+   └─ results/     每一步的數字，JSON（跑過一次才有）</code></pre>
+  <p>想看某一步的細節，打開 <code>blackjack/logs/</code>：每一步一個檔案，是那一步的完整終端輸出，最後幾行通常就是結果表。所有數字另外以 JSON 存在 <code>results/</code>，PART 3 與 PART 4 的每一張表都標了它對應哪一個檔案。</p>
 
   <div class="pager">
     <a href="part1-what.html">← PART 1　這個專案在做什麼</a>
