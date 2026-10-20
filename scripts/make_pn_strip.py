@@ -63,7 +63,7 @@ svg = "\n".join(S)
 
 cap = (f'<figcaption><b>圖 4　點數的 18 個值怎麼取 PN。</b>18 橫排畫的都是同一條隊伍、同樣的位置 0 到 {N - 1}，只是把每個點數的框分開畫在自己那一排；藍框是那個點數取的連續 {W} 個位置。下一個點數的框往右挪 {" 或 ".join(map(str, E["total_shift"]))} 格，'
        f'所以相鄰兩框重疊 {" 或 ".join(map(str, E["total_neighbour_overlaps"]))} 格。18 個框一共取 {E["total_picks"]} 次，只蓋到前 {last} 個位置，也就是 {last} 顆不同的 PN：{E["total_pn_used_twice"]} 顆各被取 2 次、{E["total_pn_used_once"]} 顆各取 1 次（{E["total_pn_used_twice"]} × 2 ＋ {E["total_pn_used_once"]} ＝ {E["total_picks"]}）；'
-       f'最下面那條是每個位置被幾個點數用到，最多 2 次。明牌照同樣的方法，在另一條重新亂排的 682 顆隊伍上取。兩條隊伍都只在建立模型時排一次，整個訓練、換打牌種子都不再變。'
+       f'最下面那條是每個位置被幾個點數用到，最多 2 次。明牌照同樣的方法，在另一條重新亂排的 682 顆隊伍上取。兩條隊伍都只在建立模型時排一次，整個訓練、換打牌種子都不再變。一次訓練裡不能重排，是因為學習要靠「同一個局面配同一個動作，每次都點亮同一批 KC」：第 4 節的削弱改的是這批 KC 通往 MBON 的連結，下次遇到同一個局面配同一個動作，要用到同一批連結，才看得到上次學的；如果每手重新打亂，「硬 20 對 8 配要牌」這次和下次會是兩種不同的氣味，上次削弱的連結這次用不到，什麼都學不起來。換打牌種子也不重排，是因為編碼的種子寫死在作者的程式裡（<code>Situation</code> 的預設值），作者沒有說明理由；效果是不同打牌種子之間只差發牌與亂選，編碼都一樣。'
        f'<span class="figsrc">位置由 <code>scripts/encoding_pn.py</code> 照作者 <code>Situation</code> 的抽法算出，存在 <code>out/blackjack/encoding_pn.json</code>；圖由 <code>scripts/make_pn_strip.py</code> 產生。</span></figcaption>')
 frag = '<!-- pnstrip:start -->\n  <figure class="fig">\n' + svg + '\n  ' + cap + '\n  </figure>\n<!-- pnstrip:end -->'
 page = open(PAGE, encoding="utf-8").read()
