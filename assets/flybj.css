@@ -244,3 +244,20 @@ figure.code figcaption.figsrc{margin-top:6px}
 .walk{margin:10px 0 18px; padding-left:0; list-style:none}
 .walk li{margin:6px 0; padding-left:2.4em; text-indent:-2.4em; font-size:15px; line-height:1.75}
 .walk li b.l{display:inline-block; min-width:2.1em; text-indent:0; color:var(--accent); font-family:"Cascadia Code",Consolas,Menlo,monospace; font-size:13px}
+
+/* PART 1 第 3 節的六步互動示意圖 */
+.anim{margin:26px 0; padding:14px 16px 10px; border:1px solid var(--border); border-radius:var(--radius); background:#fff}
+.anim-ctl{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:8px; font-size:14px}
+.anim-btn,.anim-act{font:inherit; font-size:14px; padding:5px 12px; border:1px solid var(--border); border-radius:8px; background:var(--panel); color:var(--ink); cursor:pointer}
+.anim-btn:disabled{opacity:.4; cursor:default}
+.anim-btn:hover:not(:disabled),.anim-act:hover{border-color:var(--accent)}
+.anim-step{font-weight:700; color:var(--accent); min-width:6em; text-align:center}
+.anim-acts{margin-left:auto; color:var(--soft); display:flex; gap:6px; align-items:center}
+.anim-act.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+.anim-svg{display:block; width:100%; height:auto; border:1px solid var(--border); border-radius:8px; background:#fff}
+.anim-steps{margin:12px 0 0; padding-left:0; list-style:none; font-size:14.5px; line-height:1.7}
+.anim-steps li{padding:6px 10px; border-left:3px solid transparent; margin:2px 0; color:var(--soft)}
+.anim-steps li.on{border-left-color:var(--accent); background:var(--accent-soft); color:var(--ink)}
+.anim-steps li b{color:var(--ink)}
+.anim-cap{font-size:14px; color:var(--soft); line-height:1.7; margin:12px 0 0}
+.anim-cap b{color:var(--ink)}
