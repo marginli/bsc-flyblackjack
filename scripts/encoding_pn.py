@@ -39,5 +39,16 @@ res = {
     "total_neighbour_overlap": len(sets[("total", 0)] & sets[("total", 1)]),
     "upcard_neighbour_overlap": len(sets[("upcard", 0)] & sets[("upcard", 1)]),
 }
+for f, levels in (("total", 18), ("upcard", 10)):          # 相鄰兩個值：起點挪幾顆、共用幾顆（全部相鄰對）
+    w = SituationCode.WIDTH[f]
+    shifts = sorted({int((l + 1) * w * 0.55) - int(l * w * 0.55) for l in range(levels - 1)})
+    ovs = sorted({len(sets[(f, l)] & sets[(f, l + 1)]) for l in range(levels - 1)})
+    assert ovs == sorted({w - x for x in shifts})
+    starts = [int(l * w * 0.55) for l in range(levels)]
+    cover = [sum(1 for (g, _l), c in sets.items() if g == f and pn in c) for pn in by_feature[f]]
+    res[f"{f}_starts"] = starts; res[f"{f}_picks"] = levels * w
+    res[f"{f}_pn_used_twice"] = sum(1 for x in cover if x == 2); res[f"{f}_pn_used_once"] = sum(1 for x in cover if x == 1)
+    res[f"{f}_pn_used_more"] = sum(1 for x in cover if x > 2)
+    res[f"{f}_width"] = w; res[f"{f}_shift"] = shifts; res[f"{f}_neighbour_overlaps"] = ovs
 json.dump(res, open(OUT, "w"), indent=1, ensure_ascii=False)
 print(json.dumps(res, indent=1, ensure_ascii=False))

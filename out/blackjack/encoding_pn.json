@@ -29,5 +29,61 @@
  "soft_overlap": 0,
  "first_overlap": 1,
  "total_neighbour_overlap": 12,
- "upcard_neighbour_overlap": 10
+ "upcard_neighbour_overlap": 10,
+ "total_starts": [
+  0,
+  14,
+  28,
+  42,
+  57,
+  71,
+  85,
+  100,
+  114,
+  128,
+  143,
+  157,
+  171,
+  185,
+  200,
+  214,
+  228,
+  243
+ ],
+ "total_picks": 468,
+ "total_pn_used_twice": 199,
+ "total_pn_used_once": 70,
+ "total_pn_used_more": 0,
+ "total_width": 26,
+ "total_shift": [
+  14,
+  15
+ ],
+ "total_neighbour_overlaps": [
+  11,
+  12
+ ],
+ "upcard_starts": [
+  0,
+  12,
+  24,
+  36,
+  48,
+  60,
+  72,
+  84,
+  96,
+  108
+ ],
+ "upcard_picks": 220,
+ "upcard_pn_used_twice": 90,
+ "upcard_pn_used_once": 40,
+ "upcard_pn_used_more": 0,
+ "upcard_width": 22,
+ "upcard_shift": [
+  12
+ ],
+ "upcard_neighbour_overlaps": [
+  10
+ ]
 }
