@@ -52,8 +52,8 @@ kcv = [hit["kc_values"].get(str(i), 0) for i in range(n_kc)]
 # ── SVG（第 5 步配要牌的靜態狀態寫死在屬性上） ─────────────────────────
 S = []
 S.append(f'<svg class="anim-svg" viewBox="0 0 {VB_W} {VB_H}" role="img" aria-labelledby="animTitle" xmlns="http://www.w3.org/2000/svg">')
-S.append(f'<title id="animTitle">第 1 手第一個決定（硬 20 對莊家 8）配「要牌」：PN、KC、MBON 的活動量與好惡值</title>')
-S.append(f'<text id="animHead" x="24" y="34" font-size="17" font-weight="700" fill="{INK}">第 5 步　加總成好惡值：硬 20 對莊家 8，配「要牌」</text>')
+S.append(f'<title id="animTitle">第 1 手第一個決定（硬 20 對莊家 8、前兩張）配「要牌」：PN、KC、MBON 的活動量與好惡值</title>')
+S.append(f'<text id="animHead" x="24" y="34" font-size="17" font-weight="700" fill="{INK}">第 5 步　加總成好惡值：硬 20 對莊家 8、前兩張，配「要牌」</text>')
 for x, lab in ((PN_X + PN_COLS * PN_SP / 2, f"PN　{n_pn} 顆"), (KC_X + KC_COLS * KC_SP / 2, f"KC　{n_kc:,} 顆"), (MB_X + 55, f"MBON　{n_mbon} 顆"), (872, "好惡值")):
     S.append(f'<text x="{x:.0f}" y="76" text-anchor="middle" font-size="13" font-weight="700" fill="{SOFT}">{lab}</text>')
 # 箭頭
@@ -115,7 +115,7 @@ st, sd = A["actions"]["stand"], A["actions"]["double"]
 by = hit["pn_lit_by_feature"]
 steps = [
     ("牌面變成 PN 的活動",
-     f"先解釋牌面的詞（第 5 節細講）：硬 20 ＝ 手上 20 點、沒有把 A 算成 11；明牌 ＝ 莊家翻開給你看的那張牌；前兩張 ＝ 還沒抽過牌。「硬 20、明牌 8、前兩張」加上候選動作「要牌」，各選中一組 PN：點數 {by['total']} 顆、明牌 {by['upcard']} 顆、動作 {by['action']} 顆、軟硬 {by['soft']} 顆、前兩張 {by['first']} 顆，五組共 {hit['pn_lit'] + hit['pn_overlap']} 顆，其中 {hit['pn_overlap']} 顆被兩項資訊同時選中、只算一次，實際亮 {hit['pn_lit']} 顆，其餘 {hit['pn_dark']} 顆是 0。每顆被選中的 PN 各有一個 0.7 到 1 的固定數當活動量，動作那組乘 1.3，被同時選中的把兩邊相加；整欄超過 1 的有 {hit['pn_over_1']} 顆，多數是動作那組。圖上亮度照活動量。"),
+     f"先解釋這個局面（規則第 5 節細講）。21 點的目標：手上的點數接近 21 但不能超過，超過叫爆牌、直接輸；沒爆就和莊家比誰大。莊家是發牌的一方，也是你要比贏的對手。三個動作：要牌 ＝ 再抽一張；停牌 ＝ 不抽了，就用手上的點數和莊家比；加倍 ＝ 賭注加倍、只再抽一張就停，只有前兩張時能選。硬 20：你手上的牌加起來 20 點，而且沒有一張 A 被算成 11，這一手是 10＋10；「硬」的相對是「軟」，手上有 A 算成 11 而沒爆的叫軟手，軟手再抽一張不會爆（A 可以改算 1），硬 20 再抽則除了抽到 A 以外都爆。莊家 8：開局莊家發兩張，一張翻開給你看（明牌）、一張蓋著，翻開的那張是 8，你做決定時只看得到它。前兩張：你還沒抽過牌，所以加倍也能選，三個動作都開著。「硬 20、明牌 8、前兩張」加上候選動作「要牌」，各選中一組 PN：點數 {by['total']} 顆、明牌 {by['upcard']} 顆、動作 {by['action']} 顆、軟硬 {by['soft']} 顆、前兩張 {by['first']} 顆，五組共 {hit['pn_lit'] + hit['pn_overlap']} 顆，其中 {hit['pn_overlap']} 顆被兩項資訊同時選中、只算一次，實際亮 {hit['pn_lit']} 顆，其餘 {hit['pn_dark']} 顆是 0。每顆被選中的 PN 各有一個 0.7 到 1 的固定數當活動量，動作那組乘 1.3，被同時選中的把兩邊相加；整欄超過 1 的有 {hit['pn_over_1']} 顆，多數是動作那組。圖上亮度照活動量。"),
     ("每顆 KC 收到多少",
      f"每顆 KC 把「收到的每顆 PN 的活動 × 那條連結的權重」加總；權重是突觸數除以該 KC 收到的 PN 突觸總數。1,200 顆裡 {hit['kc_drive_nonzero']} 顆收到非零的量（接到亮的 PN 才有），最高 {hit['kc_drive_max_3dp']}。圖上 KC 欄變成深淺不一。"),
     ("只留最高的 6%",
@@ -196,7 +196,7 @@ script = '''<script>
     cmpG.setAttribute("visibility", step===6 ? "visible" : "hidden");
     var vt = valG.querySelectorAll("text");
     vt[0].textContent = "加分堆 ＋" + a.plus; vt[1].textContent = "扣分堆 " + a.minus; vt[2].textContent = "相減＝好惡值 " + a.v3;
-    head.textContent = (step===0 ? "開始　" : "第 " + step + " 步　" + TITLES[step-1] + "：") + "硬 20 對莊家 8，配「" + ZH[act] + "」";
+    head.textContent = (step===0 ? "開始　" : "第 " + step + " 步　" + TITLES[step-1] + "：") + "硬 20 對莊家 8、前兩張，配「" + ZH[act] + "」";
     document.getElementById("animStep").textContent = step===0 ? "開始／6" : "第 " + step + " 步／6";
     document.getElementById("animPrev").disabled = step<=0;
     document.getElementById("animNext").disabled = step>=6;
