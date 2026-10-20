@@ -49,6 +49,8 @@ for f, levels in (("total", 18), ("upcard", 10)):          # 相鄰兩個值：�
     res[f"{f}_starts"] = starts; res[f"{f}_picks"] = levels * w
     res[f"{f}_pn_used_twice"] = sum(1 for x in cover if x == 2); res[f"{f}_pn_used_once"] = sum(1 for x in cover if x == 1)
     res[f"{f}_pn_used_more"] = sum(1 for x in cover if x > 2)
+    res[f"{f}_pn_not_used"] = n - len(by_feature[f]); res[f"{f}_last_pos"] = starts[-1] + w - 1
     res[f"{f}_width"] = w; res[f"{f}_shift"] = shifts; res[f"{f}_neighbour_overlaps"] = ovs
+res["pn_last_index"] = n - 1
 json.dump(res, open(OUT, "w"), indent=1, ensure_ascii=False)
 print(json.dumps(res, indent=1, ensure_ascii=False))

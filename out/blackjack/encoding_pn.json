@@ -54,6 +54,8 @@
  "total_pn_used_twice": 199,
  "total_pn_used_once": 70,
  "total_pn_used_more": 0,
+ "total_pn_not_used": 413,
+ "total_last_pos": 268,
  "total_width": 26,
  "total_shift": [
   14,
@@ -79,11 +81,14 @@
  "upcard_pn_used_twice": 90,
  "upcard_pn_used_once": 40,
  "upcard_pn_used_more": 0,
+ "upcard_pn_not_used": 552,
+ "upcard_last_pos": 129,
  "upcard_width": 22,
  "upcard_shift": [
   12
  ],
  "upcard_neighbour_overlaps": [
   10
- ]
+ ],
+ "pn_last_index": 681
 }

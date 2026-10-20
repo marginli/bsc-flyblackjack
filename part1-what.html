@@ -3976,7 +3976,107 @@
     <tr><td>是不是前兩張</td><td>2</td><td>8</td><td>各組獨立抽，沒有刻意共用</td></tr>
   </table>
   </div>
-  <p><b>點數與明牌的重疊怎麼排出來。</b>點數先把 682 顆 PN 用亂數排成一個順序（像一條隊伍，每顆只出現一次）。18 個點數在這條隊伍上各取連續 26 顆：第 k 個點數（點數 4 是第 0 個）從第 k × 26 × 0.55 個位置開始取（位置從 0 數起），小數捨去，所以起點是 0、14、28、42、57……最後一個是 243；多數往後挪 14，每隔幾個挪一次 15。相鄰兩組因此重疊 12 或 11 顆。18 組一共取 468 次，全部落在這條隊伍的前 269 個位置，也就是 269 顆不同的 PN：199 顆被兩個相鄰點數共用、70 顆只屬於一個點數；挪的距離比半組（13 顆）多，所以沒有一顆被三個點數用到。明牌把同樣 682 顆重新亂排一次、排成自己的隊伍，照同樣的算法取（所以明牌和點數會撞到同一顆，下一段的「共用 55 顆」就是這樣來的）：每次挪 12 顆（22 × 0.55 ＝ 12.1，捨去小數），10 組取 220 次，落在 130 顆不同的 PN 上，相鄰兩張共用 10 顆。0.55 是作者定的常數，作者的註解只說要讓相鄰點數聞起來相近，沒說為什麼是 0.55。動作、軟硬、前兩張不排列，每個值各自從 682 顆裡亂數抽一組。</p>
+  <p><b>點數與明牌的重疊怎麼排出來。</b>點數先把 682 顆 PN 用亂數排成一個順序（像一條隊伍，每顆只出現一次）。18 個點數在這條隊伍上各取連續 26 顆：第 k 個點數（點數 4 是第 0 個）從第 k × 26 × 0.55 個位置開始取（位置從 0 數起），小數捨去，所以起點是 0、14、28、42、57……最後一個是 243；26 × 0.55 ＝ 14.3，小數累積到滿 1 時就多挪一格，所以多數挪 14、每隔幾個挪一次 15。相鄰兩組因此重疊 12 或 11 顆。18 組一共取 468 次，全部落在這條隊伍的前 269 個位置，也就是 269 顆不同的 PN：199 顆被兩個相鄰點數共用、70 顆只屬於一個點數（199 × 2 ＋ 70 ＝ 468）；隔一個的兩框起點至少差 28，超過一框的寬度 26，碰不到，所以沒有一顆被三個點數用到（圖 4）。明牌把同樣 682 顆重新亂排一次、排成自己的隊伍，照同樣的算法取（所以明牌和點數會撞到同一顆，下一段的「共用 55 顆」就是這樣來的）：每次挪 12 顆（22 × 0.55 ＝ 12.1，捨去小數），10 組取 220 次，落在 130 顆不同的 PN 上，相鄰兩張共用 10 顆。0.55 是作者定的常數，作者的註解只說要讓相鄰點數聞起來相近，沒說為什麼是 0.55。動作、軟硬、前兩張不排列，每個值各自從 682 顆裡亂數抽一組。</p>
+<!-- pnstrip:start -->
+  <figure class="fig">
+<svg viewBox="0 0 960 358" role="img" aria-labelledby="pnsTitle" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;border:1px solid #e4e8ee;border-radius:10px;background:#fff">
+<title id="pnsTitle">點數 4 到 21 各取 26 顆 PN：在 682 顆排成的一列上，起點每次往後挪 14 或 15 顆，18 個框一共蓋住前 269 個位置</title>
+<text x="70" y="24" font-size="12" font-weight="700" fill="#5a6b7b">682 顆 PN 用亂數排成一條隊伍（位置 0 到 681，每顆只出現一次；建立模型時排一次，之後不再變）</text>
+<rect x="409.2" y="36" width="520.8" height="238" fill="#f1f5f9"/>
+<text x="670" y="157" text-anchor="middle" font-size="12" fill="#8b98a5">位置 269–681：點數用不到（413 顆）</text>
+<text x="62" y="49" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 4</text>
+<rect x="70.0" y="40" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="106.8" y="49" font-size="10" fill="#5a6b7b">位置 0–25</text>
+<text x="62" y="62" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 5</text>
+<rect x="87.7" y="53" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="124.4" y="62" font-size="10" fill="#5a6b7b">位置 14–39</text>
+<text x="62" y="75" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 6</text>
+<rect x="105.3" y="66" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="142.1" y="75" font-size="10" fill="#5a6b7b">位置 28–53</text>
+<text x="62" y="88" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 7</text>
+<rect x="123.0" y="79" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="101" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 8</text>
+<rect x="141.9" y="92" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="114" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 9</text>
+<rect x="159.5" y="105" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="127" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 10</text>
+<rect x="177.2" y="118" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="140" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 11</text>
+<rect x="196.1" y="131" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="153" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 12</text>
+<rect x="213.8" y="144" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="166" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 13</text>
+<rect x="231.4" y="157" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="179" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 14</text>
+<rect x="250.3" y="170" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="192" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 15</text>
+<rect x="268.0" y="183" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="205" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 16</text>
+<rect x="285.6" y="196" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="218" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 17</text>
+<rect x="303.3" y="209" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="231" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 18</text>
+<rect x="322.2" y="222" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="244" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 19</text>
+<rect x="339.9" y="235" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="257" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 20</text>
+<rect x="357.5" y="248" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="62" y="270" text-anchor="end" font-size="10.5" fill="#5a6b7b">點數 21</text>
+<rect x="376.4" y="261" width="32.8" height="10" rx="2" fill="#2563eb" fill-opacity="0.75"/>
+<text x="413.2" y="270" font-size="10" fill="#5a6b7b">位置 243–268</text>
+<text x="62" y="298" text-anchor="end" font-size="10.5" font-weight="700" fill="#1b2733">被用幾次</text>
+<rect x="70.00" y="288" width="17.65" height="12" fill="#93c5fd"/>
+<rect x="87.65" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="102.79" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="105.31" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="120.44" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="122.96" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="138.09" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="141.88" y="288" width="13.87" height="12" fill="#1b2733"/>
+<rect x="155.75" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="159.53" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="174.66" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="177.18" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="192.32" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="196.10" y="288" width="13.87" height="12" fill="#1b2733"/>
+<rect x="209.97" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="213.75" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="228.89" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="231.41" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="246.54" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="250.32" y="288" width="13.87" height="12" fill="#1b2733"/>
+<rect x="264.19" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="267.98" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="283.11" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="285.63" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="300.76" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="303.28" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="318.42" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="322.20" y="288" width="13.87" height="12" fill="#1b2733"/>
+<rect x="336.07" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="339.85" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="354.99" y="288" width="2.52" height="12" fill="#93c5fd"/>
+<rect x="357.51" y="288" width="15.13" height="12" fill="#1b2733"/>
+<rect x="372.64" y="288" width="3.78" height="12" fill="#93c5fd"/>
+<rect x="376.42" y="288" width="13.87" height="12" fill="#1b2733"/>
+<rect x="390.29" y="288" width="18.91" height="12" fill="#93c5fd"/>
+<rect x="409.21" y="288" width="520.79" height="12" fill="#f1f5f9"/>
+<line x1="70.0" y1="302" x2="70.0" y2="308" stroke="#8b98a5"/>
+<text x="70.0" y="320" text-anchor="middle" font-size="10.5" fill="#5a6b7b">0</text>
+<line x1="409.2" y1="302" x2="409.2" y2="308" stroke="#8b98a5"/>
+<text x="409.2" y="320" text-anchor="middle" font-size="10.5" fill="#5a6b7b">269</text>
+<line x1="930.0" y1="302" x2="930.0" y2="308" stroke="#8b98a5"/>
+<text x="930.0" y="320" text-anchor="middle" font-size="10.5" fill="#5a6b7b">682</text>
+<rect x="70" y="332" width="12" height="10" fill="#1b2733" stroke="#e4e8ee"/>
+<text x="87" y="341" font-size="11" fill="#5a6b7b">2 次：199 顆</text>
+<rect x="200" y="332" width="12" height="10" fill="#93c5fd" stroke="#e4e8ee"/>
+<text x="217" y="341" font-size="11" fill="#5a6b7b">1 次：70 顆</text>
+<rect x="330" y="332" width="12" height="10" fill="#f1f5f9" stroke="#e4e8ee"/>
+<text x="347" y="341" font-size="11" fill="#5a6b7b">0 次：413 顆</text>
+</svg>
+  <figcaption><b>圖 4　點數的 18 個值怎麼取 PN。</b>18 橫排畫的都是同一條隊伍、同樣的位置 0 到 681，只是把每個點數的框分開畫在自己那一排；藍框是那個點數取的連續 26 個位置。下一個點數的框往右挪 14 或 15 格，所以相鄰兩框重疊 11 或 12 格。18 個框一共取 468 次，只蓋到前 269 個位置，也就是 269 顆不同的 PN：199 顆各被取 2 次、70 顆各取 1 次（199 × 2 ＋ 70 ＝ 468）；最下面那條是每個位置被幾個點數用到，最多 2 次。明牌照同樣的方法，在另一條重新亂排的 682 顆隊伍上取。兩條隊伍都只在建立模型時排一次，整個訓練、換打牌種子都不再變。<span class="figsrc">位置由 <code>scripts/encoding_pn.py</code> 照作者 <code>Situation</code> 的抽法算出，存在 <code>out/blackjack/encoding_pn.json</code>；圖由 <code>scripts/make_pn_strip.py</code> 產生。</span></figcaption>
+  </figure>
+<!-- pnstrip:end -->
   <p>哪些 PN 分給哪個值，由一個固定的亂數種子（給電腦亂數產生器的一個起始數字；同一個數字每次抽出來的結果都一樣，所以可以重現）抽定，之後不再變。被選中的 PN 在單一特徵裡的活動量是 0.7 到 1 之間的一個固定數（也是這個編碼種子抽定的；每個值各抽各的，所以一顆被點數 14 和 15 共用的 PN，在兩個點數裡的活動量不一樣，相鄰點數聞起來相近靠的是用到同一批 PN，不是數值相同），動作那組再乘 1.3，沒被選中的是 0；一顆 PN 被兩個特徵同時選中時兩邊相加，所以活動量可以超過 1。五個特徵用的是各自的亂數，彼此沒有協調，所以不同特徵的組可以撞到同一顆：實際用到 419 顆，263 顆從頭到尾活動是 0。表上「每種值用幾顆」是一個值的數，整個特徵合起來用的更多：點數 18 個值合計 269 顆、明牌 10 個值 130 顆、動作 106 顆、軟硬 24 顆、前兩張 15 顆。撞得最多的是點數與明牌（共用 55 顆）、點數與動作（38 顆）；三個動作的組兩兩之間一共只撞到 2 顆（36 × 3 ＝ 108，扣掉重複的 2 顆就是 106）。一顆 PN 同時屬於兩個特徵時，兩邊的活動相加（算法在 scripts/encoding_pn.py，數字在 out/blackjack/encoding_pn.json）。PN 在真果蠅裡各自對應哪種氣味沒有用到；從資料用到的只有這些 PN 各自連到哪些 KC、連幾個突觸。同一手牌配「要牌」「停牌」「加倍」是三種不同的氣味，所以每個動作各有一個好惡值。</p>
 
   <p><b>讀出規則：選好惡值最高的動作，偶爾亂選。</b>第 3 節說好惡值正代表想靠近、負代表想躲開；在這裡，一個動作的好惡值高，就是蕈狀體認為這個動作該做。大部分時候選三個候選動作裡好惡值最高的那個（只在前兩張時才有「加倍」可選）。但每做一個決定，都有一定機率不看好惡值、隨機亂選，叫<b>探索</b>。發牌與亂選用的亂數種子（打牌的種子）和上面編碼用的那個是分開的：換一個打牌的種子就是換一副牌、換一套亂選，PART 4 加種子換的是這一個；編碼的種子從頭到尾不變。一次訓練共打 30,000 手；剛開始每個決定有 35% 的機率亂選，每打 3,000 手減半，最低降到 3%。沒有探索，一個起步就偏好「要牌」的蕈狀體永遠不會發現「停牌」更好。</p>
