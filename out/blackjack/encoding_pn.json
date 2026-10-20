@@ -1,0 +1,33 @@
+{
+ "pn_total": 682,
+ "pn_used": 419,
+ "pn_unused": 263,
+ "per_feature_union": {
+  "total": 269,
+  "upcard": 130,
+  "action": 106,
+  "soft": 24,
+  "first": 15
+ },
+ "cross_feature_overlap": {
+  "total&upcard": 55,
+  "total&action": 38,
+  "total&soft": 3,
+  "total&first": 8,
+  "upcard&action": 22,
+  "upcard&soft": 5,
+  "upcard&first": 2,
+  "action&soft": 2,
+  "action&first": 2,
+  "soft&first": 0
+ },
+ "action_pairwise_overlap": {
+  "0&1": 1,
+  "0&2": 1,
+  "1&2": 0
+ },
+ "soft_overlap": 0,
+ "first_overlap": 1,
+ "total_neighbour_overlap": 12,
+ "upcard_neighbour_overlap": 10
+}

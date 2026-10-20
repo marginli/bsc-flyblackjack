@@ -1,0 +1,73 @@
+{
+ "brain_somas_drawn": 123322,
+ "all_somas_with_coords": 138496,
+ "brain_z_max": 50000,
+ "kc_live": 3811,
+ "kc_sampled": 1200,
+ "edges_pn_kc": 7182,
+ "edges_kc_mbon": 18183,
+ "counts": {
+  "KC_other": {
+   "cells": 2864,
+   "with_soma": 2852,
+   "without_soma": 12
+  },
+  "KC": {
+   "cells": 1200,
+   "with_soma": 1198,
+   "without_soma": 2
+  },
+  "PN": {
+   "cells": 682,
+   "with_soma": 676,
+   "without_soma": 6
+  },
+  "PAM": {
+   "cells": 316,
+   "with_soma": 316,
+   "without_soma": 0
+  },
+  "MBON": {
+   "cells": 97,
+   "with_soma": 96,
+   "without_soma": 1
+  },
+  "PPL1": {
+   "cells": 16,
+   "with_soma": 16,
+   "without_soma": 0
+  }
+ },
+ "axis_check": {
+  "somaSide_L_mean_xyz": [
+   72406.0,
+   31634.0,
+   38267.0
+  ],
+  "somaSide_R_mean_xyz": [
+   24676.0,
+   33040.0,
+   39174.0
+  ],
+  "KC_mean_xyz": [
+   47737.0,
+   11052.0,
+   33935.0
+  ],
+  "ALPN_mean_xyz": [
+   48260.0,
+   30284.0,
+   15239.0
+  ],
+  "GNG_mean_xyz": [
+   48646.0,
+   41174.0,
+   25168.0
+  ],
+  "T4T5_mean_xyz": [
+   48527.0,
+   32500.0,
+   41409.0
+  ]
+ }
+}

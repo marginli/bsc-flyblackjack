@@ -1,0 +1,60 @@
+{
+ "PAM": {
+  "cells": 316,
+  "by_side": {
+   "R": 158,
+   "L": 158
+  },
+  "n_types": 15,
+  "cells_per_type": {
+   "PAM01": 44,
+   "PAM02": 17,
+   "PAM03": 12,
+   "PAM04": 32,
+   "PAM05": 20,
+   "PAM06": 28,
+   "PAM07": 14,
+   "PAM08": 50,
+   "PAM09": 9,
+   "PAM10": 15,
+   "PAM11": 15,
+   "PAM12": 22,
+   "PAM13": 16,
+   "PAM14": 18,
+   "PAM15": 4
+  },
+  "per_side_per_type_min": 2,
+  "per_side_per_type_max": 25,
+  "per_side_per_type_mean": 10.4,
+  "synapses_to_mbon": 28546,
+  "synapses_to_mbon_per_cell": 90.3,
+  "mbons_reached": 77,
+  "mbons_total": 97
+ },
+ "PPL1": {
+  "cells": 16,
+  "by_side": {
+   "R": 8,
+   "L": 8
+  },
+  "n_types": 8,
+  "cells_per_type": {
+   "PPL101": 2,
+   "PPL102": 2,
+   "PPL103": 2,
+   "PPL104": 2,
+   "PPL105": 2,
+   "PPL106": 2,
+   "PPL107": 2,
+   "PPL108": 2
+  },
+  "per_side_per_type_min": 1,
+  "per_side_per_type_max": 1,
+  "per_side_per_type_mean": 1.0,
+  "synapses_to_mbon": 11070,
+  "synapses_to_mbon_per_cell": 691.9,
+  "mbons_reached": 94,
+  "mbons_total": 97
+ },
+ "ppl1_per_cell_over_pam_per_cell": 7.7
+}
