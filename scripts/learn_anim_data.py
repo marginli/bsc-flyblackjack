@@ -76,6 +76,10 @@ res = {
 }
 _rec = mb.decay * (1 - (g0 - cut).min())          # 剛被削到最低的那條，回復一步拉回的量
 res["decay_on_min_txt"] = f"{_rec:.8f}".rstrip("0"); res["decay_on_min_2sf"] = f"{_rec:.7f}"
+for _s, _k in ((1, "plus"), (-1, "minus")):              # 兩型 MBON 各收到多少多巴胺
+    _d = da[val == _s]
+    res[f"da_{_k}_n"] = int(len(_d)); res[f"da_{_k}_pos"] = int((_d > 0).sum())
+    res[f"da_{_k}_mean"] = round(float(_d.mean()), 3); res[f"da_{_k}_median"] = round(float(np.median(_d)), 3)
 res["hit_drop"] = round(res["valence_before"]["hit"] - res["valence_after"]["hit"], 4)
 res["hit_minus_stand_after"] = round(res["valence_after"]["hit"] - res["valence_after"]["stand"], 4)
 json.dump(res, open(OUT, "w"), ensure_ascii=False)

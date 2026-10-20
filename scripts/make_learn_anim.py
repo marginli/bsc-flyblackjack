@@ -111,7 +111,7 @@ steps = [
     ("一手結束，重新呈現",
      "這手輸了。把這手唯一的決定「硬 20 對 8 配要牌」再送進蕈狀體一次：亮的還是圖 2 那 72 顆 KC，MBON 活動也和當時一樣。"),
     ("送懲罰多巴胺",
-     f"輸一注，懲罰強度 0.5。每顆 MBON 收到 0.5 × 它的「來自 PPL1 的比例」：{L['n_mbon_da_pos']} 顆收到、{L['n_mbon_da_zero']} 顆是 0；{round(L['da_share_plus'] * 100)}% 落在上面的趨近型。"),
+     f"輸一注，懲罰強度 0.5。每顆 MBON 收到 0.5 × 它的「來自 PPL1 的比例」：{L['n_mbon_da_pos']} 顆收到、{L['n_mbon_da_zero']} 顆是 0；送出的多巴胺總量有 {round(L['da_share_plus'] * 100)}% 落在上面的趨近型。"),
     ("削弱",
      f"上面式子的第一行：亮的 KC 通往「收到多巴胺的 MBON」的連結，增益減掉 0.05 × KC 活動 × 多巴胺。這次動到 {L['n_links_cut']} 條，最多從 1 減到 {L['gain_min_after']}；其餘連結不動。下次再送同一個牌面，MBON 活動會變小，最右欄是少掉的量（放大 {MAG} 倍）。細節在下面。"),
     ("回復",
@@ -131,6 +131,7 @@ ctl = '''<div class="anim" id="p1learn">
 ol = '<ol class="anim-steps" id="lrnSteps">\n' + "\n".join(f'    <li{ON if i == 2 else ""}><b>第 {i + 1} 步　{t}。</b>{d}</li>' for i, (t, d) in enumerate(steps)) + '\n  </ol>'
 sp, sm = L["sum_plus_before"], L["sum_minus_before"]
 detail = (f'<details class="note"><summary>圖 3 的細節</summary>'
+          f'<p>迴避型也會被削嗎：會，只是很少。懲罰時 97 顆 MBON 裡 {L["n_mbon_da_pos"]} 顆收到多巴胺：趨近型 {L["da_plus_n"]} 顆全收到，平均 {L["da_plus_mean"]}（滿額是 0.5）；迴避型 {L["da_minus_n"]} 顆裡 {L["da_minus_pos"]} 顆收到，但平均只有 {L["da_minus_mean"]}；中位數 {L["da_minus_median"]}，約是趨近型中位數（{L["da_plus_median"]}）的百分之一。所以「亮的 KC ＋ 收到多巴胺」這個條件，兩型的連結幾乎都滿足，差別在削多少：趨近型的連結被削得多，迴避型的只削一點點。第 4 節「作者的標記就是這樣定的」那段的 97%／3%，講的就是這個量的比例，不是「只有一部分 MBON 收到」。</p>'
           f'<p>為什麼只動到 {L["n_links_cut"]} 條：一顆 KC 只連到少數幾顆 MBON，72 顆亮的 KC 一共連出 {L["n_links_kc_lit"]} 條，其中 {L["n_links_cut"]} 條通往收到多巴胺的 MBON。最多減 {L["cut_max"]} ＝ 0.05 × KC 活動 1 × 多巴胺 0.5：出現在最亮的 KC（活動 1）通往只接 PPL1 的 MBON（多巴胺是滿的 0.5）的連結上。</p>'
           f'<p>為什麼好惡值往負走：好惡值＝加分堆 − 扣分堆。學之前加分堆 {sp:.3f}、扣分堆 {sm:.3f}；學之後加分堆 {L["sum_plus_after"]:.3f}、扣分堆 {L["sum_minus_after"]:.3f}。懲罰多巴胺多半送到趨近型，所以加分堆少得多、扣分堆幾乎不動，相減就變小。</p>'
           f'<p>停牌、加倍為什麼也跟著降：削弱的是「亮的 KC → MBON」這些連結本身，不是「要牌」這個動作。停牌的 72 顆 KC 有 {L["kc_shared_hit_stand"]} 顆和要牌相同、加倍有 {L["kc_shared_hit_double"]} 顆，這些 KC 的連結被削弱了，停牌、加倍算好惡值時也會用到。共用得少，所以降得少。</p>'
