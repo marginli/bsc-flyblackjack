@@ -1,0 +1,14 @@
+{
+ "first": -0.2585,
+ "last": -0.15025,
+ "random": -0.44475,
+ "p_first": 0.2863,
+ "p_last": 0.0304,
+ "greedy_first": -0.184,
+ "greedy_last": -0.141,
+ "if_greedy_unchanged": -0.192,
+ "total_gain": 0.108,
+ "gain_from_less_random": 0.067,
+ "gain_from_better_greedy": 0.041,
+ "share_less_random_pct": 62
+}
