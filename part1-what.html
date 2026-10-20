@@ -47,7 +47,7 @@
     <tr><td>③ 輸入編碼</td><td>牌面（自己的手牌配莊家翻開的那張牌）怎麼變成神經元的輸入</td><td>人為設定</td></tr>
     <tr><td>④ 讀出規則</td><td>哪些神經元的活動、怎麼換成「要牌」「停牌」或「加倍」（21 點裡玩家能做的三個動作，第 3 節圖 2 前的「先懂這手牌」解釋）</td><td>人為設定</td></tr>
   </table>
-  <p>另外還有一條<b>學習規則</b>：它會調整零件 ① 裡某一層連結的強弱。層：兩群神經元之間同一方向的全部連結算一層，第 2 節列出留下的四層。它不動量到的突觸數，動的是乘在連結上的一個係數，這個係數第 3 節起叫「增益」。它不算第五個零件，第 4 節講，第 6 節總表把它另列一列。「其餘三個是人接上去的」說得略粗：零件 ④ 裡有一個叫「標記」的設定是一半資料、一半人設，第 4 節講；第 6 節的總表逐列標明。</p>
+  <p>另外還有一條<b>學習規則</b>：它會調整零件 ① 裡某一層連結的強弱。層：兩群神經元之間同一方向的全部連結算一層，第 2 節列出留下的四層。它不動量到的突觸數，動的是乘在連結上的一個係數，這個係數第 3 節起叫「增益」。它不算第五個零件，第 4 節講，第 6 節總表把它另列一列。</p>
   </div>
 
   <div class="plain"><b>白話：</b>連結體像一張電路板的佈線圖。佈線圖是真的量出來的，但這塊板子要接什麼電源（輸入）、從哪個接腳讀訊號（讀出）、每個零件的電氣特性是什麼（方程式），都是做模型的人決定的。所以看到「果蠅大腦會學 21 點」的示範，第一個要問的是：<b>四個零件裡，哪幾個是資料、哪幾個是人選的。</b></div>
@@ -86,7 +86,7 @@
   <p>PAM 316 顆對 PPL1 16 顆，差二十倍，是果蠅解剖本身的事：PPL1 分 8 型，每一型左右腦各只有一顆；PAM 分 15 型，每一型是一小群長得幾乎一樣的細胞（型：資料集替長得一樣、接線一樣的細胞取的同一個名字）。顆數差這麼多會不會讓懲罰訊號太弱，第 4 節末尾回答。</p>
   
   <p><b>留下的四層連結。</b>PN→KC 7,182 條、KC→MBON 18,183 條、DAN→MBON 3,123 條、MBON→MBON 1,606 條，每條的突觸數照連結體。</p>
-  <p><b>不收的連結。</b>KC 之間的連結作者刻意不收，理由寫在他的程式註解裡，分兩句；本頁再補一個。第一，資料裡 KC 之間有六十幾萬條連結，幾乎全是只有一個突觸的，作者把它們當成不可靠的連結。第二，真實果蠅裡讓 KC 保持稀疏（稀疏：同一時間只有少數 KC 在活動）的是另一顆叫 APL 的抑制神經元，不是 KC 之間的連結；作者的意思是這些連結在真果蠅裡的角色不是壓低 KC，而模型裡壓低 KC 這件事已經用規則代替了（第 3 節的「只留最高的 6%」），所以不需要它們。第三（本頁補的）：如果收進來，活化的 KC（亮的 KC；第 3 節起都用「亮」）會沿這些連結再去推動其他 KC、改變亮哪幾顆，但第 3 節的式子裡亮幾顆由規則定死、亮哪幾顆只看 PN 推得多高，沒有「KC 推 KC」這一項，這層連結沒有地方可用。為什麼不把 APL 也切進來、而用規則代替，作者沒說。資料裡四群之間其他方向也有連結（KC→DAN、DAN→KC、MBON→DAN、MBON→KC、PN→MBON 都有），作者一樣沒收；其中接進 DAN 的那兩種用不到，因為模型裡 DAN 的活動不是算出來的、是輸贏時直接給的（第 3、4 節），其餘幾種不收的理由作者沒寫。</p>
+  <p><b>不收的連結。</b>KC 之間的連結作者刻意不收，理由寫在他的程式註解裡，分兩句；本頁再補一個。第一，資料裡 KC 之間有六十幾萬條連結，幾乎全是只有一個突觸的，作者把它們當成不可靠的連結。第二，真實果蠅裡讓 KC 保持稀疏（稀疏：同一時間只有少數 KC 在活動）的是另一顆叫 APL 的抑制神經元，不是 KC 之間的連結；而 APL 的作用模型裡已經用一條規則代替了（第 3 節的「只留最高的 6%」），所以留下 KC 之間的連結對稀疏沒有幫助。第三（本頁補的）：如果收進來，活化的 KC（亮的 KC；第 3 節起都用「亮」）會沿這些連結再去推動其他 KC、改變亮哪幾顆，但第 3 節的式子裡亮幾顆由規則定死、亮哪幾顆只看 PN 推得多高，沒有「KC 推 KC」這一項，這層連結沒有地方可用。為什麼不把 APL 也切進來、而用規則代替，作者沒說。資料裡四群之間其他方向也有連結（KC→DAN、DAN→KC、MBON→DAN、MBON→KC、PN→MBON 都有），作者一樣沒收；其中接進 DAN 的那兩種用不到，因為模型裡 DAN 的活動不是算出來的、是輸贏時直接給的（第 3、4 節），其餘幾種不收的理由作者沒寫。</p>
   <p><b>README 與檔案的數字對不上。</b>上面四個連結數是切出來的檔案裡數出來的，與作者另外存進 repo 的一份清點檔（切完程式自動寫下細胞數與連結數）相同；但作者 README 正文寫的 PN→KC 22,586 條、KC→MBON 61,210 條和檔案裡的 7,182、18,183 對不上。模型實際讀進去的是檔案，本頁與後面各 PART 用的都是檔案裡的數字；差在哪、為什麼，<a href="part3-repro.html#s3">PART 3 第 3 節</a>會講。</p>
 
   <p class="figsrc">細胞數與連結數出自 <code>out/blackjack/logs/bj2_extract_run1.log</code> 與作者的紀錄檔 <code>out/upstream/blackjack_mb_manifest_committed.json</code>。</p>
@@ -102,7 +102,8 @@
   <span class="sub">Σ 讀作「加總」：Σ<sub>KC</sub>（…）就是把每顆 KC 的那一項算出來再全部加起來，和第一條的「總和」是同一件事。權重一律是突觸數除以總數，而且每一層各自除：KC→MBON 的權重是那條連結的突觸數除以該 MBON 從全部 KC 收到的突觸總數，MBON→MBON 那層另外除、DAN→MBON 那層也另外除，所以每顆神經元在每一層的輸入權重各自加起來是 1。增益是第 4 節會變的那個數，起始是 1。MBON 那一式分兩步算：先算 KC 那一項得到每顆 MBON 的初步活動，再把這些初步活動經 MBON→MBON 接線加權加回來，只加一次，不反覆。</span></div>
 
   <p>多巴胺神經元（DAN）不在這三條式子裡：模型不算它們的活動，一手牌輸或贏時直接把懲罰群或獎賞群整群當成在放多巴胺。第 2 節的 DAN→MBON 那層接線只在第 4 節的學習規則裡用到，決定多巴胺送得到哪些 MBON。</p>
-  <div class="plain"><b>白話：</b>一種氣味進來，1,200 顆 KC 裡只有 72 顆「亮」（亮＝活化＝活動量不是 0，本頁三個詞通用），哪 72 顆由氣味決定——這就是這種氣味的代碼，換一種氣味就換一組。「只留最高的 6%」是作者用一個固定比例代替真實果蠅裡負責壓抑其他 KC 的那顆抑制神經元（APL），是人為設定。亮的 KC 沿著連結體量到的接線推動 97 顆 MBON；每顆 MBON 帶一個標記，趨近型加分、迴避型扣分，加總就是<b>好惡值</b>：正代表想靠近，負代表想躲。21 點裡的「氣味」是輸入：把這一手的牌面和一個候選動作合起來算成一種氣味（第 5 節講怎麼合）。做一個決定時，同一手牌配要牌、配停牌、配加倍，各送進去一次，是三種只差在動作那部分的氣味，各得一個好惡值，果蠅選最高的那個。權重裡沒有正負號：連結體只量到突觸數、量不到一條連結是推高還是壓低下游（資料的限制），作者選擇四層連結全部當正的（人設；正＝只會推高下游的活動；模型裡沒有任何抑制性連結，唯一的壓抑是「只留最高 6%」那條規則），「往正走還是往負走」由 MBON 的標記承擔。</div>
+  <div class="plain"><b>白話：</b>一種氣味進來，1,200 顆 KC 裡只有 72 顆「亮」（亮＝活化＝活動量不是 0，本頁三個詞通用），哪 72 顆由氣味決定——這就是這種氣味的代碼，換一種氣味就換一組。「只留最高的 6%」是作者用一個固定比例代替真實果蠅裡負責壓抑其他 KC 的那顆抑制神經元（APL），是人為設定。亮的 KC 沿著連結體量到的接線推動 97 顆 MBON；每顆 MBON 帶一個標記，趨近型加分、迴避型扣分，加總就是<b>好惡值</b>：正代表想靠近，負代表想躲。21 點裡的「氣味」是輸入：把這一手的牌面和一個候選動作合起來算成一種氣味（第 5 節講怎麼合）。做一個決定時，同一手牌配要牌、配停牌、配加倍，各送進去一次，是三種只差在動作那部分的氣味，各得一個好惡值，果蠅選最高的那個。</div>
+  <div class="plain"><b>白話：連結為什麼沒有負的。</b>連結體只量到突觸數，量不到一條連結是推高還是壓低下游的活動（資料的限制），所以作者把四層連結全部當成推高（人設）。模型裡因此沒有壓低別人的連結，唯一的壓抑是「只留最高 6%」那條規則；要讓好惡值往負走，只能靠 MBON 的標記。</div>
 
 <!-- anim:start -->
   <p><b>先懂這手牌（沒玩過 21 點的人看這段；第 5 節有作者簡化的幾條）。</b>莊家：發牌、和你對賭的那一方（賭場）；一手 21 點只有你和莊家兩方比。一手牌的時間線：押一注（注：賭注的單位）→ 你拿兩張、莊家拿兩張但只翻開一張給你看（明牌）→ 你做決定（要牌、停牌或加倍，下面解釋），可以重複好幾次 → 你停了之後莊家補牌 → 比大小結算。點數：2 到 10 照面值，J、Q、K 算 10，A 算 1 或 11（哪個對你有利算哪個）；手上有 A 算成 11 而沒爆的叫軟手，其餘叫硬手；超過 21 叫爆牌、直接輸。三個動作：要牌 ＝ 再抽一張，沒爆就再決定一次；停牌 ＝ 不抽了；加倍 ＝ 只在第一個決定（手上還只有發的兩張）能選，再押一注、只再發你一張就強制停牌，輸贏都算兩注。莊家補牌：翻開蓋牌，不到 17 點一定抽、到了就停；莊家爆了而你沒爆就是你贏。結算：贏了淨賺一注、輸了賠一注、平手原注拿回。</p>
@@ -2211,7 +2212,7 @@
     <li class="on"><b>第 5 步　加總成好惡值。</b>每顆 MBON 乘它的標記再全部加起來。圖上 MBON 依標記排成兩堆：上面 56 顆 +1（趨近型）、下面 41 顆 −1（迴避型）。加分堆 1.618、扣分堆 1.375，相減得到配「要牌」的好惡值 0.243。</li>
     <li><b>第 6 步　三個動作各算一次，選最高。</b>同一手牌配停牌、配加倍再各走一遍步驟 1 到 5：PN 只換「動作」那組。三個好惡值：要牌 0.2432、停牌 0.1681、加倍 0.0185，選最高的要牌。用上面的按鈕切換三個動作，看 PN、KC、MBON 怎麼跟著換；細節在六步下面的「第 6 步的細節」。</li>
   </ol>
-  <details class="note"><summary>第 6 步的細節</summary><p>PN 怎麼換：不換的四組共 68 顆，其中被兩組同時選中的只算一次，是 65 顆，加上要牌與停牌的動作組碰巧撞到的 1 顆，所以要牌與停牌亮的 PN 有 66 顆相同。</p><p>KC 為什麼幾乎全換（72 顆裡只有 12 顆相同）：動作那組乘了 1.3，是推得最用力的一組，換動作等於換掉最強的 36 顆輸入，每顆 KC 收到的總量都跟著動，前 72 名的名單就大洗牌；作者要的正是「三種氣味只差在動作、但代碼差很多」。</p><p>這一手的後續：模型有時會不看好惡值、隨機選一個動作（第 5 節叫探索），實跑裡這一手沒有，是照好惡值選的。接著抽到 6，爆牌，輸一注，懲罰多巴胺送出去（第 4 節）。基本策略（賭場數學算出來的公開最佳打法表，第 5 節）在 20 點該停牌；沒學過的果蠅在 20 點還要牌，第 5 節會解釋。</p></details>
+  <details class="note"><summary>第 6 步的細節</summary><p>PN 怎麼換：不換的四組共 68 顆，其中被兩組同時選中的只算一次，是 65 顆，加上要牌與停牌的動作組碰巧撞到的 1 顆，所以要牌與停牌亮的 PN 有 66 顆相同。</p><p>KC 為什麼幾乎全換（72 顆裡只有 12 顆相同）：動作那組乘了 1.3，是推得最用力的一組，換動作等於換掉最強的 36 顆輸入，每顆 KC 收到的總量都跟著動，前 72 名的名單就大洗牌；作者要的正是「三種氣味只差在動作、但代碼差很多」。</p><p>這一手的後續：模型有時會不看好惡值、隨機選一個動作（第 5 節叫探索），實跑裡這個決定沒有亂選，是照好惡值選的。接著抽到 6，爆牌，輸一注，懲罰多巴胺送出去（第 4 節）。基本策略（賭場數學算出來的公開最佳打法表，第 5 節）在 20 點該停牌；沒學過的果蠅在 20 點還要牌：它幾乎每格都選要牌，原因在第 5 節「未訓練的對照值」那段。</p></details>
   <p class="anim-cap"><b>圖 2　三條式子走一遍：第 1 手的第一個決定（硬 20 對莊家 8、前兩張）。</b>按「上一步」「下一步」一步一步走，每一步的說明在圖下。<span class="figsrc">例子出自一次正常的訓練（有學習、有探索，第 5 節叫它完整模型）、打牌種子 0（種子：給亂數產生器的起始數字，第 5 節講）的第 1 手；因為是整個訓練的第一個決定、增益還全是 1，不必重放整段訓練，直接用作者的模型就能重算每一欄，三個好惡值與 PART 5 錄下的實跑相同。PN、KC、MBON 全部畫出，不是示意。沒有 JavaScript 時看到的是第 5 步配「要牌」的靜態圖。數字由 <code>scripts/anim_data.py</code> 用作者的 <code>flybrain/mb/model.py</code> 算出，存在 <code>out/blackjack/anim_data.json</code>；圖由 <code>scripts/make_anim.py</code> 產生。</span></p>
 </div>
 <script>
@@ -2280,26 +2281,1679 @@
   <h2 id="s4"><span class="pt">4</span>學習規則：多巴胺只會削弱</h2>
 
   <p><b>學習規則只有一條。</b>某顆 KC 正在活化、而且它連到的 MBON 同一時刻收到多巴胺，這條 KC→MBON 連結就變弱。只會變弱，不會變強：下面的「回復」最多回到起始的 1，不會超過；「不會變強」指不會比起始強。變的不是連結體量到的突觸數，而是乘在每條 KC→MBON 連結上的一個<b>增益</b>：起始是 1，收到「KC 活化＋多巴胺」就往下掉、最低到 0；另外每「呈現」一次都往 1 回復一點點，所以沒再被削弱的連結會慢慢復原。整個模型裡只有 KC→MBON 這一層會變，PN→KC、DAN→MBON、MBON→MBON 全部固定。</p>
-  <p><b>什麼叫呈現。</b>一手牌結束後，把這手裡的一個情境（牌面配動作）重新送進蕈狀體一次，就是一次呈現（第 5 節「學習」那段會講）；選動作時算好惡值不算呈現。回復每次呈現都發生，不管那一次有沒有多巴胺。21 點裡每次呈現都帶多巴胺（第 5 節），差別在各顆 MBON 分到多少：分到 0 的 MBON，它的輸入連結不削弱、但照樣回復。作者另外三個實驗裡有不帶多巴胺的呈現（例如只給氣味不電擊），那時只回復。</p>
+  <p><b>什麼叫呈現。</b>把一個輸入送進蕈狀體走一遍 PN → KC → MBON，而且這一遍允許增益改變，叫一次<b>呈現</b>。21 點裡，呈現只發生在一手牌結束之後：這手牌做過幾個決定，就把每個決定當時的牌面配上當時選的動作各送進去一次（第 5 節「學習」那段）。選動作時替三個動作各算一次好惡值，走的是同一條路，但增益不准變，所以不算呈現。</p>
 
   <div class="formula">增益 ← 增益 − 學習率 × KC 活動 × 這顆 MBON 收到的多巴胺<br>增益 ← 增益 ＋ 回復速度 × (1 − 增益)<br><span class="sub">「這顆 MBON 收到的多巴胺」是兩個數的乘積。第一個是懲罰或獎賞的強度（第 5 節：輸贏 1 注是 0.5）。第二個是比例：分子是這顆 MBON 從被觸發的那群多巴胺神經元（給了懲罰或獎賞訊號的那群）收到的突觸數，分母是它收到的全部多巴胺突觸數；這個比例由 DAN→MBON 的接線決定。「←」讀作「更新為」。多巴胺神經元沒連到的 MBON，這一項是 0，它的輸入連結就不會變。</span></div>
+  <p><b>每次呈現，上面兩行各做什麼。</b>第二行（回復）每次呈現都做。第一行（削弱）要兩個條件同時成立才有作用：連結那一端的 KC 這次亮著，而且這顆 MBON 收到的多巴胺不是 0。例子：一手牌輸了，送懲罰多巴胺；懲罰群接到的 MBON，從這次亮的 72 顆 KC 連過來的連結被削弱（削多少看這顆 MBON 的 PPL1 比例，比例小的只削一點）、也回復一點點，其他 KC 連過來的只回復；懲罰群沒接到的 3 顆 MBON（PPL1 接到 97 顆裡的 94 顆，數字在本節末尾的補充），連結全都不削弱、只回復。平手那手不送多巴胺，作者也乾脆不呈現，所以 21 點裡沒有「呈現了卻沒有多巴胺」的情況；作者另外三個實驗有（例如只給氣味、不電擊），那種呈現只回復。回復是往 1 拉：增益已經是 1 的連結，回復算了也不變。</p>
 
-  <p><b>多巴胺的兩個方向。</b>每顆 MBON 帶一個固定標記：＋1（趨近型）或 −1（迴避型）。下面這段是作者定這個標記的理由；21 點裡沒有電擊，這裡借果蠅實驗室最常用的例子（給氣味同時電擊，果蠅學會躲那種氣味；第 7 節的氣味制約）走一遍，因為它最短。給氣味 A，A 的那幾顆 KC 活化。同時電擊，懲罰群多巴胺神經元（PPL1）放出多巴胺。PPL1 只連到一部分 MBON，所以只有「A 的 KC → 這部分 MBON」的連結變弱。下次再聞到 A，這部分 MBON 變安靜，其他 MBON 不變。果蠅要「學會怕 A」，A 的好惡值必須往負走。總和要下降，變安靜的那幾顆 MBON 原本就得是加分的那種，所以它們的標記必須是＋1。結論：<b>被懲罰多巴胺管的 MBON，就是趨近型。</b>（這是把情況理想化來走，真實接線沒這麼乾淨，下面會說。）電擊不是按下「躲」的按鈕，而是把「去」的按鈕變鈍。獎賞群（PAM）反過來：它管的 MBON 是迴避型，獎賞把「躲」的按鈕變鈍，總和往正走。</p>
+  <p><b>多巴胺的兩個方向。</b>每顆 MBON 帶一個固定標記：＋1（趨近型）或 −1（迴避型）。下面這段是作者定這個標記的理由；21 點裡沒有電擊，這裡借果蠅實驗室最常用的例子（給氣味同時電擊，果蠅學會躲那種氣味；第 7 節的氣味制約）走一遍，因為它最短。先把接線理想化：假設 PPL1 只連到一部分 MBON（實際是 97 顆裡的 94 顆，下面兩段會講）。給氣味 A，A 的那幾顆 KC 活化。同時電擊，懲罰群多巴胺神經元（PPL1）放出多巴胺。PPL1 只連到一部分 MBON，所以只有「A 的 KC → 這部分 MBON」的連結變弱。下次再聞到 A，這部分 MBON 變安靜，其他 MBON 不變。果蠅要「學會怕 A」，A 的好惡值必須往負走。總和要下降，變安靜的那幾顆 MBON 原本就得是加分的那種，所以它們的標記必須是＋1。結論：<b>被懲罰多巴胺管的 MBON，就是趨近型。</b>（這是把情況理想化來走，真實接線沒這麼乾淨，下面會說。）電擊不是按下「躲」的按鈕，而是把「去」的按鈕變鈍。獎賞群（PAM）反過來：它管的 MBON 是迴避型，獎賞把「躲」的按鈕變鈍，總和往正走。</p>
 
-  <p><b>作者的標記就是這樣定的。</b>每顆 MBON 數它收到的多巴胺突觸，PPL1 多於 PAM 的標＋1 趨近，PAM 多於 PPL1 的標 −1 迴避，得到 56 顆趨近、41 顆迴避。兩群一樣多的情況程式判給迴避型，實際上 97 顆沒有剛好一樣多的。同時接到兩群的 MBON，獎賞與懲罰來的時候兩邊都會被削弱，只是少的那一邊比例小：連結體原本的接線（PART 4 會打亂它）裡，一次懲罰送出的多巴胺有 97% 進了標 +1 的 MBON、只有 3% 進了標 −1 的；一次獎賞送出的有 93% 進了標 −1 的。所以「同時接兩群」的那一小部分影響很小。這兩個百分比是 PART 4 第 3 節算的：一次懲罰給每顆 MBON 的量是強度乘以它那個「來自 PPL1 的比例」（本節開頭），把 97 顆的量加總，看落在標 +1 那些的佔幾成。</p>
-  <p><b>為什麼主要接懲罰訊號的反而叫趨近型。</b>看起來相反，是因為「誰管它」和「它做什麼」是兩件事：懲罰訊號的工作就是把趨近輸出關掉。真實接線沒有上一段的推導那麼乾淨：推導假設 PPL1 只連到一部分 MBON，實際上它接到 97 顆裡的 94 顆（數字在本節末尾的補充），幾乎每顆都連，差別在各顆收到的比例高低很多。所以作者不是用「有沒有連」、而是用「哪一群送來的突觸多」來定標記，97%／3% 就是這樣定出來的結果。</p>
+  <p><b>作者的標記就是這樣定的。</b>每顆 MBON 數它收到的多巴胺突觸，PPL1 多於 PAM 的標＋1 趨近，PAM 多於 PPL1 的標 −1 迴避，得到 56 顆趨近、41 顆迴避。兩群一樣多的情況程式判給迴避型，實際上 97 顆沒有剛好一樣多的。大多數 MBON 兩群都接（PPL1 接到 94 顆、PAM 接到 77 顆，本節末尾的補充），所以懲罰來時、獎賞來時，同一顆 MBON 都可能被削弱；但每顆收到的多巴胺大多來自其中一群：連結體原本的接線（PART 4 會打亂它）裡，一次懲罰送出的多巴胺有 97% 進了標 +1 的 MBON、只有 3% 進了標 −1 的；一次獎賞送出的有 93% 進了標 −1 的。所以送到「另一型」的那一小部分影響很小。這兩個百分比是 PART 4 第 3 節算的：一次懲罰給每顆 MBON 的量是強度乘以它那個「來自 PPL1 的比例」（本節開頭），把 97 顆的量加總，看落在標 +1 那些的佔幾成。</p>
+  <p><b>為什麼主要接懲罰訊號的反而叫趨近型。</b>看起來相反，是因為「誰管它」和「它做什麼」是兩件事：懲罰訊號的工作就是把趨近輸出關掉。真實接線沒有上一段的推導那麼乾淨：推導假設 PPL1 只連到一部分 MBON，實際上它接到 97 顆裡的 94 顆（數字在本節末尾的補充），幾乎每顆都連，差別在各顆收到的比例高低很多。所以作者不是用「有沒有連」、而是用「哪一群送來的突觸多」來定標記。97%／3% 是標記定完之後回頭算的，用來確認這樣定的標記和多巴胺實際的去向大致一致，不是定標記的依據。</p>
   <p><b>這個標記哪一半是資料、哪一半是人設。</b>上面的推導靠兩個前提：「多巴胺只削弱」和「電擊要讓好惡值下降」。這兩個前提是果蠅學習研究的文獻結論，連結體裡量不到。所以：每顆 MBON 收到 PPL1 與 PAM 各多少突觸是連結體數出來的（資料）；「PPL1 多的就是趨近型」這條對應規則是照文獻定的（人設）。<a href="part4-checks.html#s5">PART 4 的第 4 項檢查（代號 X4）</a> 會拿它去對實驗文獻。</p>
   <p><b>補充：PPL1 只有 16 顆，懲罰訊號會不會太弱？</b>不會，因為這個模型裡訊號的強度是輸贏時給的固定數，不是顆數加出來的。一手牌輸了就給一個固定數（第 5 節），每顆 MBON 收到的量是這個數乘以它那個「來自 PPL1 的比例」；突觸數會透過這個比例進來，但顆數（16 對 316）不會；而 PPL1 的突觸並不少：兩群都左右對稱（PAM 每側 158 顆、PPL1 每側 8 顆），PPL1 送到 MBON 的突觸共 11,070 個、平均每顆 692 個，PAM 共 28,546 個、平均每顆 90 個，PPL1 一顆抵 PAM 七、八顆，而且 97 顆 MBON 裡 PPL1 接到 94 顆、PAM 接到 77 顆。上面定標記時比的就是這兩群送來的突觸數，不是顆數。
   <span class="figsrc">兩群的型數、每側顆數與送到 MBON 的突觸數由 <code>scripts/dan_counts.py</code> 從 MaleCNS 的神經元表與突觸矩陣數出，存在 <code>out/blackjack/dan_counts.json</code>。</span></p>
 
-  <p><b>兩個作者設定的數。</b>學習率（一次「KC 活化＋多巴胺」把增益砍掉多少）與回復速度（每呈現一次，增益往 1 回復多少）。21 點用的是學習率 0.05、回復速度 0.00005；作者在氣味制約實驗（第 7 節簡介）用的是 0.55 與 0.012，21 點每呈現一次回復的量只有制約那組的 240 分之一（0.012 ÷ 0.00005 ＝ 240），削弱過的連結要很多次呈現才會回復。回復速度放慢的理由作者寫在程式註解裡：照制約那組設，一個牌面的教訓在下次遇到同一個牌面之前就被抹掉了，只剩「要牌常常輸」這種全面的教訓。學習率為什麼也從 0.55 降到 0.05，作者沒有說明。</p>
+  <p><b>兩個作者設定的數。</b>學習率（一次「KC 活化＋多巴胺」把增益砍掉多少）與回復速度（每呈現一次，增益往 1 回復多少）。21 點用的是學習率 0.05、回復速度 0.00005；作者在氣味制約實驗（第 7 節簡介）用的是 0.55 與 0.012，21 點每呈現一次回復的量只有制約那組的 240 分之一（0.012 ÷ 0.00005 ＝ 240），削弱過的連結要很多次呈現才會回復。回復速度放慢的理由作者寫在程式註解裡：照制約那組設，一個牌面的教訓在下次遇到同一個牌面之前就被抹掉了，只剩「要牌常常輸」這種全面的教訓（不分牌面、對所有局面都成立的偏好；第 5 節「學習」那段有例子）；為什麼全面的那個留得下來，作者沒有說明。學習率為什麼也從 0.55 降到 0.05，作者沒有說明。</p>
 
+  <p><b>整條規則走一遍。</b>下面圖 3 接著圖 2 的那一手：硬 20 對 8 選了要牌、爆牌輸了，看一次呈現怎麼改動連結、好惡值怎麼跟著變。</p>
+<!-- learn:start -->
+<div class="anim" id="p1learn">
+  <div class="anim-ctl">
+    <button type="button" class="anim-btn" id="lrnPrev">← 上一步</button>
+    <span class="anim-step" id="lrnStep">第 3 步／5</span>
+    <button type="button" class="anim-btn" id="lrnNext">下一步 →</button>
+  </div>
+<svg class="anim-svg" viewBox="0 0 960 580" role="img" aria-labelledby="lrnTitle" xmlns="http://www.w3.org/2000/svg">
+<title id="lrnTitle">第 1 手輸了之後的一次學習：72 顆亮的 KC、每顆 MBON 收到的多巴胺、MBON 活動與它減少的量</title>
+<text id="lrnHead" x="24" y="34" font-size="17" font-weight="700" fill="#1b2733">第 3 步　削弱</text>
+<text x="24" y="58" font-size="13" fill="#5a6b7b">第 1 手：硬 20 對莊家 8 選了要牌 → 抽到 6 爆牌 → 輸一注 → 懲罰強度 0.5</text>
+<text x="115" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">KC　1,200 顆</text>
+<text x="350" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">收到的多巴胺</text>
+<text x="510" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">MBON 活動　97 顆</text>
+<text x="700" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">活動減少的量 ×50</text>
+<text x="850" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">好惡值</text>
+<g id="lrnLines" stroke="#dc2626" stroke-width="0.6" stroke-opacity="0.4">
+<line x1="40" y1="117" x2="450" y2="441.7"/>
+<line x1="120" y1="117" x2="450" y2="336.7"/>
+<line x1="165" y1="117" x2="450" y2="198.1"/>
+<line x1="65" y1="122" x2="450" y2="433.3"/>
+<line x1="155" y1="122" x2="450" y2="193.9"/>
+<line x1="170" y1="127" x2="450" y2="336.7"/>
+<line x1="130" y1="132" x2="450" y2="235.9"/>
+<line x1="125" y1="142" x2="450" y2="219.1"/>
+<line x1="90" y1="152" x2="450" y2="261.1"/>
+<line x1="135" y1="152" x2="450" y2="508.9"/>
+<line x1="175" y1="157" x2="450" y2="181.3"/>
+<line x1="75" y1="167" x2="450" y2="114.1"/>
+<line x1="145" y1="167" x2="450" y2="391.3"/>
+<line x1="70" y1="172" x2="450" y2="223.3"/>
+<line x1="50" y1="177" x2="450" y2="378.7"/>
+<line x1="120" y1="177" x2="450" y2="492.1"/>
+<line x1="125" y1="177" x2="450" y2="391.3"/>
+<line x1="60" y1="182" x2="450" y2="114.1"/>
+<line x1="110" y1="182" x2="450" y2="466.9"/>
+<line x1="145" y1="182" x2="450" y2="114.1"/>
+<line x1="180" y1="182" x2="450" y2="294.7"/>
+<line x1="185" y1="182" x2="450" y2="479.5"/>
+<line x1="40" y1="187" x2="450" y2="378.7"/>
+<line x1="55" y1="187" x2="450" y2="181.3"/>
+<line x1="80" y1="187" x2="450" y2="114.1"/>
+<line x1="110" y1="187" x2="450" y2="336.7"/>
+<line x1="120" y1="187" x2="450" y2="214.9"/>
+<line x1="145" y1="187" x2="450" y2="437.5"/>
+<line x1="55" y1="192" x2="450" y2="391.3"/>
+<line x1="105" y1="192" x2="450" y2="433.3"/>
+<line x1="40" y1="197" x2="450" y2="118.3"/>
+<line x1="45" y1="197" x2="450" y2="437.5"/>
+<line x1="100" y1="197" x2="450" y2="189.7"/>
+<line x1="130" y1="197" x2="450" y2="378.7"/>
+<line x1="60" y1="207" x2="450" y2="374.5"/>
+<line x1="85" y1="212" x2="450" y2="210.7"/>
+<line x1="150" y1="212" x2="450" y2="445.9"/>
+<line x1="180" y1="212" x2="450" y2="177.1"/>
+<line x1="45" y1="217" x2="450" y2="214.9"/>
+<line x1="180" y1="217" x2="450" y2="181.3"/>
+<line x1="50" y1="222" x2="450" y2="290.5"/>
+<line x1="70" y1="222" x2="450" y2="189.7"/>
+<line x1="110" y1="222" x2="450" y2="181.3"/>
+<line x1="170" y1="222" x2="450" y2="391.3"/>
+<line x1="50" y1="232" x2="450" y2="252.7"/>
+<line x1="50" y1="237" x2="450" y2="374.5"/>
+<line x1="125" y1="237" x2="450" y2="177.1"/>
+<line x1="140" y1="237" x2="450" y2="378.7"/>
+<line x1="85" y1="242" x2="450" y2="391.3"/>
+<line x1="95" y1="242" x2="450" y2="391.3"/>
+<line x1="130" y1="242" x2="450" y2="261.1"/>
+<line x1="180" y1="242" x2="450" y2="437.5"/>
+<line x1="165" y1="247" x2="450" y2="181.3"/>
+<line x1="80" y1="257" x2="450" y2="374.5"/>
+<line x1="70" y1="262" x2="450" y2="437.5"/>
+<line x1="120" y1="262" x2="450" y2="277.9"/>
+<line x1="145" y1="262" x2="450" y2="185.5"/>
+<line x1="95" y1="267" x2="450" y2="135.1"/>
+<line x1="115" y1="267" x2="450" y2="114.1"/>
+<line x1="135" y1="267" x2="450" y2="437.5"/>
+<line x1="185" y1="267" x2="450" y2="219.1"/>
+<line x1="180" y1="272" x2="450" y2="189.7"/>
+<line x1="135" y1="277" x2="450" y2="114.1"/>
+<line x1="75" y1="287" x2="450" y2="160.3"/>
+<line x1="165" y1="287" x2="450" y2="135.1"/>
+<line x1="75" y1="292" x2="450" y2="437.5"/>
+<line x1="90" y1="292" x2="450" y2="177.1"/>
+<line x1="95" y1="292" x2="450" y2="151.9"/>
+<line x1="40" y1="302" x2="450" y2="235.9"/>
+<line x1="115" y1="302" x2="450" y2="156.1"/>
+<line x1="140" y1="302" x2="450" y2="391.3"/>
+<line x1="80" y1="307" x2="450" y2="374.5"/>
+</g>
+<g id="lrnKC" fill="#1b2733">
+<circle cx="40" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="112" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="117" r="1.8" fill-opacity="0.68"/>
+<circle cx="45" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="117" r="1.8" fill-opacity="0.57"/>
+<circle cx="125" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="117" r="1.8" fill-opacity="0.75"/>
+<circle cx="170" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="117" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="122" r="1.8" fill-opacity="0.6"/>
+<circle cx="70" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="122" r="1.8" fill-opacity="0.57"/>
+<circle cx="160" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="122" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="127" r="1.8" fill-opacity="0.59"/>
+<circle cx="175" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="127" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="132" r="1.8" fill-opacity="0.6"/>
+<circle cx="135" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="132" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="137" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="142" r="1.8" fill-opacity="0.64"/>
+<circle cx="130" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="142" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="147" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="152" r="1.8" fill-opacity="0.61"/>
+<circle cx="95" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="152" r="1.8" fill-opacity="0.71"/>
+<circle cx="140" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="152" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="157" r="1.8" fill-opacity="0.59"/>
+<circle cx="180" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="157" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="162" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="167" r="1.8" fill-opacity="0.64"/>
+<circle cx="80" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="167" r="1.8" fill-opacity="0.63"/>
+<circle cx="150" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="167" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="172" r="1.8" fill-opacity="0.73"/>
+<circle cx="75" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="172" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="177" r="1.8" fill-opacity="0.63"/>
+<circle cx="55" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="177" r="1.8" fill-opacity="0.58"/>
+<circle cx="125" cy="177" r="1.8" fill-opacity="0.64"/>
+<circle cx="130" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="177" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="182" r="1.8" fill-opacity="0.69"/>
+<circle cx="65" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="182" r="1.8" fill-opacity="0.63"/>
+<circle cx="115" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="182" r="1.8" fill-opacity="0.64"/>
+<circle cx="150" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="182" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="182" r="1.8" fill-opacity="0.58"/>
+<circle cx="185" cy="182" r="1.8" fill-opacity="0.62"/>
+<circle cx="40" cy="187" r="1.8" fill-opacity="0.6"/>
+<circle cx="45" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="187" r="1.8" fill-opacity="0.88"/>
+<circle cx="60" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="187" r="1.8" fill-opacity="0.57"/>
+<circle cx="85" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="187" r="1.8" fill-opacity="0.7"/>
+<circle cx="115" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="187" r="1.8" fill-opacity="0.97"/>
+<circle cx="125" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="187" r="1.8" fill-opacity="0.61"/>
+<circle cx="150" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="187" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="192" r="1.8" fill-opacity="0.58"/>
+<circle cx="60" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="192" r="1.8" fill-opacity="0.58"/>
+<circle cx="110" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="192" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="197" r="1.8" fill-opacity="0.59"/>
+<circle cx="45" cy="197" r="1.8" fill-opacity="0.67"/>
+<circle cx="50" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="197" r="1.8" fill-opacity="0.71"/>
+<circle cx="105" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="197" r="1.8" fill-opacity="0.61"/>
+<circle cx="135" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="197" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="202" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="207" r="1.8" fill-opacity="0.68"/>
+<circle cx="65" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="207" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="212" r="1.8" fill-opacity="0.71"/>
+<circle cx="90" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="212" r="1.8" fill-opacity="0.62"/>
+<circle cx="155" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="212" r="1.8" fill-opacity="0.56"/>
+<circle cx="185" cy="212" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="217" r="1.8" fill-opacity="0.97"/>
+<circle cx="50" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="217" r="1.8" fill-opacity="0.69"/>
+<circle cx="185" cy="217" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="222" r="1.8" fill-opacity="0.65"/>
+<circle cx="55" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="222" r="1.8" fill-opacity="0.66"/>
+<circle cx="75" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="222" r="1.8" fill-opacity="0.58"/>
+<circle cx="115" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="222" r="1.8" fill-opacity="0.79"/>
+<circle cx="175" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="222" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="227" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="232" r="1.8" fill-opacity="0.61"/>
+<circle cx="55" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="232" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="237" r="1.8" fill-opacity="0.79"/>
+<circle cx="55" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="237" r="1.8" fill-opacity="0.59"/>
+<circle cx="130" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="237" r="1.8" fill-opacity="0.67"/>
+<circle cx="145" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="237" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="242" r="1.8" fill-opacity="0.79"/>
+<circle cx="90" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="242" r="1.8" fill-opacity="0.84"/>
+<circle cx="100" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="242" r="1.8" fill-opacity="0.57"/>
+<circle cx="135" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="242" r="1.8" fill-opacity="0.63"/>
+<circle cx="185" cy="242" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="247" r="1.8" fill-opacity="0.66"/>
+<circle cx="170" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="247" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="252" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="257" r="1.8" fill-opacity="0.65"/>
+<circle cx="85" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="257" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="262" r="1.8" fill-opacity="0.71"/>
+<circle cx="75" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="262" r="1.8" fill-opacity="0.59"/>
+<circle cx="125" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="262" r="1.8" fill-opacity="0.57"/>
+<circle cx="150" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="262" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="267" r="1.8" fill-opacity="0.69"/>
+<circle cx="100" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="267" r="1.8" fill-opacity="0.64"/>
+<circle cx="120" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="267" r="1.8" fill-opacity="0.64"/>
+<circle cx="140" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="267" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="267" r="1.8" fill-opacity="0.95"/>
+<circle cx="40" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="272" r="1.8" fill-opacity="0.65"/>
+<circle cx="185" cy="272" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="277" r="1.8" fill-opacity="1.0"/>
+<circle cx="140" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="277" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="282" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="287" r="1.8" fill-opacity="0.61"/>
+<circle cx="80" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="287" r="1.8" fill-opacity="0.62"/>
+<circle cx="170" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="287" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="292" r="1.8" fill-opacity="0.62"/>
+<circle cx="80" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="292" r="1.8" fill-opacity="0.64"/>
+<circle cx="95" cy="292" r="1.8" fill-opacity="0.56"/>
+<circle cx="100" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="292" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="297" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="302" r="1.8" fill-opacity="0.81"/>
+<circle cx="45" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="85" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="302" r="1.8" fill-opacity="0.74"/>
+<circle cx="120" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="302" r="1.8" fill-opacity="0.61"/>
+<circle cx="145" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="302" r="1.8" fill-opacity="0.08"/>
+<circle cx="40" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="45" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="50" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="55" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="60" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="65" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="70" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="75" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="80" cy="307" r="1.8" fill-opacity="0.68"/>
+<circle cx="85" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="90" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="95" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="100" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="105" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="110" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="115" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="120" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="125" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="130" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="135" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="140" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="145" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="150" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="155" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="160" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="165" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="170" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="175" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="180" cy="307" r="1.8" fill-opacity="0.08"/>
+<circle cx="185" cy="307" r="1.8" fill-opacity="0.08"/>
+</g>
+<text id="lrnKCnote" x="40" y="330" font-size="11" fill="#8b98a5">亮的 72 顆＝「硬 20 對 8</text>
+<text id="lrnKCnote2" x="40" y="345" font-size="11" fill="#8b98a5">配要牌」的代碼（圖 2 第 3 步）</text>
+<g id="lrnDA" fill="#7c3aed">
+<rect x="300" y="112.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="116.2" width="99.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="120.4" width="87.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="124.6" width="89.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="128.8" width="95.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="133.0" width="71.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="137.2" width="90.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="141.4" width="99.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="145.6" width="97.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="149.8" width="68.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="154.0" width="95.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="158.2" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="162.4" width="98.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="166.6" width="98.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="170.8" width="97.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="175.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="179.2" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="183.4" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="187.6" width="98.4" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="191.8" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="196.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="200.2" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="204.4" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="208.6" width="98.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="212.8" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="217.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="221.2" width="89.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="225.4" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="229.6" width="98.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="233.8" width="98.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="238.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="242.2" width="85.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="246.4" width="96.7" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="250.6" width="98.6" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="254.8" width="83.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="259.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="263.2" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="267.4" width="97.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="271.6" width="80.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="275.8" width="93.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="280.0" width="99.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="284.2" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="288.4" width="98.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="292.6" width="69.7" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="296.8" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="301.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="305.2" width="99.7" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="309.4" width="72.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="313.6" width="99.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="317.8" width="97.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="322.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="326.2" width="87.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="330.4" width="96.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="334.6" width="72.8" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="338.8" width="96.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="343.0" width="100.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="347.2" width="0.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="351.4" width="1.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="355.6" width="1.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="359.8" width="2.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="364.0" width="4.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="368.2" width="0.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="372.4" width="1.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="376.6" width="0.6" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="380.8" width="4.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="385.0" width="0.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="389.2" width="1.7" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="393.4" width="0.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="397.6" width="0.9" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="401.8" width="0.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="406.0" width="0.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="410.2" width="0.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="414.4" width="8.4" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="418.6" width="13.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="422.8" width="1.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="427.0" width="0.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="431.2" width="4.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="435.4" width="0.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="439.6" width="3.6" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="443.8" width="2.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="448.0" width="0.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="452.2" width="3.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="456.4" width="0.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="460.6" width="0.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="464.8" width="1.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="469.0" width="0.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="473.2" width="1.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="477.4" width="1.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="481.6" width="2.5" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="485.8" width="5.8" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="490.0" width="3.3" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="494.2" width="9.8" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="498.4" width="19.1" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="502.6" width="9.2" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="506.8" width="25.0" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="511.0" width="4.4" height="3.2" fill-opacity="0.8"/>
+<rect x="300" y="515.2" width="16.7" height="3.2" fill-opacity="0.8"/>
+</g>
+<g id="lrnMB">
+<rect x="450" y="112.0" width="112.2" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="116.2" width="19.4" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="120.4" width="21.8" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="124.6" width="16.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="128.8" width="33.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="133.0" width="24.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="137.2" width="52.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="141.4" width="25.0" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="145.6" width="12.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="149.8" width="20.7" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="154.0" width="42.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="158.2" width="15.5" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="162.4" width="18.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="166.6" width="24.0" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="170.8" width="24.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="175.0" width="92.0" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="179.2" width="106.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="183.4" width="13.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="187.6" width="84.6" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="191.8" width="41.5" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="196.0" width="67.7" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="200.2" width="47.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="204.4" width="19.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="208.6" width="35.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="212.8" width="83.0" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="217.0" width="59.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="221.2" width="39.7" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="225.4" width="16.4" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="229.6" width="30.6" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="233.8" width="44.6" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="238.0" width="23.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="242.2" width="10.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="246.4" width="4.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="250.6" width="21.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="254.8" width="3.8" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="259.0" width="30.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="263.2" width="11.5" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="267.4" width="29.4" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="271.6" width="4.3" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="275.8" width="9.6" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="280.0" width="20.7" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="284.2" width="12.0" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="288.4" width="21.5" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="292.6" width="19.9" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="296.8" width="18.8" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="301.0" width="15.2" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="305.2" width="33.4" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="309.4" width="21.4" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="313.6" width="28.6" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="317.8" width="24.1" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="322.0" width="37.8" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="326.2" width="5.5" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="330.4" width="23.0" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="334.6" width="47.5" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="338.8" width="3.8" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="343.0" width="38.7" height="3.2" fill="#2563eb" fill-opacity="0.85"/>
+<rect x="450" y="347.2" width="31.0" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="351.4" width="21.5" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="355.6" width="20.6" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="359.8" width="20.9" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="364.0" width="33.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="368.2" width="62.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="372.4" width="103.0" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="376.6" width="120.0" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="380.8" width="18.3" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="385.0" width="18.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="389.2" width="89.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="393.4" width="16.6" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="397.6" width="16.4" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="401.8" width="22.8" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="406.0" width="24.5" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="410.2" width="27.2" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="414.4" width="19.8" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="418.6" width="45.2" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="422.8" width="14.1" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="427.0" width="40.8" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="431.2" width="40.6" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="435.4" width="110.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="439.6" width="73.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="443.8" width="28.0" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="448.0" width="27.8" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="452.2" width="22.8" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="456.4" width="23.2" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="460.6" width="24.5" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="464.8" width="58.3" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="469.0" width="48.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="473.2" width="26.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="477.4" width="27.5" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="481.6" width="26.3" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="485.8" width="5.1" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="490.0" width="36.1" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="494.2" width="31.5" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="498.4" width="30.3" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="502.6" width="40.2" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="506.8" width="44.5" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="511.0" width="18.2" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+<rect x="450" y="515.2" width="5.7" height="3.2" fill="#d97706" fill-opacity="0.85"/>
+</g>
+<g id="lrnDR" fill="#dc2626">
+<rect x="640" y="112.0" width="77.3" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="116.2" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="120.4" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="124.6" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="128.8" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="133.0" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="137.2" width="27.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="141.4" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="145.6" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="149.8" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="154.0" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="158.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="162.4" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="166.6" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="170.8" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="175.0" width="60.8" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="179.2" width="66.3" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="183.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="187.6" width="49.7" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="191.8" width="27.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="196.0" width="60.8" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="200.2" width="27.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="204.4" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="208.6" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="212.8" width="82.9" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="217.0" width="60.8" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="221.2" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="225.4" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="229.6" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="233.8" width="33.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="238.0" width="27.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="242.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="246.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="250.6" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="254.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="259.0" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="263.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="267.4" width="16.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="271.6" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="275.8" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="280.0" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="284.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="288.4" width="16.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="292.6" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="296.8" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="301.0" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="305.2" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="309.4" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="313.6" width="16.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="317.8" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="322.0" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="326.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="330.4" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="334.6" width="22.1" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="338.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="343.0" width="27.6" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="347.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="351.4" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="355.6" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="359.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="364.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="368.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="372.4" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="376.6" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="380.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="385.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="389.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="393.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="397.6" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="401.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="406.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="410.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="414.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="418.6" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="422.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="427.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="431.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="435.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="439.6" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="443.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="448.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="452.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="456.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="460.6" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="464.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="469.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="473.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="477.4" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="481.6" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="485.8" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="490.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="494.2" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="498.4" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="502.6" width="5.5" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="506.8" width="11.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="511.0" width="0.0" height="3.2" fill-opacity="0.85"/>
+<rect x="640" y="515.2" width="0.0" height="3.2" fill-opacity="0.85"/>
+</g>
+<line x1="294" y1="347.2" x2="766" y2="347.2" stroke="#8b98a5" stroke-dasharray="3 3"/>
+<text x="300" y="106" font-size="11" fill="#2563eb">上面 56 顆：標記 +1（趨近型）</text>
+<text x="300" y="531" font-size="11" fill="#d97706">下面 41 顆：標記 −1（迴避型）</text>
+<g id="lrnDecay" font-size="12" fill="#1b2733" visibility="hidden">
+<text x="770" y="150">全部 18,183 條連結</text>
+<text x="770" y="170">各往 1 拉回一點：</text>
+<text x="770" y="190">0.00005 × (1 − 增益)</text>
+<text x="770" y="214" fill="#5a6b7b">增益還是 1 的：不變</text>
+<text x="770" y="234" fill="#5a6b7b">剛被削到 0.975 的：</text>
+<text x="770" y="254" fill="#5a6b7b">拉回約 0.0000013</text>
+</g>
+<g id="lrnVal" font-size="13" fill="#1b2733" visibility="hidden">
+<text x="770" y="140" font-size="11" fill="#5a6b7b">學之前 → 學之後</text>
+<text x="770" y="170" font-weight="700">要牌　0.2432 → 0.2245</text>
+<rect x="770" y="178" width="155.6" height="8" fill="none" stroke="#8b98a5"/>
+<rect x="770" y="178" width="143.7" height="8" fill="#2563eb"/>
+<text x="770" y="234" font-weight="400">停牌　0.1681 → 0.1636</text>
+<rect x="770" y="242" width="107.6" height="8" fill="none" stroke="#8b98a5"/>
+<rect x="770" y="242" width="104.7" height="8" fill="#8b98a5"/>
+<text x="770" y="298" font-weight="400">加倍　0.0185 → 0.0138</text>
+<rect x="770" y="306" width="11.8" height="8" fill="none" stroke="#8b98a5"/>
+<rect x="770" y="306" width="8.8" height="8" fill="#8b98a5"/>
+<text x="770" y="370" font-size="12" fill="#5a6b7b">要牌仍最高</text>
+</g>
+<text x="24" y="566" font-size="12" fill="#8b98a5">KC 每顆一點、MBON 每顆一條，全部畫出。線：每顆亮的 KC 只畫它推得最用力的那一條。最右欄放大 50 倍，原尺寸看不出來。</text>
+</svg>
+  <ol class="anim-steps" id="lrnSteps">
+    <li><b>第 1 步　一手結束，重新呈現。</b>這手輸了。把這手唯一的決定「硬 20 對 8 配要牌」再送進蕈狀體一次：亮的還是圖 2 那 72 顆 KC，MBON 活動也和當時一樣。</li>
+    <li><b>第 2 步　送懲罰多巴胺。</b>輸一注，懲罰強度 0.5。每顆 MBON 收到 0.5 × 它的「來自 PPL1 的比例」：94 顆收到、3 顆是 0；97% 落在上面的趨近型。</li>
+    <li class="on"><b>第 3 步　削弱。</b>上面式子的第一行：亮的 KC 通往「收到多巴胺的 MBON」的連結，增益減掉 0.05 × KC 活動 × 多巴胺。這次動到 923 條，最多從 1 減到 0.975；其餘連結不動。下次再送同一個牌面，MBON 活動會變小，最右欄是少掉的量（放大 50 倍）。細節在下面。</li>
+    <li><b>第 4 步　回復。</b>式子的第二行：所有連結都往 1 拉回一點。增益還是 1 的不變；剛被削弱的只拉回百萬分之一左右，這一次看不出來，要累積很多次呈現才有作用。</li>
+    <li><b>第 5 步　好惡值變了。</b>被削弱的多半是趨近型（加分），所以要牌的好惡值從 0.2432 降到 0.2245。停牌、加倍也降了一點（0.1681 → 0.1636、0.0185 → 0.0138），因為它們的代碼和要牌共用十幾顆 KC。要牌仍最高，細節在下面。</li>
+  </ol>
+  <details class="note"><summary>圖 3 的細節</summary><p>為什麼只動到 923 條：一顆 KC 只連到少數幾顆 MBON，72 顆亮的 KC 一共連出 982 條，其中 923 條通往收到多巴胺的 MBON。最多減 0.025 ＝ 0.05 × KC 活動 1 × 多巴胺 0.5：出現在最亮的 KC（活動 1）通往只接 PPL1 的 MBON（多巴胺是滿的 0.5）的連結上。</p><p>為什麼好惡值往負走：好惡值＝加分堆 − 扣分堆。學之前加分堆 1.618、扣分堆 1.375；學之後加分堆 1.598、扣分堆 1.373。懲罰多巴胺多半送到趨近型，所以加分堆少得多、扣分堆幾乎不動，相減就變小。</p><p>停牌、加倍為什麼也跟著降：削弱的是「亮的 KC → MBON」這些連結本身，不是「要牌」這個動作。停牌的 72 顆 KC 有 12 顆和要牌相同、加倍有 13 顆，這些 KC 的連結被削弱了，停牌、加倍算好惡值時也會用到。共用得少，所以降得少。</p><p>一次學習改變多少：要牌只降了 0.0187，仍比停牌高 0.0609。單看這一次，下次遇到同樣的局面還是會選要牌；要多輸幾次、把差距削掉，選擇才會換。這就是為什麼一次訓練要打 30,000 手。</p><p>回復的量：0.00005 × (1 − 0.975) ＝ 0.00000125。制約實驗那組（0.012）回復得快 240 倍，所以 21 點刻意放慢，見本節「兩個作者設定的數」。</p></details>
+  <p class="anim-cap"><b>圖 3　學習規則走一遍：第 1 手輸了之後的一次呈現。</b>按「上一步」「下一步」一步一步走，每一步的說明在圖下。<span class="figsrc">例子接著圖 2：同一次訓練（打牌種子 0）的第 1 手，選了要牌、爆牌輸一注。這是整個訓練的第一次學習，學之前增益全是 1，所以每個數都能重算；學之前的三個好惡值與 PART 5 錄下的實跑相同；學之後的三個值實跑沒有錄（PART 5 只錄了前 6 手與最後 6 手的決定），是用作者這支學習程式直接算的。數字由 <code>scripts/learn_anim_data.py</code> 呼叫作者的 <code>FlyPlayer.outcome</code>（<code>flybrain/mb/blackjack.py</code>）算出，存在 <code>out/blackjack/learn_anim_data.json</code>；圖由 <code>scripts/make_learn_anim.py</code> 產生。沒有 JavaScript 時看到的是第 3 步的靜態圖。</span></p>
+</div>
+<script>
+(function(){
+  var TITLES = ["一手結束，重新呈現", "送懲罰多巴胺", "削弱", "回復", "好惡值變了"];
+  var svg = document.querySelector("#p1learn .anim-svg"); if(!svg) return;
+  var kc = svg.querySelector("#lrnKC"), da = svg.querySelector("#lrnDA"), mb = svg.querySelector("#lrnMB"), dr = svg.querySelector("#lrnDR");
+  var lines = svg.querySelector("#lrnLines"), dec = svg.querySelector("#lrnDecay"), vl = svg.querySelector("#lrnVal"), head = svg.querySelector("#lrnHead");
+  var step = 0;
+  function vis(el, on){ el.setAttribute("visibility", on ? "visible" : "hidden"); }
+  function render(){
+    vis(kc, step>=1); vis(svg.querySelector("#lrnKCnote"), step>=1); vis(svg.querySelector("#lrnKCnote2"), step>=1); vis(mb, step>=1);
+    vis(da, step>=2); vis(lines, step===3); vis(dr, step>=3); vis(dec, step===4); vis(vl, step===5);
+    head.textContent = step===0 ? "開始：第 1 手剛結束" : "第 " + step + " 步　" + TITLES[step-1];
+    document.getElementById("lrnStep").textContent = step===0 ? "開始／5" : "第 " + step + " 步／5";
+    document.getElementById("lrnPrev").disabled = step<=0;
+    document.getElementById("lrnNext").disabled = step>=5;
+    var lis = document.querySelectorAll("#lrnSteps li");
+    for(var i=0;i<lis.length;i++) lis[i].className = (i===step-1) ? "on" : "";
+  }
+  document.getElementById("lrnPrev").onclick = function(){ if(step>0){ step--; render(); } };
+  document.getElementById("lrnNext").onclick = function(){ if(step<5){ step++; render(); } };
+  render();
+})();
+</script>
+<!-- learn:end -->
   <p class="figsrc">學習規則與兩組參數出自 <code>flybrain/mb/model.py</code>（檔頭常數 LEARNING_RATE 0.55、DECAY 0.012）與 <code>flybrain/mb/blackjack.py</code>（FlyPlayer 的 lr 0.05、decay 0.00005，與檔尾註解）；56／41 出自 <code>out/blackjack/logs/bj1_extract_run1.log</code>。</p>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s5"><span class="pt">5</span>21 點實驗：規則、牌面怎麼變成氣味、怎麼選、怎麼學</h2>
 
-  <p>fly-blackjack 的 repo 裡有好幾個實驗，21 點是最後一個。它的讀出（第 1 節的零件 ④）只是一條規則：三個動作各得一個好惡值，選最高的（牌面怎麼變成氣味送進去，是零件 ③ 輸入編碼的事，下面講）。其他實驗的讀出是接在神經元後面、把活動換成動作、要訓練的小網路（小網路：一小段可調的計算，裡面有幾百個數字要靠反覆試誤調出來；21 點沒有這一段）；所以 21 點是<b>唯一既要做決策、又不用訓練讀出</b>的實驗。本課只重現這一個實驗；其他三個第 7 節簡介。</p>
+  <p>fly-blackjack 的 repo 裡有好幾個實驗，21 點是最後一個。它的讀出（第 1 節的零件 ④）只是一條規則：三個動作各得一個好惡值，選最高的（牌面怎麼變成氣味送進去，是零件 ③ 輸入編碼的事，下面講）。其他三個實驗裡，Dino 和覓食的讀出是接在神經元後面、把活動換成動作、要訓練的小網路（小網路：一小段可調的計算，裡面有幾百個數字要靠反覆試誤調出來；21 點沒有這一段）；氣味制約的選邊也用固定規則（兩個好惡值的差換成選那邊的機率），但選完就結束，不從選的結果學。所以 21 點是<b>唯一不用訓練讀出、又要從自己選的結果學習</b>的實驗。本課只重現這一個實驗；其他三個第 7 節簡介。</p>
 
   <p><b>規則。</b>一手牌怎麼進行（押注 → 發牌 → 你的決定 → 莊家補牌 → 結算）和名詞（<b>明牌</b>、<b>軟手</b>、<b>硬手</b>、爆牌、注），第 3 節圖 2 前的「先懂這手牌」已經講過，這裡不重複。作者用的是簡化的 21 點，和一般賭場不同或要特別說的幾條：</p>
   <ul>
@@ -2315,27 +3969,41 @@
   <div class="tblwrap">
   <table>
     <tr><th>特徵</th><th>有幾種值</th><th>每種值用幾顆 PN</th><th>怎麼排</th></tr>
-    <tr><td>手上點數</td><td>18（4 到 21）</td><td>26</td><td>相鄰點數共用大約一半的 PN，所以硬 15 和硬 14、硬 16 聞起來相近，學到的教訓會帶一點過去</td></tr>
+    <tr><td>手上點數</td><td>18（4 到 21）</td><td>26</td><td>相鄰點數共用大約一半的 PN，所以硬 15 和硬 14、硬 16 聞起來相近，學到的教訓會帶一點過去。這個重疊是作者刻意排的：18 個點數從同一串亂數排好的 PN 裡依序取，每往上一點往後挪約半組；亂數決定的只是用到哪些 PN</td></tr>
     <tr><td>莊家明牌</td><td>10（2 到 A）</td><td>22</td><td>同上，相鄰明牌共用一部分</td></tr>
     <tr><td>候選動作</td><td>3（要牌／停牌／加倍）</td><td>36，而且這些 PN 的活動量是其他特徵的 1.3 倍</td><td>各組獨立抽，沒有刻意共用；給最多 PN、開最強，因為要學的就是動作</td></tr>
     <tr><td>軟手或硬手</td><td>2</td><td>12</td><td>各組獨立抽，沒有刻意共用</td></tr>
     <tr><td>是不是前兩張</td><td>2</td><td>8</td><td>各組獨立抽，沒有刻意共用</td></tr>
   </table>
   </div>
-  <p>哪些 PN 分給哪個值，由一個固定的亂數種子（給電腦亂數產生器的一個起始數字；同一個數字每次抽出來的結果都一樣，所以可以重現）抽定，之後不再變。被選中的 PN 在單一特徵裡的活動量是 0.7 到 1 之間的一個固定數（也是這個編碼種子抽定的），動作那組再乘 1.3，沒被選中的是 0；一顆 PN 被兩個特徵同時選中時兩邊相加，所以活動量可以超過 1。五個特徵各自獨立從 682 顆裡抽，組與組可以撞到同一顆：實際用到 419 顆，263 顆從頭到尾活動是 0。表上「每種值用幾顆」是一個值的數，整個特徵合起來用的更多：點數 18 個值合計 269 顆、明牌 10 個值 130 顆、動作 106 顆、軟硬 24 顆、前兩張 15 顆。撞得最多的是點數與明牌（共用 55 顆）、點數與動作（38 顆），三個動作的組之間只撞到 1 顆。一顆 PN 同時屬於兩個特徵時，兩邊的活動相加（算法在 scripts/encoding_pn.py，數字在 out/blackjack/encoding_pn.json）。PN 在真果蠅裡各自對應哪種氣味沒有用到；從資料用到的只有這些 PN 各自連到哪些 KC、連幾個突觸。同一手牌配「要牌」「停牌」「加倍」是三種不同的氣味，所以每個動作各有一個好惡值。</p>
+  <p>哪些 PN 分給哪個值，由一個固定的亂數種子（給電腦亂數產生器的一個起始數字；同一個數字每次抽出來的結果都一樣，所以可以重現）抽定，之後不再變。被選中的 PN 在單一特徵裡的活動量是 0.7 到 1 之間的一個固定數（也是這個編碼種子抽定的），動作那組再乘 1.3，沒被選中的是 0；一顆 PN 被兩個特徵同時選中時兩邊相加，所以活動量可以超過 1。五個特徵各自獨立從 682 顆裡抽，組與組可以撞到同一顆：實際用到 419 顆，263 顆從頭到尾活動是 0。表上「每種值用幾顆」是一個值的數，整個特徵合起來用的更多：點數 18 個值合計 269 顆、明牌 10 個值 130 顆、動作 106 顆、軟硬 24 顆、前兩張 15 顆。撞得最多的是點數與明牌（共用 55 顆）、點數與動作（38 顆）；三個動作的組兩兩之間一共只撞到 2 顆（36 × 3 ＝ 108，扣掉重複的 2 顆就是 106）。一顆 PN 同時屬於兩個特徵時，兩邊的活動相加（算法在 scripts/encoding_pn.py，數字在 out/blackjack/encoding_pn.json）。PN 在真果蠅裡各自對應哪種氣味沒有用到；從資料用到的只有這些 PN 各自連到哪些 KC、連幾個突觸。同一手牌配「要牌」「停牌」「加倍」是三種不同的氣味，所以每個動作各有一個好惡值。</p>
 
-  <p><b>讀出規則：選好惡值最高的動作，偶爾亂選。</b>第 3 節說好惡值正代表想靠近、負代表想躲開；在這裡，一個動作的好惡值高，就是蕈狀體認為這個動作該做。大部分時候選三個候選動作裡好惡值最高的那個（只在前兩張時才有「加倍」可選）。但有一定比例的手不看好惡值、隨機亂選，叫<b>探索</b>。發牌與亂選用的亂數種子（打牌的種子）和上面編碼用的那個是分開的：換一個打牌的種子就是換一副牌、換一套亂選，PART 4 加種子換的是這一個；編碼的種子從頭到尾不變。一次訓練共打 30,000 手；剛開始 35% 的手是亂選的，每打 3,000 手減半，最低降到 3%。沒有探索，一個起步就偏好「要牌」的蕈狀體永遠不會發現「停牌」更好。</p>
+  <p><b>讀出規則：選好惡值最高的動作，偶爾亂選。</b>第 3 節說好惡值正代表想靠近、負代表想躲開；在這裡，一個動作的好惡值高，就是蕈狀體認為這個動作該做。大部分時候選三個候選動作裡好惡值最高的那個（只在前兩張時才有「加倍」可選）。但每做一個決定，都有一定機率不看好惡值、隨機亂選，叫<b>探索</b>。發牌與亂選用的亂數種子（打牌的種子）和上面編碼用的那個是分開的：換一個打牌的種子就是換一副牌、換一套亂選，PART 4 加種子換的是這一個；編碼的種子從頭到尾不變。一次訓練共打 30,000 手；剛開始每個決定有 35% 的機率亂選，每打 3,000 手減半，最低降到 3%。沒有探索，一個起步就偏好「要牌」的蕈狀體永遠不會發現「停牌」更好。</p>
 
-  <p><b>學習：一手結束才回饋。</b>一手牌結束後，贏了就送獎賞多巴胺、輸了送懲罰多巴胺、平手不送：把這手牌裡每一次「情境＋選過的動作」重新呈現一次、同時給多巴胺。選動作時替三個候選各算一次好惡值不算呈現，那時不學也不回復。所以 21 點裡一手牌有幾個決定就呈現幾次；平手的那手一次都沒有，既不學也不回復。每一次呈現，依第 4 節的學習規則，減弱的就是那個情境配那個動作的 KC→MBON 連結。輸了削弱的是趨近型 MBON 的輸入，這個情境配這個動作的好惡值就往負走、下次較不會選它；贏了反過來，往正走、下次較會選。多巴胺的強度看輸贏多少：輸贏 1 注是 0.5，加倍後輸贏 2 注是 1.0，黑傑克的 1.5 注是 0.75。一手裡的每個決定分到同樣的回饋——作者在註解裡記了一個曾經踩過的坑：原本讓最後一個決定分到最多，但爆牌那一手的最後一個決定一定是要牌、贏的那一手最後一個幾乎一定是停牌，於是「要牌＝輸、停牌＝贏」這個全面的關聯淹沒了每一種牌面各自的教訓，模型變成永遠停牌。</p>
+  <p><b>學習：一手結束才回饋。</b>一手牌結束後，贏了就送獎賞多巴胺、輸了送懲罰多巴胺、平手不送：把這手牌裡每個決定（當時的牌面配上當時選的動作）重新呈現一次、同時給多巴胺。選動作時替三個候選各算一次好惡值不算呈現，那時不學也不回復。所以 21 點裡一手牌有幾個決定就呈現幾次；平手的那手一次都沒有，既不學也不回復。每一次呈現，依第 4 節的學習規則，減弱的就是那個牌面配那個動作所點亮的 KC 通往 MBON 的連結。輸了削弱的是趨近型 MBON 的輸入，這個牌面配這個動作的好惡值就往負走、下次較不會選它；贏了反過來，往正走、下次較會選。多巴胺的強度看輸贏多少：輸贏 1 注是 0.5，加倍後輸贏 2 注是 1.0。黑傑克（前兩張就是 21 點）那手直接結算、沒有做任何決定，所以沒有東西可呈現，不學。一手裡的每個決定分到同樣的回饋——作者在註解裡記了一個曾經踩過的坑：原本讓最後一個決定分到最多，但爆牌那一手的最後一個決定一定是要牌、贏的那一手最後一個幾乎一定是停牌，於是「要牌＝輸、停牌＝贏」這個全面的關聯淹沒了每一種牌面各自的教訓，模型變成永遠停牌。</p>
 
   <p><b>評模型打得好不好的標準有兩個：勝率與一致率。</b>先講<b>勝率</b>（作者的用詞；其實是平均每手的淨輸贏，不是贏的場數比例）：以一注為單位寫成百分比，−16% 就是平均每手輸 0.16 注。21 點對莊家本來就是輸的（你先抽、先爆就先輸，不管莊家後來爆不爆），所以勝率都是負的，愈接近 0 愈好。在這套規則下的三個對照值（作者程式算的，存在本課實跑輸出 out/blackjack/bj2_blackjack_30000.json 裡）：照基本策略（賭場數學算出來、公開的最佳打法表，下面講一致率時細講）打是 −1.4%、三個動作亂選是 −44.5%、永遠停牌是 −15.8%。</p>
-  <p><b>作者 README 寫的數字。</b>完整模型（有學習、有探索的正常訓練）勝率 −16%；未訓練 −45%、切斷多巴胺 −46%。這些勝率都取那 30,000 手裡的最後 2,000 手平均。</p>
-  <p><b>每個條件是什麼。</b>未訓練是不學、不探索，直接照起始的好惡值選，從頭到尾沒有亂選；切斷多巴胺是照樣打 30,000 手、照樣探索，但輸贏不送多巴胺，所以學不到東西，成績和未訓練一樣；完整模型與切斷多巴胺那兩組的最後 2,000 手裡還有約 3% 是亂選的。</p>
-  <p><b>和三個對照值比。</b>未訓練的 −45% 和亂選的 −44.5% 接近，是兩種不同打法剛好差不多：前者幾乎每種牌面都要牌、常爆（為什麼沒學過就偏要牌，本節末段講），後者亂選。完整模型的 −16% 則和永遠停牌的 −15.8% 幾乎一樣。</p>
+  <p><b>作者 README 寫的數字。</b>完整模型（有學習、有探索的正常訓練）勝率 −16%，是作者三個種子的平均；未訓練 −45%、切斷多巴胺 −46%。這些勝率都取那 30,000 手裡的最後 2,000 手平均。</p>
+  <p><b>每個條件是什麼。</b>未訓練是不學、不探索，直接照起始的好惡值選，從頭到尾沒有亂選；切斷多巴胺是照樣打 30,000 手、照樣探索，但輸贏不送多巴胺，所以學不到東西，成績和未訓練一樣；完整模型與切斷多巴胺那兩組的最後 2,000 手裡還有約 3% 的決定是亂選的。</p>
+  <p><b>和三個對照值比。</b>未訓練的 −45% 和亂選的 −44.5% 接近，是兩種不同打法剛好差不多：前者幾乎每種牌面都要牌、常爆（為什麼沒學過就偏要牌，本節後面「未訓練的對照值」那段講），後者亂選。完整模型的 −16% 則和永遠停牌的 −15.8% 幾乎一樣，也就是說學完的成績和「永遠停牌」差不多（本課 20 個種子的平均略好一點，見本節末）。</p>
   <p>再講<b>一致率</b>。<b>基本策略</b>是賭場數學算出來、公開的一張表，寫明每種情況該怎麼打：把莊家每一種明牌（2 到 A，10 種）× 自己每一種可能的手牌（硬手 5 到 21 點 17 種、軟手 13 到 21 點 9 種，共 26 種）排成 <b>260 格</b>，每格填「要牌」「停牌」或「加倍」。訓練結束後，不亂選、每格照好惡值最高的動作填出模型自己的 260 格表（填表時每格都當成前兩張、三個動作都可選，和基本策略表同一條件），和基本策略那張表有幾格相同，就是一致率。模型看得到的手牌比 260 格多兩種：硬 4（兩張 2）和軟 12（兩張 A），只在開局拿到一對時出現，基本策略表慣例不列它們；模型照樣打，但這兩種不算進一致率。上面編碼表的點數從 4 起，就是為了硬 4。作者 README 寫的一致率是 52%。</p>
-  <p><b>一致率能看出什麼、看不出什麼。</b>一致率也有兩個對照值（和勝率那段的對照值同一個意思）：不學也有 45.0%（未訓練那張表就有 117 格和基本策略相同，因為沒學過的模型 260 格裡 239 格選要牌，光基本策略該要牌的 115 格就對上 106 格）；永遠停牌是 40.8%（基本策略該停牌的格數，碰巧也是 106，106 ÷ 260）。學完的一致率落在 43.85% 到 52% 之間，和這兩個對照值差不多，所以一致率分不出學沒學（PART 3 第 5 節）；它只數動作相同的格數，不看每一格值多少錢。學到的東西要看勝率。<span class="figsrc">45.0% 作者沒寫，是本課用作者切出來的那份連結體檔案、作者自己算一致率的程式算的，和作者的 52% 用同一份連結體檔、同一支算一致率的程式、同一張基本策略表當尺。</span></p>
-  <p><b>模型學到什麼：三份東西分開看。</b>第一，作者 README 的描述：學到的是「別爆牌」，幾乎每種牌面都停牌、只在 10 和 11 點要牌。第二，作者附的大腦檔（作者 repo 裡附的一份訓練完的模型存檔，學完之後的增益；檔內標明是種子 0、30,000 手）填出來的表：載入作者自己的程式重新評分是 51.9%，要牌 97 格、停牌 149 格、加倍 14 格，和他自己的描述對不上。第三，本課用同樣的種子 0 重跑的表：要牌 6 格、停牌 214 格、加倍 40 格（加倍裡和基本策略相同的 11 格），一致率 43.85%，比不學的 45.0% 還低，正是上一段說的一致率分不出學沒學；三個種子是 43.85%、44.62%、47.31%，20 個種子平均 47.9%（PART 4 第 1 項）。本課用的是作者最後的程式，已含「學習」那段踩坑後的修法（每個決定分到同樣的回饋），即使如此重跑的表仍幾乎每格停牌。種子、連結體檔、程式看起來都相同，卻得到和作者存檔不同的表：最直接的解釋是作者的存檔由另一個版本或另一組設定的程式產生，但作者沒有記錄，本課無法確認（PART 3 第 5 節）。PART 3 第 5 節的結論是：勝率對上了（本課三個種子 −15.0%、−16.4%、−12.9%，作者 −16%；作者存檔裡記錄的勝率是 −17.86%），學到的策略對不上（本課重跑的表和作者附的存檔對不上）。本頁的答案：模型學到的幾乎就是永遠停牌，多幾格要牌、幾十格加倍。勝率上，作者的 −16% 和永遠停牌的 −15.8% 幾乎一樣；本課 20 個種子平均 −13.2%（95% 信賴區間 −14.5% 到 −11.8%，PART 4 第 1 項），比永遠停牌好兩到三個百分點，單一種子如 −12.9% 落在這個區間裡，這一點差距就是那幾十格加倍和幾格要牌換來的；本課重跑的表反而和作者的文字描述相近，和他附的存檔不像。PART 5 列出本課重跑是哪幾格要牌（軟 21 那一格是學偏的例子：再抽不會爆，但已經 21 也不可能更好）。</p>
-  <p><b>不學的對照值隨抽到的 KC 變，不隨打牌種子變。</b>這段的用途：說明 43.85% 低於 45.0% 不代表學壞了，要比只能和同一批 KC 的不學值比，結論（一致率分不出學沒學）不變。沒學過就偏要牌，來自編碼時亂數分給三個動作的 PN 配上抽到的那批 KC：換一批 KC，沒學過的一致率就跟著變，PART 4 第 3 項換的四批（全部 3,811 顆，以及隨機抽 1,200 顆三次）落在 40.8% 到 49.2% 之間（這個 40.8% 和永遠停牌的 40.8% 只是碰巧相同），所以這把尺本身帶著一點偶然；但它與打牌用的種子無關，同一批 KC 不管哪個種子都是 45.0%：未訓練不學也不亂選，填表只看起始好惡值，而起始好惡值只由編碼種子和抽到的 KC 決定。本課重跑得到的數字在 PART 3。</p>
+  <p><b>一致率能看出什麼、看不出什麼。</b>基本策略那 260 格裡，要牌 115 格、停牌 106 格、加倍 39 格。一致率的對照值（拿來比的基準）用兩個：未訓練與永遠停牌。勝率那段的亂選這裡不用，因為亂選每次填出的表都不同，沒有固定的一致率。未訓練（README 那個條件，勝率 −45%）的一致率是 45.0%：它 260 格裡 239 格選要牌；該要牌的 115 格裡有 106 格對上，該停牌的 106 格裡對上 11 格，該加倍的 39 格一格都沒對上，共 117 格（117 ÷ 260）。永遠停牌的一致率是 40.8%：只對上該停牌的那 106 格（106 ÷ 260）。學完的：本課 20 個打牌種子從 40.8% 到 59.2%，平均 47.9%（PART 4 第 1 項）；作者 README 寫 52%。<span class="figsrc">45.0% 作者沒寫，是本課用作者切出來的那份連結體檔案、作者自己算一致率的程式算的，和本課算學完的一致率（47.9%、51.9% 等）用的是同一支程式、同一張基本策略表。最低那個 40.8% 等於 106 格，和永遠停牌對上的格數相同；那張表是不是全部停牌，本課沒有存逐格表、沒查。</span></p>
+  <p><b>平均來看，一致率有沒有上升。</b>有，小幅。同一批 KC 未訓練是 45.0%，學完的 20 個種子平均 47.9%，95% 信賴區間 46.1% 到 49.7%（信賴區間：只跑了 20 個種子，算出的平均帶著誤差，這個區間是「跑無限多個種子的平均」大概落在的範圍）；區間不含 45.0%，所以上升是真的，約 3 個百分點（約 8 格）。學完的表接近永遠停牌，一致率卻沒有掉到永遠停牌的 40.8%，是因為多出來的加倍格有一部分對上（永遠停牌在加倍格一格都對不上）：種子 0 對上的 114 格是停牌 101、加倍 11、要牌 2。</p>
+  <p><b>只看一次訓練，為什麼看不出來。</b>種子之間從 40.8% 到 59.2% 都有，種子 0 的 43.85% 甚至比 45.0% 低。所以只看一次訓練的一致率，看不出學沒學（PART 3 第 5 節說「分不出學沒學」，指的就是這件事）。一致率只數動作相同的格數，不看每一格值多少錢；學到的東西要看勝率。</p>
+  <p><b>模型學到什麼：三份東西分開看。</b>作者附的大腦檔是作者 repo 裡附的一份訓練完的模型存檔（學完之後的增益；檔內標明是種子 0、30,000 手）。三份東西各說模型學到什麼：</p>
+  <table>
+    <tr><th>來源</th><th>要牌／停牌／加倍（格）</th><th>一致率</th></tr>
+    <tr><td>作者 README 的文字</td><td>「別爆牌」：幾乎每種牌面都停牌，只在 10 和 11 點要牌</td><td>52%</td></tr>
+    <tr><td>作者附的大腦檔</td><td>97／149／14</td><td>51.9%（用作者的程式評分）</td></tr>
+    <tr><td>本課重跑，打牌種子 0</td><td>6／214／40</td><td>43.85%</td></tr>
+    <tr><td>本課重跑，打牌種子 1</td><td>12／212／36</td><td>44.62%</td></tr>
+    <tr><td>本課重跑，打牌種子 2</td><td>62／176／22</td><td>47.31%</td></tr>
+  </table>
+  <p>三份彼此對不上：作者的存檔有 97 格要牌，和他 README 的「幾乎都停牌」不合；本課重跑的三個種子都以停牌為主，和 README 的文字相近、和存檔不像。種子、連結體檔、程式看起來都相同，卻得到不同的表；最直接的解釋是作者的存檔由另一個版本或另一組設定的程式產生，但作者沒有記錄，本課無法確認（PART 3 第 5 節）。本課用的是作者最後的程式，已含「學習」那段踩坑後的修法（每個決定分到同樣的回饋）：踩坑時模型變成永遠停牌；修法之後仍以停牌為主，但多了幾格到幾十格要牌、二十到四十格加倍。本課另外跑了 20 個打牌種子（種子 0 到 19，含上表三個），那批只記了勝率與一致率，沒存逐格的表。<span class="figsrc">大腦檔的檔內另記了 53.1%，由作者另寫的網頁版 21 點（在瀏覽器裡跑的版本）的評分程式算出，兩套評分程式對同一份存檔差 3 格，原因本課沒有追；README 的 52% 怎麼算的作者沒寫，51.9% 取整後碰巧相同（PART 3 第 5 節）。</span></p>
+  <p><b>未訓練的對照值隨抽到的 KC 變，不隨打牌種子變。</b>這段回答兩件事。第一，沒學過為什麼偏要牌：三個動作的編碼規則一樣，沒有哪條規則偏好要牌；起始好惡值只由亂數分給三個動作的 PN 和抽到的那批 KC 決定，偏向只能從這兩者來。所以結論是：偏要牌是這次分 PN、抽 KC 的結果，不是編碼規則或那個 1.3 造成的（1.3 三個動作都乘）。換一批 KC，未訓練的一致率就跟著變（換了之後是不是仍偏要牌，本課只存了一致率、沒查逐格的表）：PART 4 第 3 項換的四批（全部 3,811 顆，以及隨機抽 1,200 顆三次）落在 40.8% 到 49.2% 之間（最低的 40.8% 也等於 106 格，那張表長什麼樣本課沒查），所以這個對照值本身帶著幾個百分點的偶然。它與打牌種子無關：未訓練不學也不亂選，填表只看起始好惡值，而起始好惡值只由編碼種子和抽到的 KC 決定，同一批 KC 不管哪個打牌種子，一致率都是 45.0%。第二，上表種子 0 的一致率 43.85% 比同一批 KC 未訓練的 45.0% 還低，為什麼不代表學壞了：一致率只數格數、不看每格值多少錢，低 3 格（114 對 117）不代表打得更差；勝率上，種子 0 的 −15.0% 比未訓練的勝率 −45% 好得多。</p>
+  <p><b>本頁的答案：這個模型到底學到什麼？</b>看本課重跑的三個種子（作者的存檔來歷沒有記錄，不拿來下結論）：學到的以停牌為主，加上幾格到幾十格要牌、二十到四十格加倍，很接近永遠停牌。為什麼會收斂成這樣，本課沒有查。這和作者 README 的文字描述「幾乎都停牌」相近；不同的是本課的表有不少加倍格，README 沒提加倍。</p>
+  <p><b>勝率和這個答案一致嗎。</b>一致：勝率也接近永遠停牌，只略好一點。本課跑了 20 個種子，每個取最後 2,000 手的勝率，從 −17.8% 到 −5.0% 都有（最好的 −5.0% 是種子 15，沒存逐格表，不知道它學到哪些格），平均 −13.2%。這個平均的 95% 信賴區間是 −14.5% 到 −11.8%，比永遠停牌的 −15.8% 好兩到三個百分點。好在哪幾格，本課沒有逐格拆開算過。直覺會猜是加倍格換來的（種子 0 有 40 格加倍），但三個存了逐格表的種子裡，加倍最少（22 格）、要牌最多（62 格）的種子 2 勝率反而最好（−12.9%），所以不能這樣斷定。作者的 −16% 是他三個種子的平均，略低於這個區間；但單一種子就差到十幾個百分點，三個種子的平均也會晃，所以 PART 3 第 5 節比的不是精確數字，而是幾組之間的相對關係：有學習的完整模型停在 −15% 左右，明顯好過未訓練與切斷多巴胺兩組的 −45% 左右；學不到東西的兩組則彼此差不多。照這個標準，勝率對上了（本課種子 0、1、2 是 −15.0%、−16.4%、−12.9%；作者存檔裡記錄的是 −17.86%）；學到的策略則對不上（本課重跑的表和作者附的存檔不像）。PART 5 列出本課重跑是哪幾格要牌（軟 21 那一格是學偏的例子：再抽不會爆，但已經 21 也不可能更好）。</p>
+
 
   <p class="figsrc">21 點的規則、編碼、探索時程、回饋強度與基本策略表出自 <code>flybrain/mb/blackjack.py</code>（Situation 的 WIDTH、FlyPlayer 的 explore 參數、outcome()，以及 basic_strategy()；<a href="part6-code.html">PART 6</a> 逐行讀它）。</p>
 
@@ -2366,7 +4034,7 @@
   <table>
     <tr><th>實驗</th><th>在做什麼</th><th>和 21 點差在哪</th></tr>
     <tr><td><b>Dino</b>（README part one）</td><td>一個像 Chrome 離線小恐龍的小遊戲：角色一直往前跑，靠跳或蹲躲障礙物。作者從同一份連結體另外挑 80 顆神經元（32 顆收畫面、32 顆中間、16 顆往身體送指令的下行神經元），接線照連結體，後面接一個 243 個參數的小網路（叫讀出）決定跑、跳、蹲；只有這個小網路被訓練，接線不動</td><td>用的不是蕈狀體；沒有多巴胺、沒有本頁第 4 節的學習規則。它證明的是「真實接線加一個訓練過的讀出」能做事</td></tr>
-    <tr><td><b>氣味制約</b>（README part three）</td><td>用本頁第 2 到 4 節的同一個蕈狀體：給一種氣味時電擊、另一種不電，重複 20 次，量兩種氣味的好惡值差了多少（學習指數）；另外讓 100 隻模擬果蠅在兩種氣味之間選邊（T-maze）</td><td>只量好惡值、不做決策，學習率與回復速度用另一組（0.55、0.012）。它證明的是學習規則能學氣味，是 21 點的前置實驗</td></tr>
+    <tr><td><b>氣味制約</b>（README part three）</td><td>用本頁第 2 到 4 節的同一個蕈狀體：給一種氣味時電擊、另一種不電，重複 20 次，量兩種氣味的好惡值差了多少（學習指數）；另外讓 100 隻模擬果蠅在兩種氣味之間選邊（T-maze）</td><td>選邊照兩個好惡值的差用固定公式換成機率，選完不學，學習率與回復速度用另一組（0.55、0.012）。它證明的是學習規則能學氣味，是 21 點的前置實驗</td></tr>
     <tr><td><b>覓食</b>（README part four）</td><td>同一個蕈狀體接到一隻會在平面場地裡走的模擬果蠅上：兩個氣味源，一個有食物、一個會電擊，蕈狀體在一場之內學哪個氣味危險；走路由 Dino 那個 80 顆迴路加另一個讀出控制</td><td>多了一個要用 CEM（一種訓練法：每一代隨機抽幾十組參數、留下表現最好的再抽）訓練的走路讀出與一個場地，蕈狀體只學懲罰。它證明的是學到的好惡值能真的影響行為</td></tr>
   </table>
   </div>
