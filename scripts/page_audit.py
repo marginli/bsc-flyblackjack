@@ -36,7 +36,7 @@ for f in files:
             print(f"[標籤] {b} {t}: 開 {o} 關 {c}"); bad += 1
     # 2 連結與錨點、圖檔
     for href in re.findall(r'href="([^"]+)"', s):
-        if href.startswith(("http://", "https://", "mailto:")): continue
+        if href.startswith(("http://", "https://", "mailto:", "data:")): continue
         path, _, frag = href.partition("#")
         tgt = b if path == "" else path
         if path and not os.path.exists(os.path.join(D, path)):

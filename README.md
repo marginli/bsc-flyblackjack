@@ -18,6 +18,7 @@ BSC 專題課程（**重現型**，規範見 `../types/repro.md`）。對象是�
 | `part4-checks.html` | PART 4　作者沒做的檢查（X1–X4，都在 21 點上做） |
 | `part5-demo.html` | PART 5　逐手看蕈狀體怎麼打（三支影片的互動播放） |
 | `part6-code.html` | PART 6　讀程式：一鍵重跑的三層（兩支 shell script → 六支 Python 程式 → model.py、blackjack.py）；程式區塊由 `scripts/make_code.py` 產生 |
+| `player.html` | PART 5 播放台的單獨頁（給簡報嵌入或離線開）：版面配合 16:9、網址參數 `?b=` `&h=`、鍵盤操作；播放邏輯照抄 `part5-demo.html`，改那邊要一起改這裡 |
 
 ## 目錄
 
@@ -37,6 +38,7 @@ BSC 專題課程（**重現型**，規範見 `../types/repro.md`）。對象是�
 ```
 ~/anaconda3/bin/python scripts/collect_out.py     # 實跑資料夾 → out/（保留 porttest.json、demo_data.json、bj_demo_summary.json）
 python3 scripts/build_demo_data.py                # fly_play_game/demo → assets/demo/、out/demo_data.json、out/bj_demo_summary.json
+python3 scripts/make_player.py                    # assets/demo/data.json → assets/demo/data.js；打包 downloads/player/flyblackjack-player.zip（離線播放台）
 ~/anaconda3/bin/python scripts/make_figures.py    # out/ → assets/*.png
 python3 scripts/make_expected.py                  # out/ → pack/expected.json，接著重打包 downloads/
 python3 scripts/make_code.py                      # PART 6 的程式區塊：從 pack/ 與本機 clone 的作者 repo（~/claude_bscai/fly_play_game/blackjack/repo）照抄；--check 只比對
