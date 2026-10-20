@@ -261,3 +261,8 @@ figure.code figcaption.figsrc{margin-top:6px}
 .anim-steps li b{color:var(--ink)}
 .anim-cap{font-size:14px; color:var(--soft); line-height:1.7; margin:12px 0 0}
 .anim-cap b{color:var(--ink)}
+
+/* 圖說後的可收合附註 */
+details.note{margin:10px 0 14px; padding:8px 14px; border:1px solid var(--border); border-radius:8px; background:var(--panel); font-size:13.5px; color:var(--soft); line-height:1.7}
+details.note summary{cursor:pointer; color:var(--ink); font-weight:600}
+details.note p{margin:8px 0 2px}

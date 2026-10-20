@@ -11,6 +11,7 @@ D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 A = json.load(open(os.path.join(D, "out/blackjack/anim_data.json")))
 PAGE = os.path.join(D, "part1-what.html")
 ACTS = [("hit", "要牌"), ("stand", "停牌"), ("double", "加倍")]
+RULES = '莊家：發牌、和你對賭的那一方（賭場）；一手 21 點只有你和莊家兩方比。一手牌的時間線：押一注（注：賭注的單位）→ 你拿兩張、莊家拿兩張但只翻開一張給你看（明牌）→ 你做決定（要牌、停牌或加倍，下面解釋），可以重複好幾次 → 你停了之後莊家補牌 → 比大小結算。點數：2 到 10 照面值，J、Q、K 算 10，A 算 1 或 11（哪個對你有利算哪個）；手上有 A 算成 11 而沒爆的叫軟手，其餘叫硬手；超過 21 叫爆牌、直接輸。三個動作：要牌 ＝ 再抽一張，沒爆就再決定一次；停牌 ＝ 不抽了；加倍 ＝ 只在第一個決定（手上還只有發的兩張）能選，再押一注、只再發你一張就強制停牌，輸贏都算兩注。莊家補牌：翻開蓋牌，不到 17 點一定抽、到了就停；莊家爆了而你沒爆就是你贏。結算：贏了淨賺一注、輸了賠一注、平手原注拿回。'
 BLUE, AMBER, INK, SOFT, FAINT, BORDER = "#2563eb", "#d97706", "#1b2733", "#5a6b7b", "#8b98a5", "#e4e8ee"
 
 # ── 版面 ───────────────────────────────────────────────────────────
@@ -115,7 +116,7 @@ st, sd = A["actions"]["stand"], A["actions"]["double"]
 by = hit["pn_lit_by_feature"]
 steps = [
     ("牌面變成 PN 的活動",
-     f"先解釋這個局面（規則第 5 節細講）。21 點的目標：手上的點數接近 21 但不能超過，超過叫爆牌、直接輸；沒爆就和莊家比誰大。莊家是發牌的一方，也是你要比贏的對手。三個動作：要牌 ＝ 再抽一張；停牌 ＝ 不抽了，就用手上的點數和莊家比；加倍 ＝ 賭注加倍、只再抽一張就停，只有前兩張時能選。硬 20：你手上的牌加起來 20 點，而且沒有一張 A 被算成 11，這一手是 10＋10；「硬」的相對是「軟」，手上有 A 算成 11 而沒爆的叫軟手，軟手再抽一張不會爆（A 可以改算 1），硬 20 再抽則除了抽到 A 以外都爆。莊家 8：開局莊家發兩張，一張翻開給你看（明牌）、一張蓋著，翻開的那張是 8，你做決定時只看得到它。前兩張：你還沒抽過牌，所以加倍也能選，三個動作都開著。「硬 20、明牌 8、前兩張」加上候選動作「要牌」，各選中一組 PN：點數 {by['total']} 顆、明牌 {by['upcard']} 顆、動作 {by['action']} 顆、軟硬 {by['soft']} 顆、前兩張 {by['first']} 顆，五組共 {hit['pn_lit'] + hit['pn_overlap']} 顆，其中 {hit['pn_overlap']} 顆被兩項資訊同時選中、只算一次，實際亮 {hit['pn_lit']} 顆，其餘 {hit['pn_dark']} 顆是 0。每顆被選中的 PN 各有一個 0.7 到 1 的固定數當活動量，動作那組乘 1.3，被同時選中的把兩邊相加；整欄超過 1 的有 {hit['pn_over_1']} 顆，多數是動作那組。圖上亮度照活動量。"),
+     f"這手的局面。硬 20：你手上 10＋10，沒有 A 算成 11；硬 20 再抽除了 A 以外都爆，軟手再抽一張不會爆（A 可以改算 1）。莊家 8：翻開的那張是 8，你做決定時只看得到它。前兩張：你還沒抽過牌，所以加倍也能選，三個動作都開著。編碼。這個局面拆成五項資訊：硬 20 是兩項（點數 20、硬手），加上明牌 8、前兩張、候選動作「要牌」，各選中一組 PN（哪一組對哪個值，是作者事先用固定亂數抽定的，人設，和這些 PN 在真果蠅裡聞什麼無關；第 5 節講）：點數 {by['total']} 顆、明牌 {by['upcard']} 顆、動作 {by['action']} 顆、軟硬 {by['soft']} 顆、前兩張 {by['first']} 顆，五組共 {hit['pn_lit'] + hit['pn_overlap']} 顆，其中 {hit['pn_overlap']} 顆被兩項資訊同時選中、只算一次，實際亮 {hit['pn_lit']} 顆，其餘 {hit['pn_dark']} 顆是 0。每顆被選中的 PN 各有一個 0.7 到 1 的固定數當活動量，動作那組乘 1.3，被同時選中的把兩邊相加；整欄超過 1 的有 {hit['pn_over_1']} 顆，多數是動作那組。圖上亮度照活動量。"),
     ("每顆 KC 收到多少",
      f"每顆 KC 把「收到的每顆 PN 的活動 × 那條連結的權重」加總；權重是突觸數除以該 KC 收到的 PN 突觸總數。1,200 顆裡 {hit['kc_drive_nonzero']} 顆收到非零的量（接到亮的 PN 才有），最高 {hit['kc_drive_max_3dp']}。圖上 KC 欄變成深淺不一。"),
     ("只留最高的 6%",
@@ -125,7 +126,7 @@ steps = [
     ("加總成好惡值",
      f"每顆 MBON 乘它的標記再全部加起來。圖上 MBON 依標記排成兩堆：上面 {n_plus} 顆 +1（趨近型）、下面 {n_mbon - n_plus} 顆 −1（迴避型）。加分堆 {hit['sum_plus_3dp']}、扣分堆 {hit['sum_minus_3dp']}，相減得到配「要牌」的好惡值 {hit['valence_3dp']}。"),
     ("三個動作各算一次，選最高",
-     f"同一手牌配停牌、配加倍再各走一遍步驟 1 到 5：PN 只換「動作」那組：不換的四組共 {A['pn_fixed_sum']} 顆，其中被兩組同時選中的只算一次，是 {A['pn_fixed_union']} 顆，加上要牌與停牌的動作組碰巧撞到的 {A['pn_action_shared_hit_stand']} 顆，所以兩者亮的 PN 有 {A['pn_shared_hit_stand']} 顆相同；KC 的 {A['k_winners']} 顆卻幾乎全換（只有 {A['kc_shared_hit_stand']} 顆相同）：動作那組乘了 1.3，是推得最用力的一組，換動作等於換掉最強的 36 顆輸入，每顆 KC 收到的總量都跟著動，前 72 名的名單就大洗牌；作者要的正是「三種氣味只差在動作、但代碼差很多」。三個好惡值：要牌 {hit['valence']}、停牌 {st['valence']}、加倍 {sd['valence']}，選最高的要牌（模型有時會不看好惡值、隨機選一個動作，第 5 節叫探索；實跑裡這一手沒有，是照好惡值選的）。這一手接著抽到 6，爆牌，輸一注，懲罰多巴胺送出去（第 4 節）。基本策略（賭場數學算出來的公開最佳打法表，第 5 節）在 20 點該停牌；沒學過的果蠅在 20 點還要牌，第 5 節會解釋。用上面的按鈕切換三個動作，看 PN、KC、MBON 怎麼跟著換。"),
+     f"同一手牌配停牌、配加倍再各走一遍步驟 1 到 5：PN 只換「動作」那組。三個好惡值：要牌 {hit['valence']}、停牌 {st['valence']}、加倍 {sd['valence']}，選最高的要牌。用上面的按鈕切換三個動作，看 PN、KC、MBON 怎麼跟著換；細節在六步下面的「第 6 步的細節」。"),
 ]
 
 ctl = '''<div class="anim" id="p1anim">
@@ -138,8 +139,8 @@ ctl = '''<div class="anim" id="p1anim">
 '''
 ON = ' class="on"'
 ol = '<ol class="anim-steps" id="animSteps">\n' + "\n".join(f'    <li{ON if i == 4 else ""}><b>第 {i + 1} 步　{t}。</b>{d}</li>' for i, (t, d) in enumerate(steps)) + '\n  </ol>'
-cap = (f'<p class="anim-cap"><b>圖 2　三條式子走一遍：第 1 手的第一個決定。</b>例子是一次正常的訓練（有學習、有探索；第 5 節叫它完整模型）打的第 1 手，打牌用的亂數種子是 0（種子第 5 節解釋）；牌面是硬 20 對莊家明牌 8、前兩張，這些詞第 1 步開頭解釋。因為這是整個訓練的第一個決定、增益還全是 1，不必重放整段訓練，直接用作者的模型就能重算每一欄的數值，三個好惡值與 PART 5 錄下的實跑相同。圖上 PN、KC、MBON 全部畫出，不是示意；按「上一步」「下一步」一步一步走，每一步的說明在圖下。沒有 JavaScript 時看到的是第 5 步配「要牌」的靜態圖。'
-       f'<span class="figsrc">數字由 <code>scripts/anim_data.py</code> 用作者的 <code>flybrain/mb/model.py</code> 算出，存在 <code>out/blackjack/anim_data.json</code>；圖由 <code>scripts/make_anim.py</code> 產生。</span></p>')
+cap = (f'<p class="anim-cap"><b>圖 2　三條式子走一遍：第 1 手的第一個決定（硬 20 對莊家 8、前兩張）。</b>按「上一步」「下一步」一步一步走，每一步的說明在圖下。'
+       f'<span class="figsrc">例子出自一次正常的訓練（有學習、有探索，第 5 節叫它完整模型）、打牌種子 0（種子：給亂數產生器的起始數字，第 5 節講）的第 1 手；因為是整個訓練的第一個決定、增益還全是 1，不必重放整段訓練，直接用作者的模型就能重算每一欄，三個好惡值與 PART 5 錄下的實跑相同。PN、KC、MBON 全部畫出，不是示意。沒有 JavaScript 時看到的是第 5 步配「要牌」的靜態圖。數字由 <code>scripts/anim_data.py</code> 用作者的 <code>flybrain/mb/model.py</code> 算出，存在 <code>out/blackjack/anim_data.json</code>；圖由 <code>scripts/make_anim.py</code> 產生。</span></p>')
 
 # ── 腳本資料：三個動作的逐顆數值 ─────────────────────────────────────
 data = {"pnMax": 1.3, "mbonMax": A["mbon_max_all"], "order": order, "val": val, "kcMax": {}, "acts": {}}
@@ -215,7 +216,13 @@ script = '''<script>
 </script>'''
 
 script = script % (js_data, KC_COLS, KC_SP, KC_X, KC_Y, MB_X, MB_Y, MB_H, MB_W)
-frag = "<!-- anim:start -->\n" + ctl + svg + "\n  " + ol + "\n  " + cap + "\n</div>\n" + script + "\n<!-- anim:end -->"
+detail6 = (f'<details class="note"><summary>第 6 步的細節</summary>'
+           f'<p>PN 怎麼換：不換的四組共 {A["pn_fixed_sum"]} 顆，其中被兩組同時選中的只算一次，是 {A["pn_fixed_union"]} 顆，加上要牌與停牌的動作組碰巧撞到的 {A["pn_action_shared_hit_stand"]} 顆，所以要牌與停牌亮的 PN 有 {A["pn_shared_hit_stand"]} 顆相同。</p>'
+           f'<p>KC 為什麼幾乎全換（{A["k_winners"]} 顆裡只有 {A["kc_shared_hit_stand"]} 顆相同）：動作那組乘了 1.3，是推得最用力的一組，換動作等於換掉最強的 36 顆輸入，每顆 KC 收到的總量都跟著動，前 {A["k_winners"]} 名的名單就大洗牌；作者要的正是「三種氣味只差在動作、但代碼差很多」。</p>'
+           f'<p>這一手的後續：模型有時會不看好惡值、隨機選一個動作（第 5 節叫探索），實跑裡這一手沒有，是照好惡值選的。接著抽到 6，爆牌，輸一注，懲罰多巴胺送出去（第 4 節）。基本策略（賭場數學算出來的公開最佳打法表，第 5 節）在 20 點該停牌；沒學過的果蠅在 20 點還要牌，第 5 節會解釋。</p>'
+           f'</details>')
+rules_html = '  <p><b>先懂這手牌（沒玩過 21 點的人看這段；第 5 節有作者簡化的幾條）。</b>' + RULES + '</p>\n'
+frag = "<!-- anim:start -->\n" + rules_html + ctl + svg + "\n  " + ol + "\n  " + detail6 + "\n  " + cap + "\n</div>\n" + script + "\n<!-- anim:end -->"
 print("fragment chars:", len(frag))
 page = open(PAGE, encoding="utf-8").read()
 if "<!-- anim:start -->" in page:
