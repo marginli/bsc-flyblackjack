@@ -1,0 +1,44 @@
+{
+ "mbon_dan": {
+  "ppl1": 94,
+  "pam": 77,
+  "both": 74,
+  "ppl1_only": 20,
+  "pam_only": 3,
+  "neither": 0,
+  "pam_only_valence": [
+   -1,
+   -1,
+   -1
+  ]
+ },
+ "situations_seen": {
+  "total": 422,
+  "first": 260,
+  "later": 162
+ },
+ "readme_policy_agreement": {
+  "cells": 109,
+  "share": 0.41923076923076924
+ },
+ "last2000_seed0": {
+  "mean": -0.15025,
+  "sd": 1.1933197155296378,
+  "ci95_half": 0.05229954245517363
+ },
+ "kc_overlap": {
+  "hard14_vs_15_hit_up8": 49,
+  "hard15_vs_16_hit_up8": 47,
+  "hard14_vs_16_hit_up8": 48,
+  "hard15_hit_vs_stand_up8": 29
+ },
+ "agreement_without_21_rows": {
+  "cells": 240,
+  "untrained": 111,
+  "untrained_share": 0.4625,
+  "seed0": 96,
+  "seed0_share": 0.4,
+  "untrained_in_21_rows": 6,
+  "seed0_in_21_rows": 18
+ }
+}

@@ -22,5 +22,17 @@ res = {"first": first, "last": last, "random": rand, "p_first": round(p1, 4), "p
        "total_gain": round(last - first, 3), "gain_from_less_random": round(if_same - first, 3),
        "gain_from_better_greedy": round(last - if_same, 3),
        "share_less_random_pct": round((if_same - first) / (last - first) * 100)}
+# 換一個終點：不用末 2,000 手一塊，改用第 2 到第 15 塊（2,000 到 30,000 手）的平均，看拆法對終點怎麼選有多敏感
+late = sum(run["blocks"][1:]) / len(run["blocks"][1:])
+p_late = sum(f(h) for h in range(2000, 30000)) / 28000
+if_same_late = p_late * rand + (1 - p_late) * greedy1
+res["alt_end_blocks_2_15"] = {"mean": round(late, 3), "p": round(p_late, 4), "if_greedy_unchanged": round(if_same_late, 3),
+                              "total_gain": round(late - first, 3), "gain_from_less_random": round(if_same_late - first, 3),
+                              "gain_from_better_greedy": round(late - if_same_late, 3)}
+# 兩部分各帶多少誤差：每個 2,000 手區塊約 ±0.05（95%，part1_extras 的 block_ci95_half），兩區塊誤差互相獨立，照線性傳遞
+e = 0.05
+k = (1 - p2) / (1 - p1)                               # if_same 對 first 的斜率
+res["err95"] = {"block": e, "gain_from_less_random": round(abs(k - 1) * e, 3),
+                "gain_from_better_greedy": round((e ** 2 + (k * e) ** 2) ** 0.5, 3)}
 json.dump(res, open(os.path.join(D, "out/blackjack/part5_progress_split.json"), "w"), indent=1)
 print(json.dumps(res))

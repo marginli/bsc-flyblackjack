@@ -1,5 +1,5 @@
 """BJ3：作者附的 30,000 手大腦（data/brain_seed.json，標記為 python 30k-hand session, seed 0）
-載入 Python 模型後重新評分，與作者自述（stand 約 227、double 0/39、一致率 53.1%）及本機 BJ2 比較。
+載入 Python 模型後重新評分，與作者自述（stand 約 227、double 0/39、一致率 53.1%）比較；與本機 BJ2 的比較在課程頁面上做（逐格比對在課程 repo 的 scripts/part3_extras.py）。
 gain 只存 18,183 條 KC→MBON 連結，順序依 site/mb.json 的 w_kc_mbon (r, c)。在 repo/ 下以 PYTHONPATH=. 執行。"""
 import json, base64
 import numpy as np

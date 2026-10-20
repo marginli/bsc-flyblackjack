@@ -26,10 +26,11 @@ PLAN = [
 
 def main():
     keep = {}
-    for f in ("porttest.json", "demo_data.json", "bj_demo_summary.json", "figures.json", "code_meta.json", "video_meta.json", "dan_counts.json", "soma_fig.json", "encoding_pn.json", "anim_data.json", "learn_anim_data.json", "explore_schedule.json", "part5_progress_split.json"):   # 另幾支程式產生的檔案，收資料時保留
-        p = os.path.join(OUT, f)
-        if os.path.exists(p):
-            keep[f] = open(p, "rb").read()
+    for f in ("porttest.json", "demo_data.json", "bj_demo_summary.json", "figures.json", "code_meta.json", "video_meta.json", "dan_counts.json", "soma_fig.json", "encoding_pn.json", "anim_data.json", "learn_anim_data.json", "explore_schedule.json", "part5_progress_split.json", "reference_margin.json", "x2_alignment.json", "part4_extras.json", "part3_extras.json", "part1_extras.json", "x3_untrained_tables.json", "x4_permutation.json", "seeds20_tables.json", "row21_visits.json", "readme_kc_counts.json"):   # 另幾支程式產生的檔案，收資料時保留
+        for rel in (f, os.path.join("blackjack", f)):   # 有的放在 out/、有的放在 out/blackjack/，寫回原位置
+            p = os.path.join(OUT, rel)
+            if os.path.exists(p):
+                keep[rel] = open(p, "rb").read()
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
     n = 0
@@ -59,8 +60,8 @@ def main():
         cnt[tag] = {k: int(z[k + "_val"].size) for k in ("pn_kc", "kc_mbon", "dan_mbon", "mbon_mbon")}
     json.dump(cnt, open(os.path.join(OUT, "blackjack/bj1_edge_counts.json"), "w"), indent=1)
     n += 3
-    for f, b in keep.items():
-        open(os.path.join(OUT, f), "wb").write(b)
+    for rel, b in keep.items():
+        open(os.path.join(OUT, rel), "wb").write(b)
     meta = {"source": "~/claude_bscai/fly_play_game/blackjack", "files": n,
             "blackjack_commit": "004b2e3e9ccb742f83c5bdc2717c97f5a64b420f"}
     json.dump(meta, open(os.path.join(OUT, "_manifest.json"), "w"), indent=1)

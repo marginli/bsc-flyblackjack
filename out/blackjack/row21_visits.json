@@ -1,0 +1,278 @@
+{
+ "note": "at21\uff1d30,000 \u624b\u88e1\u6c7a\u5b9a\u843d\u5728 21 \u9ede\uff08\u786c\u6216\u8edf\uff09\u7684\u6b21\u6578\uff1bat21_first \u61c9\u70ba 0\uff08\u5169\u5f35\u724c\u7684 21 \u662f\u9ed1\u5091\u514b\uff0c\u76f4\u63a5\u7d50\u7b97\uff09\uff1btable21\uff1d\u5b78\u5b8c\u7684\u8868\u5728\u786c 21\u3001\u8edf 21 \u5169\u5217 20 \u683c\uff08\u8a55\u5206\u7528 first=True\uff09\u5404\u9078\u5e7e\u683c\u3002",
+ "runs": [
+  {
+   "decisions": 28488,
+   "at21": 186,
+   "at21_first": 0,
+   "at21_hit": 23,
+   "at21_stand": 163,
+   "seed": 0,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 28950,
+   "at21": 234,
+   "at21_first": 0,
+   "at21_hit": 51,
+   "at21_stand": 183,
+   "seed": 1,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 32064,
+   "at21": 675,
+   "at21_first": 0,
+   "at21_hit": 76,
+   "at21_stand": 599,
+   "seed": 2,
+   "table21": {
+    "hit": 2,
+    "stand": 17,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 32237,
+   "at21": 674,
+   "at21_first": 0,
+   "at21_hit": 67,
+   "at21_stand": 607,
+   "seed": 3,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 29364,
+   "at21": 291,
+   "at21_first": 0,
+   "at21_hit": 41,
+   "at21_stand": 250,
+   "seed": 4,
+   "table21": {
+    "hit": 0,
+    "stand": 19,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 32898,
+   "at21": 724,
+   "at21_first": 0,
+   "at21_hit": 76,
+   "at21_stand": 648,
+   "seed": 5,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 29475,
+   "at21": 299,
+   "at21_first": 0,
+   "at21_hit": 62,
+   "at21_stand": 237,
+   "seed": 6,
+   "table21": {
+    "hit": 1,
+    "stand": 19,
+    "double": 0
+   }
+  },
+  {
+   "decisions": 31088,
+   "at21": 465,
+   "at21_first": 0,
+   "at21_hit": 70,
+   "at21_stand": 395,
+   "seed": 7,
+   "table21": {
+    "hit": 2,
+    "stand": 17,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 30885,
+   "at21": 459,
+   "at21_first": 0,
+   "at21_hit": 58,
+   "at21_stand": 401,
+   "seed": 8,
+   "table21": {
+    "hit": 1,
+    "stand": 19,
+    "double": 0
+   }
+  },
+  {
+   "decisions": 31903,
+   "at21": 641,
+   "at21_first": 0,
+   "at21_hit": 63,
+   "at21_stand": 578,
+   "seed": 9,
+   "table21": {
+    "hit": 2,
+    "stand": 17,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 29818,
+   "at21": 366,
+   "at21_first": 0,
+   "at21_hit": 43,
+   "at21_stand": 323,
+   "seed": 10,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 30001,
+   "at21": 370,
+   "at21_first": 0,
+   "at21_hit": 48,
+   "at21_stand": 322,
+   "seed": 11,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 29089,
+   "at21": 283,
+   "at21_first": 0,
+   "at21_hit": 54,
+   "at21_stand": 229,
+   "seed": 12,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 32963,
+   "at21": 717,
+   "at21_first": 0,
+   "at21_hit": 54,
+   "at21_stand": 663,
+   "seed": 13,
+   "table21": {
+    "hit": 0,
+    "stand": 19,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 31012,
+   "at21": 437,
+   "at21_first": 0,
+   "at21_hit": 60,
+   "at21_stand": 377,
+   "seed": 14,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 32350,
+   "at21": 621,
+   "at21_first": 0,
+   "at21_hit": 72,
+   "at21_stand": 549,
+   "seed": 15,
+   "table21": {
+    "hit": 2,
+    "stand": 17,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 35448,
+   "at21": 1050,
+   "at21_first": 0,
+   "at21_hit": 102,
+   "at21_stand": 948,
+   "seed": 16,
+   "table21": {
+    "hit": 0,
+    "stand": 20,
+    "double": 0
+   }
+  },
+  {
+   "decisions": 29747,
+   "at21": 315,
+   "at21_first": 0,
+   "at21_hit": 48,
+   "at21_stand": 267,
+   "seed": 17,
+   "table21": {
+    "hit": 1,
+    "stand": 18,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 29526,
+   "at21": 315,
+   "at21_first": 0,
+   "at21_hit": 54,
+   "at21_stand": 261,
+   "seed": 18,
+   "table21": {
+    "hit": 2,
+    "stand": 17,
+    "double": 1
+   }
+  },
+  {
+   "decisions": 34037,
+   "at21": 893,
+   "at21_first": 0,
+   "at21_hit": 79,
+   "at21_stand": 814,
+   "seed": 19,
+   "table21": {
+    "hit": 0,
+    "stand": 19,
+    "double": 1
+   }
+  }
+ ],
+ "untrained_table21": {
+  "hit": 14,
+  "stand": 6,
+  "double": 0
+ },
+ "at21_mean": 500.75,
+ "at21_min": 186,
+ "at21_max": 1050,
+ "at21_share_mean": 0.015751727013174836,
+ "at21_first_total": 0,
+ "stand21_min": 17,
+ "stand21_max": 20,
+ "stand21_mean": 18.1
+}

@@ -1,5 +1,5 @@
 {
- "source": "fly_play_game/demo/rec/bj_*.json（record_bj.py，seed 0，30,000 手，與 bj5 結果逐塊核對）",
+ "source": "fly_play_game/demo/rec/bj_*.json（record_bj.py，seed 0，30,000 手，與 bj2 結果逐塊核對）",
  "conditions": {
   "bj_fly": {
    "name": "connectome + dopamine",
@@ -475,7 +475,15 @@
     "hard 16",
     "soft 16",
     "soft 21"
-   ]
+   ],
+   "cells_changed_2000_to_30000": {
+    "total": 55,
+    "moves": {
+     "double->stand": 29,
+     "stand->double": 20,
+     "stand->hit": 6
+    }
+   }
   },
   "bj_nodopa": {
    "name": "dopamine cut + exploration decay",
@@ -1046,7 +1054,11 @@
     "soft 20",
     "hard 21",
     "soft 21"
-   ]
+   ],
+   "cells_changed_2000_to_30000": {
+    "total": 0,
+    "moves": {}
+   }
   },
   "bj_untrained": {
    "name": "untrained greedy",
@@ -1586,7 +1598,11 @@
     "soft 20",
     "hard 21",
     "soft 21"
-   ]
+   ],
+   "cells_changed_2000_to_30000": {
+    "total": 0,
+    "moves": {}
+   }
   }
  },
  "basic_strategy_cells": {

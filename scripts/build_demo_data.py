@@ -50,9 +50,13 @@ def main():
                                        "agree": round(sn["agree"], 4), "depression": round(sn["depression"], 4)}
         last = r["snaps"][-1]
         hit_cells = sorted({(t, s) for (t, s, u), a in zip(r["chart_cells"], last["cells"]) if a == 0})
+        by_h = {sn["h"]: sn["cells"] for sn in r["snaps"]}
+        moved = collections.Counter((ACT[x], ACT[y]) for x, y in zip(by_h[2000], by_h[30000]) if x != y)   # PART 5：格數穩不等於表沒變
         summary["conditions"][k] = {"name": r["name"], "blocks": r["blocks"], "agree": r["agree"], "hands": hands,
                                     "chart_counts_after_hands": snaps,
-                                    "still_hit_totals_at_end": [("soft " if s else "hard ") + str(t) for t, s in hit_cells]}
+                                    "still_hit_totals_at_end": [("soft " if s else "hard ") + str(t) for t, s in hit_cells],
+                                    "cells_changed_2000_to_30000": {"total": sum(moved.values()),
+                                                                    "moves": {f"{x}->{y}": n for (x, y), n in sorted(moved.items())}}}
         if k == "bj_fly":
             bs = collections.Counter(r["chart_bs"])
             summary["basic_strategy_cells"] = {"hit": bs[0], "stand": bs[1], "double": bs[2], "total": len(r["chart_bs"])}

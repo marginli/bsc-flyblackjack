@@ -1,0 +1,27 @@
+{
+ "author_1200": {
+  "hit": 239,
+  "stand": 17,
+  "double": 4
+ },
+ "all_live_kc": {
+  "hit": 113,
+  "stand": 88,
+  "double": 59
+ },
+ "random1200_0": {
+  "hit": 250,
+  "stand": 0,
+  "double": 10
+ },
+ "random1200_1": {
+  "hit": 28,
+  "stand": 193,
+  "double": 39
+ },
+ "random1200_2": {
+  "hit": 137,
+  "stand": 123,
+  "double": 0
+ }
+}

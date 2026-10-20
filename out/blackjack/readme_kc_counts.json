@@ -1,0 +1,13 @@
+{
+ "note": "全部 KC、不篩路徑時的連結條數（非零的格數），對 README 的 22,586 與 61,210。",
+ "n_kc_all": 4064,
+ "pn_kc_edges": 22586,
+ "kc_mbon_edges": 61210,
+ "readme": {
+  "pn_kc_edges": 22586,
+  "kc_mbon_edges": 61210
+ },
+ "kc_pn_only": 1,
+ "kc_mbon_only": 252,
+ "matches_readme": true
+}

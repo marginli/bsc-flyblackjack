@@ -56,5 +56,17 @@
   "mbons_reached": 94,
   "mbons_total": 97
  },
+ "by_author_label": {
+  "+1": {
+   "mbons": 56,
+   "pam_synapses": 739,
+   "ppl1_synapses": 10484
+  },
+  "-1": {
+   "mbons": 41,
+   "pam_synapses": 27807,
+   "ppl1_synapses": 586
+  }
+ },
  "ppl1_per_cell_over_pam_per_cell": 7.7
 }

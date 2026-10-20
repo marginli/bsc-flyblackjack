@@ -1,5 +1,6 @@
 """PART 1 第 2 節的補充數字：PAM 與 PPL1 兩群多巴胺神經元為什麼顆數差二十倍。
-從 MaleCNS 的神經元表數每一型有幾顆、分左右各幾顆；再從突觸矩陣數兩群各送多少突觸到 MBON、接到幾顆 MBON。
+從 MaleCNS 的神經元表數每一型有幾顆、分左右各幾顆；再從突觸矩陣數兩群各送多少突觸到 MBON、接到幾顆 MBON；
+並照作者 extract.py 的規則（PPL1 突觸多於 PAM 標 +1）把 97 顆 MBON 分兩組，數每組收到兩群各多少突觸（PART 6「為什麼 PPL1 只有 16 顆卻有 56 顆標 +1」）。
 需要作者 repo（~/claude_bscai/fly_play_game/blackjack/repo）與它下載好的 data/malecns/。
 用法：cd <repo> && PYTHONPATH=. python <本檔>   （輸出 out/blackjack/dan_counts.json）"""
 import json
@@ -37,6 +38,11 @@ for name, pat in (("PAM", r"^PAM"), ("PPL1", r"^PPL1")):
         "mbons_reached": int((to_mbon > 0).sum()),
         "mbons_total": int(len(MBON)),
     }
+drive = {n: np.asarray(M[where(p)][:, MBON].sum(axis=0)).ravel() for n, p in (("PAM", r"^PAM"), ("PPL1", r"^PPL1"))}
+lab = np.where(drive["PPL1"] > drive["PAM"], 1, -1)
+res["by_author_label"] = {f"{v:+d}": {"mbons": int((lab == v).sum()),
+                                      "pam_synapses": int(drive["PAM"][lab == v].sum()),
+                                      "ppl1_synapses": int(drive["PPL1"][lab == v].sum())} for v in (1, -1)}
 res["ppl1_per_cell_over_pam_per_cell"] = round(res["PPL1"]["synapses_to_mbon_per_cell"] / res["PAM"]["synapses_to_mbon_per_cell"], 1)
 json.dump(res, open(OUT, "w"), indent=1, ensure_ascii=False)
 print(json.dumps(res, indent=1, ensure_ascii=False))

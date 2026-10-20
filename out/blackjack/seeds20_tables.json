@@ -1,0 +1,227 @@
+{
+ "runs": [
+  {
+   "hit": 6,
+   "stand": 214,
+   "double": 40,
+   "agree": 0.43846153846153846,
+   "agree_no21": 0.4,
+   "seed": 0,
+   "last_block": -0.15025,
+   "agree_last_session": 0.43846153846153846
+  },
+  {
+   "hit": 12,
+   "stand": 212,
+   "double": 36,
+   "agree": 0.4461538461538462,
+   "agree_no21": 0.4083333333333333,
+   "seed": 1,
+   "last_block": -0.16425,
+   "agree_last_session": 0.4461538461538462
+  },
+  {
+   "hit": 62,
+   "stand": 176,
+   "double": 22,
+   "agree": 0.47307692307692306,
+   "agree_no21": 0.44166666666666665,
+   "seed": 2,
+   "last_block": -0.12875,
+   "agree_last_session": 0.47307692307692306
+  },
+  {
+   "hit": 60,
+   "stand": 171,
+   "double": 29,
+   "agree": 0.46923076923076923,
+   "agree_no21": 0.43333333333333335,
+   "seed": 3,
+   "last_block": -0.1035,
+   "agree_last_session": 0.46923076923076923
+  },
+  {
+   "hit": 25,
+   "stand": 182,
+   "double": 53,
+   "agree": 0.4576923076923077,
+   "agree_no21": 0.4166666666666667,
+   "seed": 4,
+   "last_block": -0.0905,
+   "agree_last_session": 0.4576923076923077
+  },
+  {
+   "hit": 73,
+   "stand": 164,
+   "double": 23,
+   "agree": 0.48846153846153845,
+   "agree_no21": 0.45416666666666666,
+   "seed": 5,
+   "last_block": -0.1295,
+   "agree_last_session": 0.48846153846153845
+  },
+  {
+   "hit": 18,
+   "stand": 231,
+   "double": 11,
+   "agree": 0.46153846153846156,
+   "agree_no21": 0.42083333333333334,
+   "seed": 6,
+   "last_block": -0.10525,
+   "agree_last_session": 0.46153846153846156
+  },
+  {
+   "hit": 60,
+   "stand": 176,
+   "double": 24,
+   "agree": 0.5038461538461538,
+   "agree_no21": 0.475,
+   "seed": 7,
+   "last_block": -0.15825,
+   "agree_last_session": 0.5038461538461538
+  },
+  {
+   "hit": 65,
+   "stand": 186,
+   "double": 9,
+   "agree": 0.49230769230769234,
+   "agree_no21": 0.45416666666666666,
+   "seed": 8,
+   "last_block": -0.14125,
+   "agree_last_session": 0.49230769230769234
+  },
+  {
+   "hit": 67,
+   "stand": 165,
+   "double": 28,
+   "agree": 0.5,
+   "agree_no21": 0.4708333333333333,
+   "seed": 9,
+   "last_block": -0.13475,
+   "agree_last_session": 0.5
+  },
+  {
+   "hit": 40,
+   "stand": 198,
+   "double": 22,
+   "agree": 0.4423076923076923,
+   "agree_no21": 0.4041666666666667,
+   "seed": 10,
+   "last_block": -0.145,
+   "agree_last_session": 0.4423076923076923
+  },
+  {
+   "hit": 36,
+   "stand": 199,
+   "double": 25,
+   "agree": 0.46153846153846156,
+   "agree_no21": 0.425,
+   "seed": 11,
+   "last_block": -0.164,
+   "agree_last_session": 0.46153846153846156
+  },
+  {
+   "hit": 20,
+   "stand": 221,
+   "double": 19,
+   "agree": 0.4346153846153846,
+   "agree_no21": 0.3958333333333333,
+   "seed": 12,
+   "last_block": -0.178,
+   "agree_last_session": 0.4346153846153846
+  },
+  {
+   "hit": 86,
+   "stand": 163,
+   "double": 11,
+   "agree": 0.5038461538461538,
+   "agree_no21": 0.4666666666666667,
+   "seed": 13,
+   "last_block": -0.1295,
+   "agree_last_session": 0.5038461538461538
+  },
+  {
+   "hit": 39,
+   "stand": 188,
+   "double": 33,
+   "agree": 0.4807692307692308,
+   "agree_no21": 0.44583333333333336,
+   "seed": 14,
+   "last_block": -0.09575,
+   "agree_last_session": 0.4807692307692308
+  },
+  {
+   "hit": 64,
+   "stand": 163,
+   "double": 33,
+   "agree": 0.49230769230769234,
+   "agree_no21": 0.4625,
+   "seed": 15,
+   "last_block": -0.05,
+   "agree_last_session": 0.49230769230769234
+  },
+  {
+   "hit": 111,
+   "stand": 141,
+   "double": 8,
+   "agree": 0.5923076923076923,
+   "agree_no21": 0.5583333333333333,
+   "seed": 16,
+   "last_block": -0.15825,
+   "agree_last_session": 0.5923076923076923
+  },
+  {
+   "hit": 41,
+   "stand": 194,
+   "double": 25,
+   "agree": 0.4846153846153846,
+   "agree_no21": 0.45,
+   "seed": 17,
+   "last_block": -0.154,
+   "agree_last_session": 0.4846153846153846
+  },
+  {
+   "hit": 36,
+   "stand": 187,
+   "double": 37,
+   "agree": 0.4076923076923077,
+   "agree_no21": 0.37083333333333335,
+   "seed": 18,
+   "last_block": -0.1445,
+   "agree_last_session": 0.4076923076923077
+  },
+  {
+   "hit": 82,
+   "stand": 156,
+   "double": 22,
+   "agree": 0.55,
+   "agree_no21": 0.5166666666666667,
+   "seed": 19,
+   "last_block": -0.108,
+   "agree_last_session": 0.55
+  }
+ ],
+ "untrained": {
+  "hit": 239,
+  "stand": 17,
+  "double": 4,
+  "agree": 0.45,
+  "agree_no21": 0.4625
+ },
+ "matches_x1": true,
+ "hit_min": 6,
+ "hit_max": 111,
+ "stand_min": 141,
+ "stand_max": 231,
+ "double_min": 8,
+ "double_max": 53,
+ "agree_no21_mean": 0.44354166666666667,
+ "agree_no21_ci_t": [
+  0.42335050231304877,
+  0.46373283102028456
+ ],
+ "agree_no21_min": 0.37083333333333335,
+ "agree_no21_max": 0.5583333333333333,
+ "n_agree_no21_below_untrained": 14,
+ "corr_hit_vs_last_block": 0.14739958893488275
+}

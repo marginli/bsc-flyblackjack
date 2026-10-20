@@ -62,12 +62,12 @@
     <li><b>作者</b>：寫 fly-blackjack 這個專案的人，本課重現的對象。<b>repo</b>：放在 GitHub（放程式碼的網站）上的一個程式資料夾；<b>clone</b>：把整個資料夾複製到自己電腦；<b>commit</b>：資料夾在某個時間點的快照，<code>004b2e3</code> 是本課固定的那一個（首頁〈出處〉）。<b>MIT 授權</b>：允許任何人複製、修改、散布，所以本頁可以直接引作者的程式。</li>
     <li><b>環境</b>：一套自成一格的 Python 加套件；<b>conda</b> 是建環境的工具，<b>pip</b> 是往環境裡裝套件的工具。本課只要一個環境，叫 <code>flyplay_bj</code>（PART 2 第 4 節）。</li>
     <li><b>路徑</b>：檔案在電腦裡的位址，像地址。<b>相對路徑</b>：從目前所在資料夾起算的位址；<code>..</code> 是「上一層資料夾」。作者的程式在 <code>repo/</code> 裡執行，所以我們的程式寫 <code>../results/</code>，指的是 <code>blackjack/results/</code>。</li>
-    <li><b>BJ1 到 BJ3</b>：PART 3 重現的三步：下載資料並切出蕈狀體、21 點 30,000 手、評分作者附的大腦檔；<b>X1 到 X4</b>：PART 4 本課自己加做的四項檢查。代號都是本課編的。</li>
+    <li><b>BJ1 到 BJ3</b>：PART 3 重現的三步：下載資料並切出蕈狀體、21 點 30,000 手、評分作者附的大腦檔（<b>大腦檔</b>：作者打完 30,000 手之後存下來、附在 repo 裡的增益值檔 <code>data/brain_seed.json</code>，載入就等於拿到他訓練完的模型，第 4 節詳述）；<b>X1 到 X4</b>：PART 4 本課自己加做的四項檢查。代號都是本課編的。</li>
     <li><b>連結體</b>：一顆腦裡每一顆神經元連到哪些神經元、各有幾個突觸（兩顆神經元之間傳訊號的接點）的完整清單；本課用的是 MaleCNS（一份雄果蠅全腦連結體資料集的名字）。把這份清單寫成一張表，第 i 列第 j 欄是「神經元 i 連到神經元 j 幾個突觸」，就叫<b>連結矩陣</b>。</li>
     <li><b>蕈狀體</b>：果蠅形成氣味記憶的腦區，模型從連結體切出它的四群神經元（PART 1 第 2 節）：<b>PN</b>（投射神經元，682 顆，把氣味送進來）、<b>KC</b>（Kenyon 細胞，1,200 顆，把每種氣味編成一組代碼；怎麼從全腦挑出這 1,200 顆，見本頁第 3 節）、<b>MBON</b>（輸出神經元，97 顆，把 KC 的代碼讀成好惡值）、<b>DAN</b>（多巴胺神經元，332 顆，分 PAM 獎賞群 316 顆與 PPL1 懲罰群 16 顆，送學習訊號）。本頁第 4 到 6 節講「氣味」時，在 21 點裡指的是：每一種「牌面＋候選動作」被編成一種假氣味送進 PN（第 7 節的 Situation）。</li>
     <li><b>活動量</b>：這個模型裡一顆神經元此刻有多活躍，一個沒有單位的數。真神經元靠放電傳訊號（一個個短促的電脈衝），這個模型不模擬放電，只用一個數代表「多活躍」（PART 1 第 3 節）。<b>權重</b>：一條連結的強度，從突觸數算出來。<b>矩陣</b>：一張數字表；<code>W[i, j]</code> 是第 i 列第 j 欄那一格。「一層神經元的活動乘上權重加總」在程式裡就是矩陣乘法，寫成 <code>@</code>。</li>
     <li><b>亮</b>：KC 把每種氣味編成一組「亮」的細胞；亮＝活動量（上一條）大於 0，本頁後面說「哪 72 顆亮」「正在亮的 KC」都是這個意思。</li>
-    <li><b>好惡值</b>：蕈狀體對眼前輸入「想靠近還是想躲」的分數，正是想做、負是不想；21 點裡每個候選動作各有一個。<b>增益</b>：乘在每條 KC→MBON 連結上的倍率，起始 1；多巴胺那一步只會把它往下壓、最低 0，另有一條很慢的回復往 1 爬（PART 1 第 4 節）。<b>一致率</b>：260 種牌面裡模型的選擇與基本策略（賭場數學算出來的最佳打法表）相同的比例。</li>
+    <li><b>好惡值</b>：蕈狀體對眼前輸入「想靠近還是想躲」的分數，正是想做、負是不想；21 點裡每個候選動作各有一個。<b>增益</b>：乘在每條 KC→MBON 連結上的倍率，起始 1；多巴胺那一步只會把它往下壓、最低 0，另有一條很慢的回復往 1 爬（PART 1 第 4 節）。<b>一致率</b>：基本策略表（賭場數學算出來的最佳打法表）有 260 格，一格是「自己的手牌（26 種）對莊家明牌（10 種）」；模型在這 260 格的選擇與表相同的比例。本頁說「牌面」時指的就是這一格；送進蕈狀體的一種氣味則是「這一格＋是不是前兩張＋候選動作」。</li>
     <li><b>種子</b>：程式裡的「隨機」其實是從一個起始數字算出來的一串數，那個起始數字叫種子，同一個種子每次得到同一串，所以結果可以逐位相同。<b>手</b>：21 點從發牌到算出輸贏的一局；30,000 手就是連打三萬局。<b>探索</b>：每做一個決定都有一定機率不看好惡值、隨機選一個動作，機率從 35% 隨手數遞減、逼近 3%。</li>
     <li><b>寫死</b>：直接把值寫在程式裡，不能從外面改。<b>匯入</b>（import）：把另一支程式裡寫好的東西接進來，在這支裡直接用。<b>模組</b>：一支可以被匯入的 Python 檔；<code>python -m flybrain.mb.fetch</code> 讀成「執行 flybrain 資料夾底下 mb 資料夾裡的 fetch 這個模組」。</li>
     <li><b>類別與物件</b>：類別是「一種東西」的定義，裡面放它的資料和操作它的函式（叫方法）；照定義做出來的每一個叫物件。<code>class FlyPlayer:</code> 定義會打牌的蕈狀體這種東西，<code>FlyPlayer(seed=0)</code> 做出一個；<code>self</code> 在方法裡指「這一個物件自己」。<code>__init__</code> 是做出物件時第一個執行的方法。</li>
@@ -134,7 +134,7 @@
 <!-- /code -->
 
   <ul class="walk">
-    <li><b class="l">①</b>這兩行定義一個叫 <code>mk</code> 的<b>函式</b>：把「建一個環境」這件事打包，之後叫一次就好。<code>$1</code>、<code>$2</code> 是叫它時給的第一、第二個值（環境名、Python 版本）。三個用 <code>||</code> 接起來的指令讀成「或者」：先看環境在不在（<code>conda env list | grep</code>），在就什麼都不做；不在就 <code>conda create</code>；連 create 都失敗，就加 <code>--solver classic</code> 再試一次。最後那個備案是可攜測試時撞到的（可攜測試：把下載包解到一個空資料夾、從建環境開始從頭跑一次，確認在另一台電腦也跑得完，PART 2 第 1 節）：conda 預設的求解器（決定裝哪些版本的那個零件）在某些安裝裡會壞掉。</li>
+    <li><b class="l">①</b>這兩行定義一個叫 <code>mk</code> 的<b>函式</b>：把「建一個環境」這件事打包，之後叫一次就好。<code>$1</code>、<code>$2</code> 是叫它時給的第一、第二個值（環境名、Python 版本）。三個用 <code>||</code> 接起來的指令讀成「或者」：先看環境在不在（<code>conda env list | grep</code>），在就跳過建環境；不在就 <code>conda create</code>；連 create 都失敗，就加 <code>--solver classic</code> 再試一次。第 9 行的 pip install 前面是換行，不在這串「或者」裡，所以不管環境原本在不在都會跑，把套件裝成釘的那一版。最後那個備案是可攜測試時撞到的（可攜測試：把下載包解到一個空資料夾、從建環境開始從頭跑一次，確認不依賴本機原本就有的檔案與套件，PART 2 第 1 節；這是在同一台電腦上做的，不是真的換一台。換電腦也該得到相同數字，根據是作者固定了所有亂數種子、本課固定了套件版本，但本課沒有在第二台電腦上實測）：conda 預設的求解器（決定裝哪些版本的那個零件）在某些安裝裡會壞掉。</li>
     <li><b class="l">②</b>環境建好後，用那個環境自己的 pip 裝套件。<code>${@:3}</code> 是「第三個以後的所有值」，也就是下一行列的套件清單。</li>
   </ul>
 
@@ -155,13 +155,13 @@
 <figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span><span class="cm">#!/usr/bin/env bash</span>
 <span class="ln">  2</span><span class="mk"> </span><span class="cm"># fly-blackjack 的 21 點實驗一鍵重跑：BJ1–BJ3 ＋ 加做檢查 X1–X4。用法：bash run_all.sh（本課實測時間見 PART 2）</span>
 <span class="ln">  3</span><span class="mk"> </span><span class="cm"># 需要先跑過上一層的 setup_envs.sh。每步的終端輸出寫到 logs/，數字寫到 results/，最後由 ../check.py 驗收。</span>
-<span class="hl"><span class="ln">  4</span><span class="mk">①</span>set -e</span><span class="hl"><span class="ln">  5</span><span class="mk">②</span>HERE=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><span class="ln">  6</span><span class="mk"> </span>PY=&quot;$(conda info --base)/envs/flyplay_bj/bin/python&quot;
+<span class="hl"><span class="ln">  4</span><span class="mk">①</span>set -eo pipefail</span><span class="hl"><span class="ln">  5</span><span class="mk">②</span>HERE=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><span class="ln">  6</span><span class="mk"> </span>PY=&quot;$(conda info --base)/envs/flyplay_bj/bin/python&quot;
 <span class="ln">  7</span><span class="mk"> </span>export PYTHONNOUSERSITE=1 PYTHONPATH=.
 <span class="hl"><span class="ln">  8</span><span class="mk">③</span>cd &quot;$HERE&quot;</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 1–8 行</figcaption></figure>
 <!-- /code -->
 
   <ul class="walk">
-    <li><b class="l">①</b>同樣的 <code>set -e</code>：任何一步失敗就停，不會帶著錯的中間結果往下跑。</li>
+    <li><b class="l">①</b>同樣的 <code>set -e</code>：任何一步失敗就停，不會帶著錯的中間結果往下跑；後面的 <code>-o pipefail</code> 是給第 14 行用的。第 14 行是一條管線（<code>for … done | tee …</code>：前面的輸出經 <code>|</code> 接給 <code>tee</code>，<code>tee</code> 一邊印在螢幕上、一邊存檔），只有 <code>set -e</code> 時，一條管線成不成功只看最後一個指令 <code>tee</code>，迴圈裡切蕈狀體失敗了也不會停；加了 <code>pipefail</code>，管線裡任何一段失敗都算失敗。本課原本漏了這個，交稿前請沒看過頁面的人逐段讀、找問題時被抓到才補上（不影響任何結果）。</li>
     <li><b class="l">②</b>算出這支腳本自己所在的資料夾（<code>blackjack/</code>），存進 <code>HERE</code>。這樣不管你在哪個資料夾打 <code>bash …/run_all.sh</code>，它都知道 <code>scripts/</code>、<code>logs/</code>、<code>results/</code> 在哪。第 6、7 行是第 1 節的例子。</li>
     <li><b class="l">③</b>先進到腳本自己的資料夾，之後的相對路徑都以它為準。</li>
   </ul>
@@ -176,19 +176,19 @@
     <li><b class="l">①</b><code>[ -d repo ] ||</code> 讀成「如果 <code>repo</code> 這個資料夾還不存在，就」<code>git clone</code>：把 fly-blackjack 整個 repo 複製下來，放進 <code>repo/</code>。第二次跑就跳過。</li>
     <li><b class="l">②</b>切到固定的 commit（<code>004b2e3…</code> 是完整的四十個字，首頁〈出處〉寫的是前七個）。沒有這一行，作者之後改了程式，你跑到的就不是本課重現的那一版。</li>
     <li><b class="l">③</b>建 <code>logs/</code> 與 <code>results/</code> 兩個資料夾，之後每一步的輸出往這裡放。</li>
-    <li><b class="l">④</b>進到 <code>repo/</code>。作者的程式要在這裡執行（第 7 行的 <code>PYTHONPATH=.</code> 指的「目前資料夾」就是它），所以下面每一行寫到我們自己的檔案都是 <code>../</code> 開頭：往上一層回到 <code>blackjack/</code>。</li>
+    <li><b class="l">④</b>進到 <code>repo/</code>。作者的程式要在這裡執行（第 7 行的 <code>PYTHONPATH=.</code> 指的「目前資料夾」就是它：「.」不是在第 7 行設定的那一刻就定下的，而是之後每次 Python 啟動、要找套件時，才看當下在哪個資料夾），所以下面每一行寫到我們自己的檔案都是 <code>../</code> 開頭：往上一層回到 <code>blackjack/</code>。</li>
   </ul>
 
 <!-- code: run_all.sh 13-18 hl=13,14,15,16,17,18 lab=13:①,14:②,15:③,16:④,17:⑤,18:⑥ -->
 <figure class="code"><pre class="code"><span class="hl"><span class="ln"> 13</span><span class="mk">①</span>echo &quot;BJ1 下載並切出蕈狀體（下載約 107 MB）&quot;; $PY -m flybrain.mb.fetch &gt; ../logs/bj1_fetch.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 14</span><span class="mk">②</span>for i in 1 2; do $PY -m flybrain.mb.extract &gt; ../logs/bj1_extract_run$i.log 2&gt;&amp;1; md5sum data/mb_circuit.npz; done | tee ../logs/bj1_md5.txt</span><span class="hl"><span class="ln"> 15</span><span class="mk">③</span>echo &quot;BJ2 21 點 30,000 手 × 4 個條件 × 3 個種子&quot;; $PY ../scripts/bj2_blackjack.py 30000 0 1 2 &gt; ../logs/bj2_blackjack.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 16</span><span class="mk">④</span>echo &quot;BJ3 評分作者附的大腦&quot;;     $PY ../scripts/bj3_author_brain.py &gt; ../logs/bj3_author_brain.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 17</span><span class="mk">⑤</span>echo &quot;加做檢查 X1–X4&quot;;            $PY ../scripts/bj_extra.py &gt; ../logs/bj_extra.log 2&gt;&amp;1</span><span class="hl"><span class="ln"> 18</span><span class="mk">⑥</span>cd &quot;$HERE&quot;; &quot;$PY&quot; ../check.py blackjack</span></pre><figcaption class="figsrc">下載包的 <code>blackjack/run_all.sh</code> 第 13–18 行</figcaption></figure>
 <!-- /code -->
 
-  <p><b>這段在做什麼。</b>五個步驟，每一步一行。格式都一樣：<code>echo</code> 印出步驟名，然後用環境裡的 Python 跑一支程式，<code>&gt;</code> 把它印出來的東西存進 <code>logs/</code> 的一個檔案（<code>2&gt;&amp;1</code> 是把錯誤訊息也存進同一個檔）。PART 3 每一節末尾的終端機節錄，就是這些 log 檔的原文。BJ1 直接用作者的程式（<code>$PY -m</code> 執行作者的模組）；BJ2 以後跑我們自己寫的程式，原因在 PART 3 第 2 節：21 點實驗作者沒有留下可以直接在終端機打的指令，他是在 Python 裡呼叫函式跑的，所以本課寫了小程式去呼叫作者的函式，不改作者任何一行。這些程式放在 <code>blackjack/scripts/</code>，從 <code>repo/</code> 看過去是 <code>../scripts/</code>。</p>
+  <p><b>這段在做什麼。</b>五個步驟、六行：BJ1 佔兩行（下載、切兩次並比 md5），BJ2、BJ3、X1–X4、驗收各一行。格式都一樣：<code>echo</code> 印出步驟名，然後用環境裡的 Python 跑一支程式，<code>&gt;</code> 把它印出來的東西存進 <code>logs/</code> 的一個檔案（<code>2&gt;&amp;1</code> 是把錯誤訊息也存進同一個檔）。PART 3 每一節末尾的終端機節錄，就是這些 log 檔的原文。BJ1 直接用作者的程式（<code>$PY -m</code> 執行作者的模組）；BJ2 以後跑我們自己寫的程式，原因在 PART 3 第 2 節：21 點實驗作者沒有留下可以直接在終端機打的指令，他是在 Python 裡呼叫函式跑的，所以本課寫了小程式去呼叫作者的函式，不改作者任何一行。這些程式放在 <code>blackjack/scripts/</code>，從 <code>repo/</code> 看過去是 <code>../scripts/</code>。</p>
 
   <ul class="walk">
     <li><b class="l">①</b>BJ1 的前半：<code>flybrain.mb.fetch</code> 下載兩個資料檔（約 107 MB）並核對計數（第 3 節）。</li>
-    <li><b class="l">②</b>BJ1 的後半是一個<b>迴圈</b>：<code>for i in 1 2; do … done</code> 讓中間那段對 1、2 各跑一次。每次執行作者的 <code>flybrain.mb.extract</code> 切一次蕈狀體（輸出寫到 <code>bj1_extract_run1.log</code>、<code>run2.log</code>），再用 <code>md5sum</code> 算切出來的檔案 <code>data/mb_circuit.npz</code> 的指紋（md5：從整個檔案算出來的一串字，內容差一個位元就完全不同）。<code>| tee</code> 把兩行指紋同時印在螢幕上和存進 <code>bj1_md5.txt</code>。PART 3 第 3 節「跑兩次、md5 相同」驗的就是這個檔。</li>
-    <li><b class="l">③</b>BJ2：<code>bj2_blackjack.py</code> 後面跟著四個數字：<code>30000</code> 是每個種子打幾手，<code>0 1 2</code> 是三個種子。PART 2 第 6 節教你手動改成 <code>2000 0</code> 試跑，改的就是這幾個數字（第 4 節）。</li>
+    <li><b class="l">②</b>BJ1 的後半是一個<b>迴圈</b>：<code>for i in 1 2; do … done</code> 讓中間那段對 1、2 各跑一次。每次執行作者的 <code>flybrain.mb.extract</code> 切一次蕈狀體（輸出寫到 <code>bj1_extract_run1.log</code>、<code>run2.log</code>），再用 <code>md5sum</code> 算切出來的檔案 <code>data/mb_circuit.npz</code>（npz：numpy 把好幾個數字陣列打包成一個檔的格式，不是文字檔，直接打開看不懂）的指紋（md5：從整個檔案算出來的一串字，內容差一個位元就完全不同）。<code>| tee</code> 把兩行指紋同時印在螢幕上和存進 <code>bj1_md5.txt</code>。PART 3 第 3 節「跑兩次、md5 相同」驗的就是這個檔。</li>
+    <li><b class="l">③</b>BJ2：<code>bj2_blackjack.py</code> 後面跟著四個數字：<code>30000</code> 是每個種子打幾手，<code>0 1 2</code> 是三個種子。PART 2 第 6 節教你把這一行單獨打出來、數字換成 <code>2000 0</code> 試跑（這支程式在本頁第 4 節）：那樣只跑 BJ2 的種子 0 打 2,000 手，不經過 run_all.sh，所以 X1–X4 與驗收都不會跑，也就不會出現 ✗。</li>
     <li><b class="l">④</b>BJ3：<code>bj3_author_brain.py</code>，把作者附在 repo 裡的大腦檔載入 Python 模型重新評分（PART 3 第 5 節）。</li>
     <li><b class="l">⑤</b>X1 到 X4 都在 <code>bj_extra.py</code> 一支裡（第 4 節）。</li>
     <li><b class="l">⑥</b>回到 <code>blackjack/</code>，跑上一層的 <code>check.py</code> 驗收，<code>blackjack</code> 是告訴它驗哪一組。PART 2 第 7 節那份 ✓／✗ 的清單就是它印的（第 5 節）。</li>
@@ -231,8 +231,8 @@
 
   <ul class="walk">
     <li><b class="l">①</b>對兩個檔案各做一次。</li>
-    <li><b class="l">②</b>檔案已經在、而且位元組數剛好，就印「have」跳過。本課實跑的 log 第一、二行印的是 have，因為可攜測試前已經下載過（<code>out/blackjack/logs/bj1_fetch.log</code>）。</li>
-    <li><b class="l">③</b>否則叫 <code>_fetch_one</code> 下載。那個函式有 60 行（第 73 到 131 行），處理斷線續傳、憑證問題、改用 curl 的備案，本頁跳過：它只影響「下載會不會成功」，不影響任何數字。</li>
+    <li><b class="l">②</b>檔案已經在、而且位元組數剛好，就印「have」跳過。本課實跑的 log 第一、二行印的是 have（<code>out/blackjack/logs/bj1_fetch.log</code>）：這份 log 出自本機的實跑資料夾，那裡的兩個資料檔在更早的一次執行就下載好了，這次直接沿用。這裡有兩次執行，要分清楚。A 是本機實跑：資料早已下載，log 印 have；expected.json 的標準答案出自這一次，它的驗收輸出是 <code>out/blackjack/runall_test.out</code>（檔名有 test，但它是實跑 A 的輸出，不是可攜測試）。B 是可攜測試：從空資料夾開始，log 印 got（真的下載了），17 項全部通過（17 項是 check.py 的驗收項目，第 5 節），結果記在 <code>out/porttest.json</code>。分清楚的用意：A 沿用舊檔，沒有真的下載；B 真的從頭下載也全數通過，證明 A 沿用舊檔不影響結果。</li>
+    <li><b class="l">③</b>否則叫 <code>_fetch_one</code> 下載。那個函式有 59 行（第 73 到 131 行），處理斷線續傳、憑證問題、改用 curl 的備案，本頁跳過：它只影響「下載會不會成功」，不影響任何數字。</li>
   </ul>
 
 <!-- code: fetch.py 162-175 hl=162,164,165,166,167,168,169,170,171,172,173,174 lab=164:①,165:②,167:③,170:④,171:⑤,174:⑥ -->
@@ -246,7 +246,7 @@
     <li><b class="l">①</b><code>load()</code>（第 148 到 159 行，本頁沒引）把兩個檔讀進來：<code>M</code> 是連結矩陣，一張 161,429 × 161,429 的表，第 i 列第 j 欄是「神經元 i 連到神經元 j 有幾個突觸」，絕大多數格子是 0，所以存成稀疏矩陣；<code>meta</code> 是神經元屬性表，一列一顆，有型（type：每顆神經元的細分名稱，例如 KCab-p、MBON01）、類（class：粗分類）等欄位。</li>
     <li><b class="l">②</b>把型那一欄拿出來，空白的填成空字串。</li>
     <li><b class="l">③</b>神經元數是矩陣的列數；連結數是非 0 的格子數（<code>nnz</code>）；突觸數是所有格子加總。</li>
-    <li><b class="l">④</b>KC 的顆數：型以「KC」開頭的列數（<code>^KC</code> 是「開頭是 KC」的寫法）。MBON、PAM、PPL1 同樣用型的開頭。</li>
+    <li><b class="l">④</b>KC 的顆數：型以「KC」開頭的列數（<code>^KC</code> 是「開頭是 KC」的寫法）。</li>
     <li><b class="l">⑤</b>MBON、PAM、PPL1 這三行同樣用型的開頭認。這就是 PART 1 第 2 節表裡「四群神經元」怎麼認的：靠屬性表裡的名字，不是靠任何行為或表現。</li>
     <li><b class="l">⑥</b>PN 用的是「類」這一欄等於 <code>ALPN</code>（觸角葉投射神經元）：PN 的型名各帶自己小球區的名字（小球區：嗅覺訊號進腦第一站裡的分區，每一區收一種受體的訊號；例如 DA1_lPN 是 DA1 區的 PN），不以同一個字開頭，所以只能用粗分類挑。</li>
   </ul>
@@ -262,14 +262,14 @@
 
   <ul class="walk">
     <li><b class="l">①</b>逐項比對實際算出的和預期的。</li>
-    <li><b class="l">②</b><code>ok &amp;= good</code>：只要有一項不符，<code>ok</code> 就變成不成立。</li>
+    <li><b class="l">②</b><code>ok &amp;= good</code>：第 176 行（就在這段上面一行）先把 <code>ok</code> 設成成立（<code>True</code>）；之後只要有一項不符，<code>ok</code> 就變成不成立，而且不會再變回來。</li>
     <li><b class="l">③</b>入口：先下載、再印「verifying:」、再核對。</li>
-    <li><b class="l">④</b>核對不過就以失敗結束（<code>exit(1)</code>），run_all.sh 第 4 行的 <code>set -e</code> 會讓整支腳本在這裡停住。這就是 PART 2 說「日後整理版若更新，BJ1 會在這裡停住，而不是悄悄算出不同的蕈狀體」。</li>
+    <li><b class="l">④</b>核對不過就以失敗結束（<code>exit(1)</code>：程式結束時交給終端機一個數，叫結束碼，0 是成功、非 0 是失敗），run_all.sh 第 4 行的 <code>set -e</code> 看的就是這個數，非 0 就讓整支腳本在這裡停住。這就是 PART 2 說「日後整理版若更新，BJ1 會在這裡停住，而不是悄悄算出不同的蕈狀體」。</li>
   </ul>
 
   <h3>extract.py：切出蕈狀體</h3>
 
-  <p><b>這支在做什麼。</b>PART 1 第 2 節的那段：從 MaleCNS 切出 PN、KC、MBON、DAN 四群，留四組連結（PN→KC、KC→MBON、DAN→MBON、MBON→MBON；這裡的「組」是連結的種類，和本頁讀程式的三層無關），KC 只取「路徑上」（同時接到 PN、又連到 MBON）的 3,811 顆中的 1,200 顆；順手替每顆 MBON 算出趨近／迴避標記（PART 1 第 4 節）。</p>
+  <p><b>這支在做什麼。</b>PART 1 第 2 節的那段：從 MaleCNS 切出 PN、KC、MBON、DAN 四群，留四層連結（PN→KC、KC→MBON、DAN→MBON、MBON→MBON；這裡的「層」是 PART 1 的用法：從一群神經元到一群神經元的全部連結，和本頁讀程式分的「三層」是兩回事），KC 只取「路徑上」（同時接到 PN、又連到 MBON）的 3,811 顆中的 1,200 顆；順手替每顆 MBON 算出趨近／迴避標記（PART 1 第 4 節）。</p>
 
 <!-- code: extract.py 42-51 hl=42,43,44,45,46,48,49,50,51 lab=42:①,43:②,46:③,48:④,49:⑤ -->
 <figure class="code"><pre class="code"><span class="hl"><span class="ln"> 42</span><span class="mk">①</span>def extract(kenyon: int | None = 1200, seed: int = 20260913):</span><span class="hl"><span class="ln"> 43</span><span class="mk">②</span>    M, meta = load()</span><span class="hl"><span class="ln"> 44</span><span class="mk"> </span>    t = meta[&quot;type&quot;].fillna(&quot;&quot;)</span><span class="hl"><span class="ln"> 45</span><span class="mk"> </span>    cls = meta[&quot;class&quot;].fillna(&quot;&quot;)</span><span class="hl"><span class="ln"> 46</span><span class="mk">③</span>    where = lambda pat: meta.index[t.str.match(pat, na=False)].to_numpy()</span><span class="ln"> 47</span><span class="mk"> </span>
@@ -301,7 +301,7 @@
     <li><b class="l">②</b>同樣算每顆 KC 送到全部 MBON 幾個突觸。</li>
     <li><b class="l">③</b>兩個都大於 0 的 KC 才算「在路徑上」（<code>&amp;</code> 是「而且」），共 3,811 顆。</li>
     <li><b class="l">④</b>如果要的顆數比 3,811 少（預設 1,200），就取樣。作者說只取 1,200 顆是為了省計算，是人選的；少用三分之二的細胞結果會不會變，是 PART 4 的 X3 要查的（本頁第 4 節）。</li>
-    <li><b class="l">⑤</b>依「收到 ＋ 送出」的突觸數由大到小排名；<code>kind="stable"</code> 是穩定排序：分數相同的保持原本順序。作者的註解寫得很直接：大多數 KC 在這個分數上同分，不穩定的排序在不同 numpy 版本會把同分的排成不同順序，於是「不同電腦悄悄拿到不同的一批細胞」。README〈Reproducibility〉說的 md5 跨電腦相同，靠的就是這個字。</li>
+    <li><b class="l">⑤</b>依「收到 ＋ 送出」的突觸數由大到小排名；<code>kind="stable"</code> 是穩定排序：分數相同的保持原本順序。作者的註解寫得很直接：大多數 KC 在這個分數上同分，不穩定的排序在不同 numpy 版本會把同分的排成不同順序，於是「不同電腦悄悄拿到不同的一批細胞」。作者 repo 的 README 裡〈Reproducibility〉（可重現性）一節承諾切出來的檔案 md5 在不同電腦上相同，靠的就是這個字。</li>
     <li><b class="l">⑥</b><code>linspace(0, 3810, 1200)</code> 在排名 0 到 3810 之間等距取 1,200 個位置，所以取到的是「從最常連到最少連」全範圍都有，而不是只取前 1,200 名。這一行是 PART 1 第 6 節總表說「KC 只取 1,200 顆是人選的」的地方。</li>
   </ul>
 
@@ -316,7 +316,7 @@
     <li><b class="l">①</b>DAN 是 PAM 接 PPL1 排成一串：前 316 顆是 PAM、後 16 顆是 PPL1。extract.py 第 94 行（本頁沒引）據此做一串 0 與 1（0 是 PAM、1 是 PPL1），之後 model.py（第 6 節）用它分「獎賞群」「懲罰群」。</li>
     <li><b class="l">②</b>四層連結各切一塊：PN→KC、KC→MBON、DAN→MBON、MBON→MBON。每一塊仍是「幾個突觸」的表。PART 1 第 2 節說「KC 之間的連結作者刻意不收」：這裡沒有 <code>kc_kc</code> 那一塊，作者在檔頭說明寫了理由（真實的 KC 壓抑來自 APL 這顆抑制神經元，不是 KC 彼此的連結）。</li>
     <li><b class="l">③</b>每顆 MBON 從全部 PAM 收到的突觸總數，以及從全部 PPL1 收到的。</li>
-    <li><b class="l">④</b>標記：PPL1（懲罰群）多於 PAM 的標 +1（趨近型），否則 −1（迴避型）。這個 ±1 之後算好惡值時用：好惡值 ＝ 每顆 MBON 的活動量 × 它的標記加總，趨近型加分、迴避型減分（第 6 節）。先講清楚性質：這個 ±1 是作者用接線定的規則，不是量出來的生理事實；為什麼這樣定、後果是什麼，第 6 節末的白話一次講完。這條對應在程式裡只有這一行。</li>
+    <li><b class="l">④</b>標記：PPL1（懲罰群）多於 PAM 的標 +1（趨近型），否則 −1（迴避型）。PPL1 只有 16 顆、PAM 有 316 顆，卻有 56 顆 MBON 收到 PPL1 比較多，是因為 PAM 的突觸集中在少數 MBON 上：PAM 總共送 28,546 個突觸到 MBON，其中 27,807 個集中在最後被標 −1 的 41 顆，剩下 56 顆總共只收到 739 個 PAM 突觸；PPL1 每顆送約 692 個（PAM 每顆約 90 個），總共 11,070 個裡有 10,484 個落在這 56 顆上。所以這 56 顆收到的 PPL1 突觸比 PAM 多，被標 +1（數字由課程倉庫的 <code>scripts/dan_counts.py</code> 算出，在 <code>out/blackjack/dan_counts.json</code> 的 <code>by_author_label</code>）。這個 ±1 之後算好惡值時用：好惡值 ＝ 每顆 MBON 的活動量 × 它的標記加總，趨近型加分、迴避型減分（第 6 節）。先講清楚性質：這個 ±1 是作者用接線定的規則，不是量出來的生理事實；為什麼這樣定、後果是什麼，第 6 節末的白話一次講完。這條對應在程式裡只有這一行。</li>
     <li><b class="l">⑤</b>兩群都沒連到的標 0；兩群剛好一樣多的會落到上一行的 −1。實際上 97 顆都沒有碰到這兩種情況：趨近 56 ＋ 迴避 41 ＝ 97，沒有一顆標 0；本課另外拿切出來的檔算過，97 顆裡沒有一顆兩群同分。</li>
   </ul>
 
@@ -346,7 +346,7 @@
 
   <ul class="walk">
     <li><b class="l">①</b>四群各幾顆。</li>
-    <li><b class="l">②</b>把資料集名稱、來源、各群顆數、各層連結數與突觸數、趨近與迴避各幾顆、以及一段「怎麼挑的」文字收成一個字典。這就是 PART 3 第 3 節那張表裡「作者 repo 裡的 manifest」那一欄的來源。</li>
+    <li><b class="l">②</b>把資料集名稱、來源、各群顆數、各層連結數與突觸數、趨近與迴避各幾顆、以及一段「怎麼挑的」文字收成一個字典。這就是 PART 3 第 3 節那張表裡「作者 repo 裡的 manifest」（說明清單：切完時自動記下這份資料各有多少細胞與連結的摘要檔）那一欄的來源。</li>
     <li><b class="l">③</b>連結數是每一塊非 0 的格子數：PN→KC 7,182、KC→MBON 18,183、DAN→MBON 3,123、MBON→MBON 1,606。</li>
     <li><b class="l">④</b>趨近型 56、迴避型 41 就是在這裡數的。</li>
     <li><b class="l">⑤</b>寫成 <code>data/mb_manifest.json</code>。作者執行時寫出的這個檔跟著 repo 一起 commit 進去，本課收在 <code>out/upstream/blackjack_mb_manifest_committed.json</code>；本機重切時又寫一次，印在 <code>bj1_extract_run1.log</code>，兩者完全相同。</li>
@@ -385,11 +385,11 @@
 <!-- /code -->
 
   <ul class="walk">
-    <li><b class="l">①</b>從作者的 blackjack.py 匯入七樣東西：<code>FlyPlayer</code>（會打牌的蕈狀體，一個類別）、<code>session</code>（讓它連打幾萬手）、<code>reference_winrates</code>（三種固定策略的參考勝率）、<code>chart_cells</code>（基本策略表的 260 格）、<code>basic_strategy</code>（每一格的正確動作）、以及三個動作的代號。基本策略是賭場數學算出來、公開的一張表：自己的牌面（26 種）對莊家亮出來的那張牌（10 種）共 260 種情況，每一格寫明該要牌、停牌還是加倍（加倍：賭注加倍、只再抽一張就停，只能在剛拿到前兩張牌時做）；<b>一致率</b>是果蠅在這 260 格的選擇有多少比例和表相同。牌面怎麼分 26 種、三個動作的規則，在 第 7 節。</li>
+    <li><b class="l">①</b>從作者的 blackjack.py 匯入八個名字（五樣東西加三個動作代號）：<code>FlyPlayer</code>（會打牌的蕈狀體，一個類別）、<code>session</code>（讓它連打幾萬手）、<code>reference_winrates</code>（三種固定策略的參考勝率）、<code>chart_cells</code>（基本策略表的 260 格）、<code>basic_strategy</code>（每一格的正確動作）、以及三個動作的代號。基本策略是賭場數學算出來、公開的一張表：自己的手牌（26 種）對莊家亮出來的那張牌（10 種）共 260 種情況，每一格寫明該要牌、停牌還是加倍（加倍：賭注加倍、只再抽一張就停，只能在剛拿到前兩張牌時做）；<b>一致率</b>是模型在這 260 格的選擇有多少比例和表相同。牌面怎麼分 26 種、三個動作的規則，在 第 7 節。</li>
     <li><b class="l">②</b>手數從命令列的第一個數字讀，沒給就 30,000。run_all.sh 給了 30000。</li>
     <li><b class="l">③</b>種子從第二個數字起全部讀進來，沒給就 0、1、2。</li>
     <li><b class="l">④</b>四個條件排成一串，每一項是「名字」加「給 FlyPlayer 的設定」。作者註解寫「對照組先跑」，所以完整模型排最後。</li>
-    <li><b class="l">⑤</b>未訓練：不學習、探索比例 0、下限 0，每一手都選目前好惡值最高的動作。<b>探索</b>（詞表）：每做一個決定都有一定機率不看好惡值、隨機選一個動作。為什麼需要它：沒學過時的好惡值由編碼的亂數決定，實跑時剛好偏要牌（PART 5 第 3 節第 1 手）；只有選過的動作才會在一手結束後被學到；不探索的話，一個一開始偏好「要牌」的蕈狀體在要牌被削低到停牌之下、改選停牌之前，停牌完全沒被試過，沒有任何關於停牌的資料；探索讓每個動作從一開始就有機會被試、被學。完整模型的比例從 35% 隨手數遞減、逼近下限 3%（打到 30,000 手時約 3.03%，第 7 節）。</li>
+    <li><b class="l">⑤</b>未訓練：不學習、探索比例 0、下限 0，每一手都選目前好惡值最高的動作。<b>探索</b>（詞表）：每做一個決定都有一定機率不看好惡值、隨機選一個動作。為什麼需要它：沒學過時的好惡值由編碼的亂數決定，實跑時剛好偏要牌（PART 5 第 3 節第 1 手）；只有選過的動作才會在一手結束後被學到；不探索的話，一個一開始偏好「要牌」的蕈狀體在要牌被削低到停牌之下、改選停牌之前，停牌完全沒被試過，沒有任何關於停牌的資料。後果是：要牌在某一格打得還不錯、沒被削到停牌之下，那一格就永遠不會試停牌；加倍更要等要牌、停牌都被削到它之下才輪得到。探索讓每個動作從一開始就有機會被試、被學。本課沒有跑「有學習、不探索」這個組合，所以不探索實際會差多少，沒有數字。完整模型的比例從 35% 隨手數遞減、逼近下限 3%（打到 30,000 手時約 3.03%，第 7 節）。</li>
     <li><b class="l">⑥</b>關掉學習但探索照常遞減。</li>
     <li><b class="l">⑦</b>切斷多巴胺（<code>dopamine=False</code>），探索照常。</li>
     <li><b class="l">⑧</b>完整模型：什麼都不改，用 FlyPlayer 的預設值。</li>
@@ -424,21 +424,26 @@
     <li><b class="l">①</b>對四個條件各做一次。</li>
     <li><b class="l">②</b>對三個種子各做一次（兩層迴圈，共 12 次）。</li>
     <li><b class="l">③</b>做一個 FlyPlayer：種子 <code>s</code>，加上這個條件的設定。<code>**kw</code> 是「把字典裡的設定全部展開當參數」。</li>
-    <li><b class="l">④</b>叫作者的 <code>session</code> 打 30,000 手，發牌的亂數也用同一個種子。回來三樣：每一手的淨輸贏 <code>nets</code>、每 2,000 手一塊的平均 <code>blocks</code>（15 塊）、每一塊結束時與基本策略的一致率 <code>agree</code>。</li>
+    <li><b class="l">④</b>叫作者的 <code>session</code> 打 30,000 手，發牌的亂數也用同一個種子。種子只改兩件事：發牌與探索的亂數。電路、Situation 的編碼（第 7 節，固定種子 20260914）在所有種子下都相同，所以未訓練那組三個種子的成績差別只來自發牌。回來三樣：每一手的淨輸贏 <code>nets</code>、每 2,000 手一塊的平均 <code>blocks</code>（15 塊）、每一塊結束時與基本策略的一致率 <code>agree</code>。</li>
     <li><b class="l">⑤</b>記這個種子的結果：第一塊與最後一塊的平均、頭尾一致率、整條曲線、260 格的計數。PART 3 第 4 節的圖 2 畫的就是 <code>blocks</code>。</li>
     <li><b class="l">⑥</b>印一行：條件、種子、勝率從第一塊到最後一塊、一致率從頭到尾、格數統計、花了幾秒。PART 3 節錄的每一行就是它。</li>
-    <li><b class="l">⑦</b>這個條件三個種子的「最後一塊平均」再取平均，就是 PART 3 表最右欄的 −48.0%、−47.5%、−47.5%、−14.8%。作者叫它勝率，但它是每手平均淨輸贏、以一注為單位：−48% 是平均每手輸 0.48 注，不是贏的百分比，所以是負的。check.py 的 BJ2 四項比的就是這四個數。</li>
-    <li><b class="l">⑧</b>三條參考線：照基本策略打、亂選、永遠停牌各打 20,000 手的平均輸贏，用種子 0。圖 2 的三條灰色虛線。</li>
+    <li><b class="l">⑦</b>這個條件三個種子的「最後一塊平均」再取平均，就是 PART 3 表最右欄的 −48.0%、−47.5%、−47.5%、−14.8%（關掉學習與切斷多巴胺兩個 −47.5% 一模一樣是必然的：兩種對照都讓增益停在 1，又用同一串亂數發牌與探索，每一手都相同，PART 3 第 4 節表後有說明）。作者叫它勝率，但它是每手平均淨輸贏、以一注為單位：−48% 是平均每手輸 0.48 注，不是贏的百分比，所以是負的。check.py 的 BJ2 四項比的就是這四個數。</li>
+    <li><b class="l">⑧</b>三條參考線：照基本策略打、亂選、永遠停牌各打 20,000 手的平均輸贏，用種子 0，結果是 −1.4%、−44.5%、−15.8%。完整模型的 −14.8% 落在永遠停牌附近，離基本策略很遠；未訓練的 −48.0% 比亂選還差（它幾乎每格要牌，常爆）。圖 2 的三條灰色虛線。</li>
     <li><b class="l">⑨</b>存成 <code>results/bj2_blackjack_30000.json</code>，檔名帶手數。</li>
   </ul>
 
   <h3>bj3_author_brain.py：BJ3，重新評分作者附的大腦</h3>
 
-  <p><b>這支在做什麼。</b>作者附了一個訓練完的蕈狀體狀態檔 <code>data/brain_seed.json</code>（PART 3 叫它大腦檔）。它是作者的網頁版用的：作者除了 Python 程式，還用 JavaScript 寫了一個在瀏覽器裡跑的版本（repo 的 <code>site/</code>，首頁〈出處〉提到的線上牌桌），本頁叫它網頁版。檔內標明它是從「Python 跑完 30,000 手、種子 0」的蕈狀體轉存成網頁版的格式（所以這支程式的說明寫 python session）；檔內記的一致率 53.1%，是網頁版的 JavaScript 評分程式算的。這支程式把那份狀態載入作者的 Python 模型，用作者算一致率的那個函式（<code>agreement</code>，第 7 節）重算，得到 51.9%。這就是 PART 3 第 5 節那張表的第四列：作者的 README、程式檔尾註解、附的大腦檔三處寫的一致率是 52%、48.1%、53.1%，互相對不上，重算的 51.9% 是本課加上去的第四個數。要先弄清楚那個檔存了什麼。</p>
+  <p><b>這支在做什麼。</b>作者附了一個訓練完的蕈狀體狀態檔 <code>data/brain_seed.json</code>（PART 3 叫它大腦檔）。它是作者的網頁版用的：作者除了 Python 程式，還用 JavaScript 寫了一個在瀏覽器裡跑的版本（repo 的 <code>site/</code>，首頁〈出處〉提到的線上牌桌），本頁叫它網頁版。檔內標明它是從「Python 跑完 30,000 手、種子 0」的蕈狀體轉存成網頁版的格式（所以這支程式的說明寫 python session）；檔內記的一致率 53.1%，是網頁版的 JavaScript 評分程式算的。這支程式把那份狀態載入作者的 Python 模型，用作者算一致率的那個函式（<code>agreement</code>，第 7 節）重算，得到 51.9%。這一節會出現好幾個一致率，先排好：</p>
+  <ul>
+    <li>作者寫的三個：README 52%、程式檔尾註解 48.1%、大腦檔裡記的 53.1%（網頁版算的），三處互相對不上。</li>
+    <li>本課算的兩個：這支程式把大腦檔載入 Python 重算 51.9%（第四個數，和網頁版差 3 格）；本機 BJ2 用公開程式、種子 0 重新訓練，學完 43.85%（260 格裡和基本策略相同 114 格）。</li>
+  </ul>
+  <p>另一個比較：大腦檔標明是種子 0，本機種子 0 學完的表和它有 114 格選的動作不同（碰巧也是 114，和上面「與基本策略相同 114 格」是不同的比較；PART 3 第 5 節，這是課程 repo 的 <code>scripts/part3_extras.py</code> 逐格比的，不在下載包裡，這支 bj3 只算大腦檔自己的表）。原因的推論放在下面讀完程式之後（④ 之後那段）。要先弄清楚那個檔存了什麼。</p>
 
 <!-- code: bj3_author_brain.py 1-12 hl=8,9,10,11,12 lab=8:①,9:②,10:③,11:④,12:⑤ -->
 <figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;BJ3：作者附的 30,000 手大腦（data/brain_seed.json，標記為 python 30k-hand session, seed 0）
-<span class="ln">  2</span><span class="mk"> </span>載入 Python 模型後重新評分，與作者自述（stand 約 227、double 0/39、一致率 53.1%）及本機 BJ2 比較。
+<span class="ln">  2</span><span class="mk"> </span>載入 Python 模型後重新評分，與作者自述（stand 約 227、double 0/39、一致率 53.1%）比較；與本機 BJ2 的比較在課程頁面上做（逐格比對在課程 repo 的 scripts/part3_extras.py）。
 <span class="ln">  3</span><span class="mk"> </span>gain 只存 18,183 條 KC→MBON 連結，順序依 site/mb.json 的 w_kc_mbon (r, c)。在 repo/ 下以 PYTHONPATH=. 執行。&quot;&quot;&quot;
 <span class="ln">  4</span><span class="mk"> </span>import json, base64
 <span class="ln">  5</span><span class="mk"> </span>import numpy as np
@@ -464,12 +469,12 @@
     <li><b class="l">①</b>本機切出來的 KC→MBON 原始突觸數矩陣。</li>
     <li><b class="l">②</b>確認 mb.json 列的每一個位置在本機矩陣裡都有連結、而且本機有連結的格子數也剛好是這麼多：兩邊的電路是同一個。結果存成 <code>same_edges</code>，本課實跑是 true（<code>out/blackjack/bj3_author_brain.json</code>）。沒有這一步，重算的一致率就沒有意義。</li>
     <li><b class="l">③</b>做一個全是 1 的增益矩陣，把大腦檔的 18,183 個值填進對應位置。</li>
-    <li><b class="l">④</b>換掉本機蕈狀體的增益。從這一刻起，這個 FlyPlayer 就是作者那個「打過 30,000 手的大腦」。</li>
+    <li><b class="l">④</b>換掉本機蕈狀體的增益。從這一刻起，這個 FlyPlayer 的增益換成了大腦檔裡的值。它等於作者那個「打過 30,000 手的大腦」，前提是電路與氣味編碼都和作者當時相同：KC→MBON 這一層的連結位置由前面的 same_edges 確認相同；其他三層與突觸數沒有逐值比對，根據是：作者 commit 進 repo 的 manifest 和本機重切寫出的完全相同（各層連結數、突觸數，第 3 節 extract.py ⑤），而本機重切兩次 md5 相同（作者沒公布他的 md5，所以跨機只能比到這些數量），由此推定相同；編碼無法確認（大腦檔只存增益），而且增益只存到 1/255 的精度。所以和本機種子 0 差 114 格，可能的原因有三種：程式版本不同、編碼不同、增益精度不足。精度那一項影響應該很小（1/255 的捨入要剛好讓兩個動作的好惡值翻轉順序，才會改到一格），另兩項本課沒有辦法分開；另有一條證據指向程式版本不同：作者表格裡「關掉學習」與「切斷多巴胺」兩列的數字不一樣（−45% → −45% 對 −46% → −47%），但照公開的程式，這兩個條件打出來的每一手都相同、數字該一模一樣（PART 3 第 4、5 節；也可能是作者抄寫筆誤，分辨不出來）。</li>
     <li><b class="l">⑤</b>記下檔內的一致率、檔內的每手平均輸贏（總輸贏 ÷ 手數）、電路是否相同。</li>
     <li><b class="l">⑥</b>用作者的 <code>agreement</code> 函式重算一致率，就是表裡的 51.9%。</li>
   </ul>
 
-  <p>第 20 到 28 行和 bj2_blackjack.py 的 <code>spot_counts</code> 同一件事（260 格各選什麼、各類選對幾格），印出來並存成 <code>results/bj3_author_brain.json</code>，不再重複講。表裡「要牌 97、停牌 149、加倍 14」出自這裡。程式第 2 行說明裡的「stand 約 227、double 0/39」是作者在 blackjack.py 檔尾註解裡對學完模型的描述，要分兩組比：停牌格數是作者寫約 227 格、大腦檔重算 149 格；加倍選對是作者寫 0/39、大腦檔重算 1/39（14 是它選加倍的總格數，不和 0/39 比）。停牌差 78 格的原因，本課沒有查到：作者沒說那段描述來自哪一次跑，也沒有附那一次的存檔。PART 3 第 5 節整理了作者三份資料互相對不上的情形。14 是 260 格裡它選加倍的格數；上面說的 1/39 是表上該加倍的 39 格裡它選對的格數，兩個不是同一件事。</p>
+  <p>第 20 到 28 行和 bj2_blackjack.py 的 <code>spot_counts</code> 同一件事（260 格各選什麼、各類選對幾格），印出來並存成 <code>results/bj3_author_brain.json</code>，不再重複講。PART 3 第 5 節那張表裡「要牌 97、停牌 149、加倍 14」出自這裡。程式第 2 行說明把「stand 約 227、double 0/39、一致率 53.1%」並列為作者自述，但來源不同：53.1% 是大腦檔裡記的，「stand 約 227、double 0/39」是作者在 blackjack.py 檔尾註解裡對學完模型的描述（那段註解寫的一致率是 48.1%），要分兩組比：停牌格數是作者寫約 227 格、大腦檔重算 149 格；加倍選對是作者寫 0/39、大腦檔重算 1/39。停牌差 78 格的原因，本課沒有查到：作者沒說那段描述來自哪一次跑，也沒有附那一次的存檔。PART 3 第 5 節整理了作者三份資料互相對不上的情形。表裡的「加倍 14」是 260 格裡它選加倍的總格數，和這兩組比較無關。</p>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <h3>bj_extra.py：X1 到 X4</h3>
@@ -485,7 +490,7 @@
     <li><b class="l">①</b>把作者的 blackjack 模組整個匯入，取短名 <code>bj</code>。之後 <code>bj.FlyPlayer</code>、<code>bj.session</code> 就是第 7 節那兩樣東西。</li>
     <li><b class="l">②</b>匯入 model.py 的 <code>MushroomBody</code> 類別（第 6 節）。</li>
     <li><b class="l">③</b>匯入 extract.py 的 <code>extract</code> 函式：X3 要用它切「全部 KC」的電路。</li>
-    <li><b class="l">④</b>手數從命令列讀，沒給就 30,000；run_all.sh 沒給。給小數字只是試跑用。</li>
+    <li><b class="l">④</b>手數從命令列讀，沒給就 30,000；run_all.sh 沒給。給小數字只是試跑用，PART 2 的試跑沒有用到它。若你自己手打 <code>$PY ../scripts/bj_extra.py 2000</code> 試跑（單獨打要先做 run_all.sh 前幾行做的事：進到 <code>blackjack/repo/</code>、設好 <code>PY</code> 與 <code>PYTHONPATH=.</code>；PART 2 第 6 節列了完整指令），之後又跑 check.py，X1–X4 那幾項會出現 ✗，這是正常的。</li>
     <li><b class="l">⑤</b>結果放 <code>../results/</code>，另開一個 <code>circuits/</code> 子資料夾放 X3 切出來的幾個電路檔。</li>
   </ul>
 
@@ -499,9 +504,9 @@
 <!-- /code -->
 
   <ul class="walk">
-    <li><b class="l">①</b><code>stats</code>：給一串數（每個種子最後 2,000 手的平均），算四樣：幾個、平均、標準差、95% 信賴區間。</li>
-    <li><b class="l">②</b>標準差用 <code>ddof=1</code>（樣本標準差，除以 n − 1），標準誤 ＝ 標準差 ÷ √n；區間 ＝ 平均 ± 1.96 × 標準誤。PART 4 第 2 節那條公式。</li>
-    <li><b class="l">③</b><code>use_circuit</code>：這支程式的關鍵。作者的 <code>FlyPlayer</code>（第 7 節第 178 行）建蕈狀體時寫的是 <code>MushroomBody()</code>，去找的是 blackjack 模組裡那個叫 <code>MushroomBody</code> 的名字。</li>
+    <li><b class="l">①</b><code>stats</code>：給一串數（每個種子最後 2,000 手的平均），算四樣：幾個、平均、標準差（每個數離平均通常差多少）、95% 信賴區間（只跑了幾個種子，平均帶著誤差；這個範圍約 95% 會包含跑無限多個種子的平均）。PART 4 用它判定：完整模型和對照組的區間不重疊，就算兩者確實不同，不是幾副牌的運氣。</li>
+    <li><b class="l">②</b>標準差用 <code>ddof=1</code>（樣本標準差，除以 n − 1），標準誤 ＝ 標準差 ÷ √n；區間 ＝ 平均 ± 1.96 × 標準誤。PART 4 第 2 節那條公式。種子只有 3 或 5 個時，嚴格的做法要把 1.96 換成 t 分布的係數（3 個是 4.30、5 個是 2.78），區間會更寬（樣本很少時，連「每個種子差多少」都估不準，平均的不確定性比 1.96 估的大，t 分布是照樣本數修正後的係數）；這支程式一律用 1.96，是本課的簡化，PART 4 第 2 節列了改用 t 分布的區間，判定結果不變。</li>
+    <li><b class="l">③</b><code>use_circuit</code>：這支程式的關鍵。作者的 <code>FlyPlayer</code>（第 7 節第 178 行）建蕈狀體時寫的是 <code>MushroomBody()</code>，去找的是 blackjack 模組裡那個叫 <code>MushroomBody</code> 的名字：blackjack.py 第 20 行寫了 <code>from .model import MushroomBody</code>，把 model.py 的類別匯入成 blackjack 模組裡的一個名字，我們換掉的就是這個名字。</li>
     <li><b class="l">④</b>我們定義一個自己的 <code>make</code> 函式，收同樣的設定。</li>
     <li><b class="l">⑤</b>它建一個 MushroomBody，但可以多給：要用哪個電路檔（<code>path</code>，沒給就用作者預設的 <code>data/mb_circuit.npz</code>），以及其他設定（<code>mb_kw</code>，X2 用它開「打亂 KC→MBON」）。</li>
     <li><b class="l">⑥</b>建好之後若有 <code>post</code>（一個「事後動手腳」的函式），就叫它一次。X2 打亂 DAN→MBON 從這裡進去。</li>
@@ -532,11 +537,11 @@
 <!-- /code -->
 
   <ul class="walk">
-    <li><b class="l">①</b>X1：先把電路設回作者預設（沒有 path、沒有 post）。</li>
+    <li><b class="l">①</b>X1 要回答：作者只跑 3 個種子看到的差距，換成 20 個種子還在不在。先把電路設回作者預設（沒有 path、沒有 post）。</li>
     <li><b class="l">②</b>20 個種子，0 到 19；前 3 個就是 BJ2 用的那 3 個。</li>
     <li><b class="l">③</b>三個條件：完整模型、切斷多巴胺（<code>dopamine=False</code>）、未訓練（不學、不探索）。設定和 bj2_blackjack.py 的同名條件相同。</li>
     <li><b class="l">④</b>每個條件 20 個種子各打一次，summarise。PART 4 第 2 節那張表。</li>
-    <li><b class="l">⑤</b>另外取前 3 個種子算 stats，對照 BJ2 的 3 種子平均。</li>
+    <li><b class="l">⑤</b>另外取前 3 個種子算 stats，對照 BJ2 的 3 種子平均。設定、種子、電路都相同，理論上該逐位相同；實跑三個條件都相同（例如完整模型兩邊的平均都是 −14.8%）。</li>
   </ul>
 
 <!-- code: bj_extra.py 67-84 hl=69,70,71,72,74,75,76,77,78,79,81 lab=69:①,70:②,72:③,74:④,75:⑤,76:⑥,77:⑦,78:⑧,79:⑨ -->
@@ -558,7 +563,7 @@
     <li><b class="l">④</b>DAN→MBON 那一層：5 種重排。</li>
     <li><b class="l">⑤</b>定義這一種重排的 <code>perm_dan</code>（<code>k=k</code> 是把目前的 k 鎖進這個函式，Python 的迴圈變數不這樣寫會全部指到最後一個值）。</li>
     <li><b class="l">⑥</b>重排的亂數起點 1000 ＋ k，5 種各不同、但固定。</li>
-    <li><b class="l">⑦</b>DAN→MBON 矩陣的欄（MBON）隨機換位：<code>permutation(97)</code> 是 0 到 96 的隨機排列，<code>[:, …]</code> 是「列不動、欄照這個排列重排」。效果是每顆 DAN 原本連到的那組 MBON，整組被換成另一組，連結強度不變、MBON 的趨近／迴避標記也不動。</li>
+    <li><b class="l">⑦</b>DAN→MBON 矩陣的欄（MBON）隨機換位：<code>permutation(97)</code> 是 0 到 96 的隨機排列，<code>[:, …]</code> 是「列不動、欄照這個排列重排」。效果是每顆 DAN 原本連到的那組 MBON，整組被換成另一組，連結強度不變、MBON 的趨近／迴避標記也不動。重排的用意：讓懲罰多巴胺不再集中在 +1 那群，削弱的方向就和標記脫鉤（原理見第 6 節末的白話，結果在 PART 4 第 3 節）。</li>
     <li><b class="l">⑧</b>用作者預設的電路檔，但建好後做這個重排。</li>
     <li><b class="l">⑨</b>每一種重排打 3 個種子。第 81 行（沒有標記）把 5 種重排的平均再取平均 <code>mean_of_means</code>，就是 PART 4 第 3 節引用的數。</li>
   </ul>
@@ -602,10 +607,10 @@
   <ul class="walk">
     <li><b class="l">①</b>讀 extract.py 寫的 <code>data/mb_cells.json</code>。</li>
     <li><b class="l">②</b>取 97 顆 MBON 的型、傳導物質預測值、作者的標記。文獻發現 MBON 用哪一種傳導物質和它推動趨近或迴避有關，所以可以拿來對照；這裡的值是資料集用影像預測的，可能猜錯。</li>
-    <li><b class="l">③</b>文獻規則寫成一個字典：麩胺酸 → −1（迴避）、乙醯膽鹼 → +1、GABA → +1（趨近）。PART 4 第 5 節說的 Aso 等人 2014 年的簡化規則。</li>
+    <li><b class="l">③</b>文獻規則寫成一個字典：麩胺酸 → −1（迴避）、乙醯膽鹼 → +1、GABA → +1（趨近）。PART 4 第 5 節說的 Aso 等人 2014 年的簡化規則。下一行的 <code>Counter()</code> 是一個「逐類計數」的字典，每遇到一個（傳導物質, 標記）組合就把那一類加 1，最後得到交叉表。</li>
     <li><b class="l">④</b>規則對這顆的預期值（傳導物質不在三種之內的得到「沒有」）。</li>
     <li><b class="l">⑤</b>每顆記一列：型、傳導物質、作者的標記、規則的預期、一致與否。</li>
-    <li><b class="l">⑥</b>一致的顆數：62，分母是 97（第 122、123 行會排除傳導物質不在三種之內、或標記為 0 的 MBON，這份資料裡一顆都沒被排除，所以 judged 就是 97）。check.py 的 X4 那一項比的就是這個數。交叉表（傳導物質 × 作者標記各幾顆）是 PART 4 那張三列的表。</li>
+    <li><b class="l">⑥</b>一致的顆數：62，分母是 97（第 122、123 行會排除傳導物質不在三種之內、或標記為 0 的 MBON，這份資料裡一顆都沒被排除：97 顆的傳導物質預測值全部落在這三種之內，所以 judged 就是 97）。check.py 的 X4 那一項比的就是這個數。交叉表（傳導物質 × 作者標記各幾顆）是 PART 4 那張三列的表。</li>
   </ul>
 
   <p>最後兩行把四項結果一起寫成 <code>results/bj_extra.json</code>，本課收在 <code>out/blackjack/bj_extra.json</code>，PART 4 每一節末尾標的「X1_seeds20」「X2_layers」等就是這個檔裡的四個段落。</p>
@@ -614,7 +619,7 @@
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s5"><span class="pt">5</span>第二層：check.py，驗收</h2>
 
-  <p><b>這支在做什麼。</b>run_all.sh 跑完的最後一步。它讀 <code>expected.json</code>（本課實跑的結果，每一項寫著「去哪個檔、取哪個值、用哪種標準比」），逐項去你的 <code>results/</code> 與 <code>logs/</code> 取值，比對後印 ✓ 或 ✗，共 17 項。PART 3 第 1 節講的三種判定標準，在這裡變成五種程式判法，本課用到其中兩種。</p>
+  <p><b>這支在做什麼。</b>run_all.sh 跑完的最後一步。它讀 <code>expected.json</code>（本課實跑的結果，每一項寫著「去哪個檔、取哪個值、用哪種標準比」），逐項去你的 <code>results/</code> 與 <code>logs/</code> 取值，比對後印 ✓ 或 ✗，共 17 項。PART 3 第 1 節講的三種判定標準，在這裡變成五種程式判法，本課用到其中兩種。對應關係：「逐位相同」對應 exact（比一個數）、same（比兩個檔）、contains（終端輸出裡出現預期的那幾行）、md5_twice（兩次的 md5 相同且等於預期）四種；「在誤差範圍內」對應 rel；「形狀相同」沒有程式判法，要人看。本課的 17 項是 exact 16 項加 md5_twice 1 項：驗收比的是你跑出來的和本課實跑的是否逐位相同，不是和作者比，和作者比的那一步在 PART 3。</p>
 
 <!-- code: check.py 1-10 hl=5,6,7,9,10 lab=5:①,9:②,10:③ -->
 <figure class="code"><pre class="code"><span class="ln">  1</span><span class="mk"> </span>&quot;&quot;&quot;驗收：把 run_all.sh 跑出來的數字跟 expected.json（本課實跑的結果）逐項比對。
@@ -628,7 +633,7 @@
   <ul class="walk">
     <li><b class="l">①</b>開頭三個 <code>import</code>：把 Python 內建的三個套件接進來用。<code>json</code> 讀寫 JSON 檔，<code>os</code> 處理路徑，<code>sys</code> 讀命令列給的參數。第 1 到 4 行三個引號夾的是這支程式的說明文字，和註解一樣不執行。</li>
     <li><b class="l">②</b><code>ROOT</code>：這支程式自己所在的資料夾（下載包的最上層），和 run_all.sh 的 <code>HERE</code> 同一個想法。</li>
-    <li><b class="l">③</b>一個字典：<code>"blackjack"</code> 這一組對到子資料夾 <code>blackjack</code>。本課原本和另一個重現專題（fruitfly-lab，Doom）合成一門課，這支程式那時同時驗兩個專案，字典是那時留下的形狀；拆成兩門課之後本課只有一組。</li>
+    <li><b class="l">③</b>一個字典：<code>"blackjack"</code> 這一組對到子資料夾 <code>blackjack</code>。本課原本和另一個重現專題（fruitfly-lab，在射擊遊戲 Doom 裡跑果蠅視覺迴路）合成一門課，這支程式那時同時驗兩個專案，字典是那時留下的形狀；拆成兩門課之後本課只有一組。</li>
   </ul>
 
 <!-- code: check.py 13-22 hl=13,14,15,16,17,18,19,20,21 lab=13:①,14:②,16:③,18:④,20:⑤ -->
@@ -639,7 +644,7 @@
     <li><b class="l">①</b><code>def get(…)</code>：定義一個函式，叫 <code>get</code>，工作是「打開一個檔，沿著一串鍵走進去，取出一個值」。括號裡是它收的四樣東西：檔案路徑、鍵的串列、可選的 <code>pluck</code> 與 <code>mean</code>。</li>
     <li><b class="l">②</b>打開檔案。檔名以 <code>.json</code> 結尾就當 JSON 解析，否則整個當文字讀進來（log 檔走這條）。</li>
     <li><b class="l">③</b><code>for k in keys</code>：對鍵的串列裡每一個鍵做一次 <code>d = d[k]</code>，也就是一層一層往裡面走。例如 BJ2 那四項寫 <code>["conditions", "connectome + dopamine", "mean_last"]</code>，就是先進 <code>conditions</code>、再進那個條件、再取 <code>mean_last</code>。</li>
-    <li><b class="l">④</b><code>pluck</code>：遇到「一串東西」時從每一個裡取同一個欄位。本課沒有一項用到，是拆課前留下的。</li>
+    <li><b class="l">④</b><code>pluck</code>：遇到「一串東西」時從每一個裡取同一個欄位。本課沒有一項用到，是拆課前留下的；第 18 行註解裡的「每一局的 kills」（擊殺數）也是 Doom 那門課的欄位。</li>
     <li><b class="l">⑤</b><code>mean</code>：把那串數字取平均。本課沒有一項用到。</li>
   </ul>
 
@@ -709,7 +714,7 @@
   <ul class="walk">
     <li><b class="l">①</b>每種氣味讓多少比例的 KC 活化：0.06，作者註明真實果蠅約 5 到 10%。1,200 × 0.06 ＝ 72 顆。</li>
     <li><b class="l">②</b>學習率 0.55：一次「KC 活化 ＋ 多巴胺」把增益砍掉多少。這是檔頭的預設值，給作者的氣味制約實驗（讓模型聞氣味同時給獎或罰，看它之後躲不躲；本課不重現）用；21 點的 FlyPlayer 會把它換成 0.05（第 7 節第 179 行）。</li>
-    <li><b class="l">③</b>回復速度 0.012：每呈現一次氣味，被壓低的增益往 1 回復多少；21 點換成 0.00005。作者特別註明這一項是「遺忘」，不是真實果蠅的消退（消退：學過的反應因為再沒有獎懲而被主動抹掉的過程；真實的消退是主動的多巴胺過程，這裡沒有模擬）。</li>
+    <li><b class="l">③</b>回復速度 0.012：每次以 <code>learn=True</code> 呈現一種氣味（呈現＝把一種氣味送進模型算一次，就是第 131 行的 <code>present</code>，本節後面逐行讀；<code>learn=True</code> 時順便改增益，<code>learn=False</code> 只讀分數、不改），被壓低的增益往 1 回復多少（21 點裡這只發生在一手有輸贏之後、逐一回饋這手每個決定的那幾次；選動作時的讀分用 <code>learn=False</code>，平手的手不回饋，都不算）；21 點換成 0.00005。注意回復作用在整張 1,200 × 97 的增益表（第 139 行），不只剛呈現的那一種氣味：每一次 learn=True 的呈現，所有被壓低的連結都往 1 爬一點，所以別的牌面打多了，這一格的教訓也會被慢慢沖掉（第 7 節第一個坑）。作者特別註明這一項是「遺忘」，不是真實果蠅的消退（消退：學過的反應因為再沒有獎懲而被主動抹掉的過程；真實的消退是主動的多巴胺過程，這裡沒有模擬）。</li>
     <li><b class="l">④</b>增益的下限 0。</li>
     <li><b class="l">⑤</b>MBON 之間互相影響的權重 0.25。這五個數就是 PART 1 第 6 節總表說「全部是人設的算法」裡的「人設」。</li>
   </ul>
@@ -731,7 +736,7 @@
     <li><b class="l">④</b>讀電路檔（<code>_dense</code> 在第 52 到 56 行，把 extract.py 存的四個陣列還原成一整張表）。</li>
     <li><b class="l">⑤</b>PN→KC：正規化。</li>
     <li><b class="l">⑥</b>KC→MBON 先留原始突觸數 <code>raw</code>，因為打亂與「哪些格子有連結」都要用原始的。</li>
-    <li><b class="l">⑦</b>DAN→MBON：正規化。所以 PART 1 說「這顆 MBON 收到的多巴胺 ＝ 強度 × 它從放電那群收到的突觸比例」，比例來自這一行。</li>
+    <li><b class="l">⑦</b>DAN→MBON：正規化。所以 PART 1 第 4 節說「這顆 MBON 收到的多巴胺」是強度乘上一個比例（它從被觸發的那群多巴胺神經元收到的突觸，佔它收到的多巴胺突觸總數的比例），比例來自這一行。</li>
     <li><b class="l">⑧</b>MBON→MBON：正規化。</li>
     <li><b class="l">⑨</b>每顆 MBON 的 +1／−1 標記（+1 是趨近型：它的活動把好惡值往「想靠近」推；−1 是迴避型，往「想躲」推），第 76 行是每顆 DAN 是不是懲罰群（PPL1 為真）。兩者都是 extract.py 算好存進檔裡的；標記不是量出來的生理事實，是用接線定義的：收到懲罰群 PPL1 的突觸多於獎賞群 PAM 的 MBON 標 +1，否則 −1（第 3 節 extract.py 第 78 行；本節末的白話段會講它的後果）。</li>
   </ul>
@@ -751,7 +756,7 @@
     <li><b class="l">②</b>把所有非 0 的突觸數抽出來排成一串。</li>
     <li><b class="l">③</b>洗牌：強度互換，位置先不動。</li>
     <li><b class="l">④</b>填回原本有連結的那些格子。</li>
-    <li><b class="l">⑤</b>再把整列（每一列是一顆 KC）隨機調換，做三次。結果：每顆 KC 拿到的是別顆 KC 的一整列連結（夥伴數也跟著那一列走）。</li>
+    <li><b class="l">⑤</b>再把整列（每一列是一顆 KC）隨機調換，做三次（三個隨機排列接起來仍是一個隨機排列，和做一次效果相同；作者沒說明為什麼做三次）。結果：每顆 KC 拿到的是別顆 KC 的一整列連結（夥伴數也跟著那一列走）。</li>
     <li><b class="l">⑥</b>換掉原始矩陣，之後的正規化與學習都用打亂後的。</li>
     <li><b class="l">⑦</b>KC→MBON 正規化。第 93 到 95 行記下四群各幾顆。</li>
     <li><b class="l">⑧</b>要留幾顆 KC：0.06 × 1,200 四捨五入 ＝ 72。</li>
@@ -777,7 +782,7 @@
 
   <ul class="walk">
     <li><b class="l">①</b><code>pn_drive</code>：PN 的活動量進到每顆 KC 的總量。作者把它獨立出來，因為它是線性的：兩個輸入相加的驅動等於各自驅動的和，所以 21 點可以先算好每個特徵的驅動，打牌時直接相加（第 7 節會用到）。</li>
-    <li><b class="l">②</b>矩陣乘法：682 個 PN 活動量 × PN→KC 權重 → 1,200 個數。</li>
+    <li><b class="l">②</b>矩陣乘法：682 個 PN 活動量 × PN→KC 權重 → 1,200 個數。程式裡的 <code>.T</code> 是轉置：把表的列和欄對調。權重表是「列＝上游、欄＝下游」，對調後再乘，算出來的才是「每顆下游神經元收到多少」；後面的 <code>dopamine</code>、<code>present</code> 用到的 <code>.T</code> 也是同一個意思。</li>
     <li><b class="l">③</b><code>kenyon_from_drive</code>：從驅動算 KC 活動。作者註明「只留前 k 名代替 APL 的抑制」（APL 是真實蕈狀體裡負責壓抑其他 KC 的那顆抑制神經元）。</li>
     <li><b class="l">④</b>全部沒有正驅動時回傳 1,200 個 0。</li>
     <li><b class="l">⑤</b>找第 72 高的值當門檻。</li>
@@ -830,18 +835,18 @@
   </ul>
 
   <div class="plain">
-    <p><b>白話：</b>為什麼懲罰打的是 +1（趨近型）那一群：學習規則只會削弱，懲罰要讓好惡值往負走，就只能削弱加分的那一邊；所以作者把「懲罰多巴胺送得最多」的 MBON 定成 +1（extract.py 的標記規則：PPL1 占多數就標 +1）。</p>
-    <p><b>懲罰怎麼讓好惡值變負。</b>一種氣味進來，682 個 PN 的活動乘上接線，1,200 顆 KC 裡只讓最亮的 72 顆亮（第 120、121 行）。這 72 顆沿著各自的連結推 97 顆 MBON，每條連結的力道是「接線量到的權重 × 目前的增益」（第 133 行）。MBON 帶 +1 或 −1，加總就是好惡值（第 142 行）。如果這時有懲罰多巴胺，每顆 MBON 照它的 PPL1 比例收到一份，它和正在亮的 72 顆 KC 之間的連結增益被扣一截（第 137 行）；一次懲罰的多巴胺有 97% 進了 +1 的 MBON（PART 1 第 4 節），所以下次同一種氣味再來，加分的那一堆推得比較弱，好惡值就往負走。</p>
+    <p><b>白話：</b>為什麼懲罰打的是 +1（趨近型）那一群：學習規則只會削弱，懲罰要讓好惡值往負走，就只能削弱加分的那一邊；所以「懲罰多巴胺送得最多」的 MBON 要定成 +1，學習方向才會對（extract.py 的標記規則就是 PPL1 占多數標 +1）。作者的註解只寫了「+1 趨近（懲罰區）、−1 迴避（獎賞區）」，並引文獻說懲罰多巴胺作用在推動趨近的區；這裡從學習規則倒推的理由是本課的推論，作者沒有這樣寫。</p>
+    <p><b>懲罰怎麼讓好惡值變負。</b>一種氣味進來，682 個 PN 的活動乘上接線，1,200 顆 KC 裡只讓最亮的 72 顆亮（第 120、121 行）。這 72 顆沿著各自的連結推 97 顆 MBON，每條連結的力道是「接線量到的權重 × 目前的增益」（第 133 行）。MBON 帶 +1 或 −1，加總就是好惡值（第 142 行）。如果這時有懲罰多巴胺，每顆 MBON 照它的 PPL1 比例收到一份，它和正在亮的 72 顆 KC 之間的連結增益被扣一截（第 137 行）；一次懲罰的多巴胺有 97% 進了 +1 的 MBON（PART 1 第 4 節；算法：每顆 MBON 收到的多巴胺突觸先縮放成加總 1，一次懲罰給每顆 MBON 的量就是它的 PPL1 比例，把 97 顆加總，+1 的 56 顆佔 97%。另 38 顆 −1 的 MBON 雖然也接到 PPL1，但 PPL1 只佔它們輸入的一小部分：−1 那 41 顆共收 586 個 PPL1 突觸、27,807 個 PAM 突觸），所以下次同一種氣味再來，加分的那一堆推得比較弱，好惡值就往負走。</p>
     <p><b>獎賞怎麼讓它變正。</b>同一條路、對象相反：獎賞群 PAM 的多巴胺大多（93%）進了標 −1（迴避型）的 MBON，削弱的是扣分的那一堆，好惡值就往正走。21 點贏了之後「這個牌面配這個動作」的好惡值會升高，靠的就是這條路（第 7 節 outcome）；規則永遠只有削弱，升或降看削弱的是哪一型 MBON 的輸入。</p>
-    <p><b>標記的限制。</b>PART 4 的 X4 拿標記去對文獻裡的傳導物質規則，97 顆裡 62 顆一致；標記對不對得上真果蠅，不影響 21 點的學習結果，但這些標記不能拿來談生物學。</p>
-    <details class="note"><summary>兩個細節</summary><p>少數標 −1、但也收到一點 PPL1 的 MBON，懲罰時同樣會被削，只是量小；整體往負走是多數決的結果，不是每一顆都這樣。每次呈現，增益都往 1 爬回一點（第 139 行）。</p></details>
+    <p><b>標記的限制。</b>PART 4 的 X4 拿標記去對文獻裡的傳導物質規則，97 顆裡 62 顆一致。這要分兩件事。(a) 在現有的模型裡，學習方向一定是對的：方向只看懲罰多巴胺是不是主要進了標 +1 的 MBON，而標記本來就照這件事定，這是定義上的事，不必實測；所以標記和真果蠅對不對得上，不影響現在報告的 21 點結果。(b) 若把標記改成照文獻規則定，約三分之一會翻號，結果會不會變、變多少，本課沒跑（PART 4 推測會學得更差）。這些標記不能拿來談生物學。</p>
+    <details class="note"><summary>兩個細節</summary><p>少數標 −1、但也收到一點 PPL1 的 MBON，懲罰時同樣會被削，只是量小；整體往負走是多數決的結果，不是每一顆都這樣。每次以 <code>learn=True</code> 呈現，增益都往 1 爬回一點（第 139 行）。</p></details>
   </div>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <!-- ══════════════════════════════════════════════════════ -->
   <h2 id="s7"><span class="pt">7</span>第三層：blackjack.py，21 點</h2>
 
-  <p><b>這支在做什麼。</b>PART 1 第 5 節的 21 點實驗，一個檔裝了四樣東西：21 點的規則與基本策略表（第 22 到 129 行）、牌面怎麼編成「氣味」（<code>Situation</code>，第 133 到 170 行）、會打牌的蕈狀體（<code>FlyPlayer</code>，第 174 到 235 行）、連打幾萬手（第 239 到 261 行）。檔尾第 265 到 295 行是作者用註解寫的結果與心得，PART 3 第 7 節引的就是它。先認識三個 21 點的詞：莊家兩張牌有一張翻開給你看，叫<b>明牌</b>；手裡有 A 算成 11 點而沒爆的叫<b>軟手</b>，其餘叫硬手；<b>加倍</b>是賭注變兩倍、只再抽一張就停，只能在剛拿到前兩張時做；開局兩張就 21 點叫<b>黑傑克</b>，直接贏 1.5 注。作者在檔頭說明為什麼選 21 點而不是撲克：情境很少（自己的點數、軟不軟、莊家明牌），每一格會被重訪幾百次，結果在同一手內揭曉，每一格的正確動作穩定，這正是「一次一筆聯想」的學習者能靠平均摸出來的形狀；而且有一張公開的基本策略表當標準答案。作者的 repo 有四個實驗：氣味制約（讓模型聞氣味同時給獎或罰，看它之後躲不躲）、Dino 小遊戲、覓食、21 點；本頁只追 21 點。</p>
+  <p><b>這支在做什麼。</b>PART 1 第 5 節的 21 點實驗，一個檔裝了四樣東西：21 點的規則與基本策略表（第 22 到 129 行）、牌面怎麼編成「氣味」（<code>Situation</code>，第 133 到 170 行）、會打牌的蕈狀體（<code>FlyPlayer</code>，第 174 到 235 行）、連打幾萬手（第 239 到 261 行）。檔尾第 265 到 295 行是作者用註解寫的結果與心得，PART 3 第 7 節引的就是它。先認識三個 21 點的詞：莊家兩張牌有一張翻開給你看，叫<b>明牌</b>；手裡有 A 算成 11 點而沒爆的叫<b>軟手</b>，其餘叫硬手；<b>加倍</b>是賭注變兩倍、只再抽一張就停，只能在剛拿到前兩張時做；開局兩張就 21 點叫<b>黑傑克</b>，直接贏 1.5 注。作者在檔頭說明為什麼選 21 點而不是撲克：情境很少（自己的點數、軟不軟、莊家明牌），每一格會被重訪幾百次，結果在同一手內揭曉，每一格的正確動作穩定，這正是「一次一筆聯想」的學習者（每次只把一個情境和它的結果連起來，不推理、不規劃）能靠平均摸出來的形狀；而且有一張公開的基本策略表當標準答案。作者的 repo 有四個實驗：氣味制約（讓模型聞氣味同時給獎或罰，看它之後躲不躲）、Dino 小遊戲、覓食、21 點；本頁只追 21 點。</p>
 
   <h3>規則與基本策略</h3>
 
@@ -855,7 +860,7 @@
 
   <ul class="walk">
     <li><b class="l">①</b>三個動作的代號：要牌 0、停牌 1、加倍 2。</li>
-    <li><b class="l">②</b>一副牌只有 13 個值：2 到 9、四個 10（10、J、Q、K）、11（A）。每次抽牌從這 13 個裡等機率抽，就是 PART 1 說的「無限副牌」。</li>
+    <li><b class="l">②</b>一副牌只有 13 個值：2 到 9、四個 10（10、J、Q、K）、11（A）。每次抽牌從這 13 個裡等機率抽，就是 PART 1 說的「無限副牌」：抽過的牌不會從牌堆拿掉，所以每次抽到每種牌的機率都一樣；真實牌桌的牌會越抽越少，機率會跟著變。</li>
     <li><b class="l">③</b><code>total</code>：一手牌的最佳點數，以及是不是軟手。A 先算 11。</li>
     <li><b class="l">④</b>超過 21 而手裡還有算成 11 的 A，就把一個 A 改算 1（減 10），直到不爆或沒有 A。</li>
     <li><b class="l">⑤</b>回傳點數，以及「還有沒有 A 算成 11」：有就是軟手（再抽一張也不會爆）。</li>
@@ -873,7 +878,7 @@
     <li><b class="l">③</b>硬 12：莊家 4、5、6 停，否則要。</li>
     <li><b class="l">④</b>硬 11：可以加倍就加倍（莊家明牌 10 以下），否則要。硬 10、9 類似，條件更嚴。</li>
     <li><b class="l">⑤</b>硬 9：莊家 3 到 6 才加倍。</li>
-    <li><b class="l">⑥</b>其餘（硬 8 以下）：要。作者在檔頭註明這是「無限副牌、莊家軟 17 停、任兩張可加倍、不能分牌、不能投降、黑傑克賠 3 比 2」這組規則的標準表。</li>
+    <li><b class="l">⑥</b>其餘（硬 8 以下）：要。作者在檔頭註明這是「無限副牌、莊家軟 17 停、任兩張可加倍、不能分牌、不能投降、黑傑克賠 3 比 2」這組規則的標準表（分牌：兩張同點拆成兩手各自打；投降：放棄一半賭注提早認輸。本模型只有要牌、停牌、加倍三個動作，所以這兩種都沒有）。</li>
   </ul>
 
 <!-- code: blackjack.py 69-77 hl=69,72,73,74,75,76 lab=69:①,72:②,73:③,75:④ -->
@@ -885,7 +890,7 @@
   <ul class="walk">
     <li><b class="l">①</b><code>chart_cells</code>：表上每一格。</li>
     <li><b class="l">②</b>莊家明牌 2 到 11（A），10 種。</li>
-    <li><b class="l">③</b>硬手 5 到 21，17 種。4 點（只能是一對 2）沒列進表裡，作者的表照慣例從 5 起算；實際打牌仍會遇到 4 點，所以下面的編碼多留一格給它（18 種）。</li>
+    <li><b class="l">③</b>硬手 5 到 21，17 種。4 點（只能是一對 2）沒列進表裡，作者的表照慣例從 5 起算；軟 12（一對 A）也沒列。反過來，表上的硬 21、軟 21 兩列在前兩張時不會出現（兩張牌最多硬 20，軟 21 就是黑傑克、直接結算），函式開頭那段說明文字（叫 docstring，第 70 行）說的「每一個第一個決定可能落到的格子」並不精確。這 20 格照樣當成前兩張來評、算進一致率（佔 260 格的 7.7%）；它們不會以「前兩張」出現，但要牌補到 21 點之後，第 101 行起的迴圈會再問一次要不要牌（每個種子 30,000 手裡 186 到 1,050 次），那時要牌常常輸（硬 21 再要必爆），模型學到停牌，評分格和它只差「是不是前兩張」一項，跟著翻成停牌（未訓練 20 格停牌 6 格，學完 17 到 20 格）（硬 21、軟 21 兩列 20 格要牌後才會遇到的次數、評分格各選什麼，由課程倉庫的 <code>scripts/row21_visits.py</code> 算出，在 <code>out/blackjack/row21_visits.json</code>）。PART 1 第 5 節扣掉這 20 格重算過：學完的一致率上升全部來自它們（20 個種子平均從 47.9% 降成 44.4%，未訓練扣掉後是 46.25%），也就是說，在其餘 240 格上一致率沒有因學習而提高；實際打牌仍會遇到 4 點，所以下面的編碼多留一格給它（18 種）。</li>
     <li><b class="l">④</b>軟手 13 到 21，9 種。10 × (17 ＋ 9) ＝ 260 格。PART 1 說的 260 就是這樣數的。</li>
   </ul>
 
@@ -921,7 +926,7 @@
     <li><b class="l">③</b>把「情境 ＋ 選的動作」記進 <code>decisions</code>。一手結束後學習要回頭看的就是這份清單。</li>
     <li><b class="l">④</b>停牌：跳出迴圈。</li>
     <li><b class="l">⑤</b>要牌或加倍都抽一張。</li>
-    <li><b class="l">⑥</b>加倍：賭注變 2、只抽這一張就停。</li>
+    <li><b class="l">⑥</b>加倍：賭注變 2、只抽這一張就停。抽完就跳出迴圈，第 116–118 行再檢查一次：爆了就輸 2 注，不用等莊家。</li>
     <li><b class="l">⑦</b>爆了（超過 21）：輸掉賭注，結束。</li>
     <li><b class="l">⑧</b>莊家到 17 就停（軟 17 也停，因為 <code>total</code> 回的是最佳點數）。</li>
     <li><b class="l">⑨</b>莊家爆、或玩家點數高：贏賭注。</li>
@@ -942,7 +947,7 @@
 <!-- /code -->
 
   <ul class="walk">
-    <li><b class="l">①</b><code>Situation</code>：「一個情境加一個候選動作，寫成 PN 的輸入」。作者的說明：有順序的特徵（點數、明牌）用重疊的代碼，讓相鄰的點數聞起來相近，果蠅對硬 15 學到的會帶一點到硬 14 與 16，基本策略表實際上就是這個形狀；動作拿最寬的代碼，因為要學的就是動作。</li>
+    <li><b class="l">①</b><code>Situation</code>：「一個情境加一個候選動作，寫成 PN 的輸入」。作者的說明：有順序的特徵（點數、明牌）用重疊的代碼，讓相鄰的點數聞起來相近，模型對硬 15 學到的會帶一點到硬 14 與 16，基本策略表實際上就是這個形狀；動作拿最寬的代碼，因為要學的就是動作。</li>
     <li><b class="l">②</b>五個特徵各用幾顆 PN：點數 26、明牌 22、動作 36、軟手 12、前兩張 8。PART 1 第 5 節那張編碼表的第三欄。</li>
   </ul>
 
@@ -1024,11 +1029,11 @@
   <ul class="walk">
     <li><b class="l">①</b>手數加一。</li>
     <li><b class="l">②</b>不學、或這手沒有任何決定（開局就 21）：什麼都不做。</li>
-    <li><b class="l">③</b>多巴胺強度 ＝ |淨輸贏| ÷ 2，夾在 0.15 到 1：輸贏 1 注是 0.5、加倍後 2 注是 1.0、黑傑克 1.5 注是 0.75（但黑傑克沒有決定，實際上不會學到）。PART 1 的回饋強度那三個數。</li>
+    <li><b class="l">③</b>多巴胺強度 ＝ |淨輸贏| ÷ 2，夾在 0.15 到 1：輸贏 1 注是 0.5、加倍後 2 注是 1.0、黑傑克 1.5 注是 0.75（但黑傑克沒有決定，實際上不會學到）。21 點的淨輸贏只有 ±1、±2、1.5、0 幾種，強度最低也是 0.5，0.15 這個下限在 21 點裡永遠用不到；作者沒說明為什麼設它。PART 1 的回饋強度那三個數。</li>
     <li><b class="l">④</b>贏了是獎賞、輸了是懲罰，各只有一個不是 0。</li>
     <li><b class="l">⑤</b>平手不送。</li>
     <li><b class="l">⑥</b>對這手每一個決定（從最後一個往回）。</li>
-    <li><b class="l">⑦</b>權重 ＝ <code>credit_decay</code> 的 i 次方，而 <code>credit_decay</code> 預設 1.0，所以每個決定一樣重。作者的註解是檔尾第二個坑：原本讓最後一個決定權重最大（0.7 的 i 次方），但爆牌那一手的最後一個決定一定是要牌、贏的那一手最後一個幾乎一定是停牌，「要牌 ＝ 輸、停牌 ＝ 贏」成了全面的關聯，淹沒每一格各自的教訓，果蠅收斂到永遠停牌；改成一樣重之後一致率才開始上升。</li>
+    <li><b class="l">⑦</b>權重 ＝ <code>credit_decay</code> 的 i 次方，而 <code>credit_decay</code> 預設 1.0，所以每個決定一樣重。作者的註解是檔尾第二個坑：原本讓最後一個決定權重最大（0.7 的 i 次方），但爆牌那一手的最後一個決定一定是要牌、贏的那一手最後一個幾乎一定是停牌，「要牌 ＝ 輸、停牌 ＝ 贏」成了全面的關聯，淹沒每一格各自的教訓，模型收斂到永遠停牌；改成一樣重之後一致率才開始上升（作者在檔尾註解的原話：chart agreement started rising only after that；作者沒有附數字）。</li>
     <li><b class="l">⑧</b>把那個情境配那個動作重新編成氣味、呈現一次、同時給多巴胺、<code>learn=True</code>：model.py 第 137 行（第 6 節）就在這時扣增益，扣的是「這組 72 顆 KC」與「收到多巴胺的 MBON」之間的連結。</li>
   </ul>
 
@@ -1045,7 +1050,7 @@
   <ul class="walk">
     <li><b class="l">①</b><code>agreement</code>：一致率。對 260 格的每一格：</li>
     <li><b class="l">②</b>基本策略說該怎麼做（當作前兩張，所以加倍在候選內）。</li>
-    <li><b class="l">③</b>果蠅的 greedy 選什麼。</li>
+    <li><b class="l">③</b>模型的 greedy 選什麼。</li>
     <li><b class="l">④</b>相同的格數除以 260。</li>
     <li><b class="l">⑤</b><code>session</code>：連打 <code>hands</code> 手（預設 20,000；bj2_blackjack.py 叫它時給 30,000），發牌用一個以 <code>seed</code> 起頭的亂數產生器（和 FlyPlayer 探索用的那個是分開的兩個）。</li>
     <li><b class="l">⑥</b>每一手：打一手（策略是 FlyPlayer 的 <code>policy</code>）。</li>
@@ -1066,7 +1071,7 @@
   <div class="tblwrap">
   <table>
     <tr><th>套件或檔案</th><th>誰用它</th><th>做什麼</th><th>進去的是什麼、出來的是什麼</th></tr>
-    <tr><td>numpy</td><td>每一支</td><td>一串或一張數字的運算：相乘加總（<code>@</code>）、排序、隨機抽樣、夾範圍</td><td>進出都是數字陣列</td></tr>
+    <tr><td>numpy</td><td>除了 check.py 以外的每一支 Python 程式</td><td>一串或一張數字的運算：相乘加總（<code>@</code>）、排序、隨機抽樣、夾範圍</td><td>進出都是數字陣列</td></tr>
     <tr><td>scipy.sparse</td><td>fetch.py、extract.py、bj_extra.py、model.py 的 <code>_dense</code></td><td>稀疏矩陣：只存非 0 格子的表</td><td>進：<code>.npz</code> 檔；出：可以切塊、加總的矩陣</td></tr>
     <tr><td>pandas</td><td>fetch.py</td><td>讀神經元屬性表（csv）、依欄篩選</td><td>進：csv；出：表格</td></tr>
     <tr><td>base64、json</td><td>bj3、每一支</td><td>Python 內建：位元組與可印字元互轉、讀寫 JSON</td><td>—</td></tr>
@@ -1102,13 +1107,15 @@
   <div class="tblwrap">
   <table>
     <tr><th>零件</th><th>在哪個檔、哪幾行</th></tr>
-    <tr><td>① 連結體</td><td>extract.py 第 48 到 72 行切四群四層（第 3 節）；model.py 第 70 到 76 行讀進來、第 59 到 63 行正規化</td></tr>
+    <tr><td>① 連結體</td><td>extract.py 第 48 到 73 行切四群四層（第 3 節）；model.py 第 70 到 76 行讀進來、第 59 到 63 行正規化</td></tr>
     <tr><td>② 神經元方程式</td><td>model.py 第 116 到 123 行（KC 只留 72 顆）、第 133 到 134 行（MBON 加權和 ＋ 0.25 側向）、第 142 行（好惡值）</td></tr>
     <tr><td>③ 輸入編碼</td><td>blackjack.py 第 143 到 170 行（五個特徵的 PN 組相加）</td></tr>
     <tr><td>④ 讀出規則</td><td>MBON 標記：extract.py 第 75 到 79 行。選動作：blackjack.py 第 197 到 204 行（選好惡值最高，加探索）</td></tr>
     <tr><td>學習</td><td>model.py 第 136 到 140 行，兩條式子；參數在 blackjack.py 第 175 行；觸發點是 blackjack.py 第 222、223 行（一手結束才回饋）</td></tr>
   </table>
   </div>
+
+  <p>好惡值與 ±1 標記分在兩格，是照 PART 1 總表的分法：好惡值那一行（model.py 第 142 行）是「MBON 活動 × 標記再加總」這條算式，屬於神經元方程式；每顆 MBON 的標記是 +1 還是 −1、以及拿好惡值怎麼選動作，是讀出規則。兩格合起來，才是「從 MBON 的活動得到要牌或停牌」的完整過程。</p>
 
   <p class="figsrc">行數與常數出自 <code>out/code_meta.json</code>（由 <code>scripts/make_code.py</code> 從原檔抓）；頁面上每一個程式區塊由同一支程式產生，<code>--check</code> 逐塊對回原檔。</p>
 

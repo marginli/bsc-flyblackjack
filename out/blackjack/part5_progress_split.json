@@ -10,5 +10,18 @@
  "total_gain": 0.108,
  "gain_from_less_random": 0.067,
  "gain_from_better_greedy": 0.041,
- "share_less_random_pct": 62
+ "share_less_random_pct": 62,
+ "alt_end_blocks_2_15": {
+  "mean": -0.16,
+  "p": 0.0611,
+  "if_greedy_unchanged": -0.2,
+  "total_gain": 0.098,
+  "gain_from_less_random": 0.059,
+  "gain_from_better_greedy": 0.04
+ },
+ "err95": {
+  "block": 0.05,
+  "gain_from_less_random": 0.018,
+  "gain_from_better_greedy": 0.084
+ }
 }

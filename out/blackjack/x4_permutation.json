@@ -1,0 +1,8 @@
+{
+ "n_mbon": 97,
+ "observed_agree": 62,
+ "permutations": 100000,
+ "null_mean": 51.97704,
+ "null_sd": 4.339791796664905,
+ "p_ge_observed": 0.01873
+}

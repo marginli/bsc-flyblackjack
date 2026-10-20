@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # fly-blackjack 的 21 點實驗一鍵重跑：BJ1–BJ3 ＋ 加做檢查 X1–X4。用法：bash run_all.sh（本課實測時間見 PART 2）
 # 需要先跑過上一層的 setup_envs.sh。每步的終端輸出寫到 logs/，數字寫到 results/，最後由 ../check.py 驗收。
-set -e
+set -eo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 PY="$(conda info --base)/envs/flyplay_bj/bin/python"
 export PYTHONNOUSERSITE=1 PYTHONPATH=.

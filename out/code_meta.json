@@ -11,7 +11,7 @@
    "kind": "ours",
    "path": "blackjack/run_all.sh",
    "lines": 18,
-   "sha256_8": "6b264d66"
+   "sha256_8": "52a98b15"
   },
   "check.py": {
    "kind": "ours",
@@ -29,7 +29,7 @@
    "kind": "ours",
    "path": "blackjack/scripts/bj3_author_brain.py",
    "lines": 28,
-   "sha256_8": "71ec9e81"
+   "sha256_8": "7d297390"
   },
   "bj_extra.py": {
    "kind": "ours",
