@@ -1,0 +1,83 @@
+{
+ "_note": "權重定義的實測（作者 flybrain/mb/model.py 的 _dense、_normalise、present）",
+ "layers": {
+  "pn_kc": {
+   "shape": [
+    682,
+    1200
+   ],
+   "edges": 7182,
+   "synapses_min": 1,
+   "synapses_max": 88,
+   "is_integer": true,
+   "negative": 0,
+   "post_total_min": 1,
+   "post_total_max": 245,
+   "post_with_zero_input": 0,
+   "colsum_max_dev_from_1": 3.3306690738754696e-16
+  },
+  "kc_mbon": {
+   "shape": [
+    1200,
+    97
+   ],
+   "edges": 18183,
+   "synapses_min": 1,
+   "synapses_max": 152,
+   "is_integer": true,
+   "negative": 0,
+   "post_total_min": 9,
+   "post_total_max": 7413,
+   "post_with_zero_input": 0,
+   "colsum_max_dev_from_1": 6.217248937900877e-15
+  },
+  "dan_mbon": {
+   "shape": [
+    332,
+    97
+   ],
+   "edges": 3123,
+   "synapses_min": 1,
+   "synapses_max": 781,
+   "is_integer": true,
+   "negative": 0,
+   "post_total_min": 5,
+   "post_total_max": 2659,
+   "post_with_zero_input": 0,
+   "colsum_max_dev_from_1": 1.5543122344752192e-15
+  },
+  "mbon_mbon": {
+   "shape": [
+    97,
+    97
+   ],
+   "edges": 1606,
+   "synapses_min": 1,
+   "synapses_max": 583,
+   "is_integer": true,
+   "negative": 0,
+   "post_total_min": 25,
+   "post_total_max": 1522,
+   "post_with_zero_input": 0,
+   "colsum_max_dev_from_1": 4.440892098500626e-16,
+   "autapses": [
+    {
+     "mbon": "MBON09",
+     "synapses": 1,
+     "col_total": 387,
+     "weight": 0.0026
+    }
+   ]
+  }
+ },
+ "example_kc_mbon": {
+  "mbon": "MBON11",
+  "kc_index": 7,
+  "synapses": 63,
+  "mbon_total_from_kc": 7413,
+  "n_kc_inputs": 647,
+  "weight": 0.0085
+ },
+ "matches_model": true,
+ "lateral": 0.25
+}
