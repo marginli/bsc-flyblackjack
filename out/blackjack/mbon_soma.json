@@ -1,0 +1,68 @@
+{
+ "_note": "MBON 細胞體前後分布；comp＝instance 括號裡的蕈狀體分區（樹突所在）。z 往後增加。",
+ "median_z": {
+  "MBON": 17522,
+  "KC": 33733,
+  "PAM": 13253,
+  "PPL1": 33347
+ },
+ "gap": [
+  18888,
+  28935
+ ],
+ "n_mbon": 97,
+ "counts": {
+  "anterior": 60,
+  "posterior": 36,
+  "no_soma": 1
+ },
+ "anterior": [
+  "MBON01(y5B'2a)",
+  "MBON02(B2B'2a)",
+  "MBON03(B'2mp)",
+  "MBON04(B'2mp_bilateral)",
+  "MBON05(y4>y1y2)",
+  "MBON06(B1>a)",
+  "MBON07(a1)",
+  "MBON09(y3B'1)",
+  "MBON10(B'1)",
+  "MBON11(y1pedc>a/B)",
+  "MBON12(y2a'1)",
+  "MBON13(a'2)",
+  "MBON14(a3)",
+  "MBON20(y1y2)",
+  "MBON25(y1y2)",
+  "MBON25-like(y1y2)",
+  "MBON25-like(y2)",
+  "MBON30(y1y2y3)",
+  "MBON31(a'1a)",
+  "MBON32(y2)",
+  "MBON33(y2y3)",
+  "MBON34(y2)",
+  "MBON35(y2)"
+ ],
+ "posterior": [
+  "MBON15(a'1)",
+  "MBON15-like(a'1a'2)",
+  "MBON16(a'3ap)",
+  "MBON17(a'3m)",
+  "MBON17-like(a'2a'3)",
+  "MBON18(a2sc)",
+  "MBON19(a2p3p)",
+  "MBON21(y4y5)",
+  "MBON22(calyx)",
+  "MBON23(a2sp)",
+  "MBON24(B2y5)",
+  "MBON26(b'2d)",
+  "MBON27(y5d)",
+  "MBON28(a'3a)",
+  "MBON29(y4y5)"
+ ],
+ "no_soma": [
+  "MBON25(y1y2)"
+ ],
+ "calyx_mbon": {
+  "MBON22_R": "posterior",
+  "MBON22_L": "posterior"
+ }
+}
