@@ -1,7 +1,9 @@
 """PART 1 第 2 節的細胞體位置圖：本課用到的四群神經元（PN、KC、MBON、DAN）的細胞體在腦裡的位置，
 底圖是 MaleCNS 全部有座標的細胞體（果蠅的細胞體都在腦表面，點一多腦的輪廓就出來）。
 只畫細胞體，不畫神經元的形狀：本機只有作者下載的神經元表（有細胞體座標）與突觸矩陣，沒有骨架。
-KC 分兩種：作者抽中的 1,200 顆（抽法逐行照 extract.py）與沒抽中的。
+KC 分兩種：作者抽中的 1,200 顆（抽法逐行照 extract.py）與路徑上沒抽中的 2,611 顆（3,811 − 1,200）；
+不在路徑上的 253 顆 KC 作者一開始就不收，不上色、留在底色裡。
+圖例的數字是細胞數（和 PART 1 第 2 節的表一致），沒有細胞體座標的幾顆畫不出來，顆數存進 json。
 需要作者 repo（~/claude_bscai/fly_play_game/blackjack/repo）與它下載好的 data/malecns/。
 用法：cd <repo> && PYTHONPATH=. python <本檔>   （寫 assets/p1-soma-front.png、assets/p1-soma-top.png、out/blackjack/soma_fig.json）
 
@@ -64,7 +66,7 @@ assert (edges_pn_kc, edges_kc_mbon) == (7182, 18183), (edges_pn_kc, edges_kc_mbo
 
 brain = has & (P[:, 2] < BRAIN_Z_MAX)
 groups = [  # (名字, index, 顏色, 點大小, 圖例)
-    ("KC_other", np.setdiff1d(KC_all, KC), "#b9c3cf", 3, "KC not sampled"),
+    ("KC_other", np.setdiff1d(KC_live, KC), "#b9c3cf", 3, "KC on pathway, not sampled"),
     ("KC", KC, "#4b5563", 4, "KC sampled"),
     ("PN", PN, "#2563eb", 6, "PN"),
     ("PAM", PAM, "#16a34a", 7, "DAN: PAM"),
@@ -94,7 +96,7 @@ def panel(fname, ix, iy, flipx, flipy, label):
     ax.scatter(sx * B[:, ix], sy * B[:, iy], s=0.25, c="#e3e7ec", lw=0, rasterized=True)
     for name, idx, col, sz, leg in groups:
         Q = P[idx][has[idx]]
-        ax.scatter(sx * Q[:, ix], sy * Q[:, iy], s=sz, c=col, lw=0, label=f"{leg} ({len(Q):,})")
+        ax.scatter(sx * Q[:, ix], sy * Q[:, iy], s=sz, c=col, lw=0, label=f"{leg} ({len(idx):,})")
     # 兩個面板用同樣的畫幅（同一個 x 範圍、同樣高的 y 範圍），放在網頁上才會一樣高、圖說對得齊
     xs = sx * B[:, ix]; ys = sy * B[:, iy]
     ax.set_xlim(xs.min() - 1500, xs.max() + 1500)
@@ -115,7 +117,7 @@ panel("p1-soma-front.png", 0, 1, False, True, "A  front view (viewer in front of
 panel("p1-soma-top.png", 0, 2, True, True, "B  top view (viewer above the fly, anterior up; fly's left on the left)")
 
 res = {"brain_somas_drawn": int(brain.sum()), "all_somas_with_coords": int(has.sum()),
-       "brain_z_max": BRAIN_Z_MAX, "kc_live": int(len(KC_live)), "kc_sampled": int(len(KC)),
+       "brain_z_max": BRAIN_Z_MAX, "kc_all": int(len(KC_all)), "kc_off_pathway": int(len(KC_all) - len(KC_live)), "kc_live": int(len(KC_live)), "kc_sampled": int(len(KC)),
        "edges_pn_kc": edges_pn_kc, "edges_kc_mbon": edges_kc_mbon,
        "counts": counts, "axis_check": axis_check}
 json.dump(res, open(OUT, "w"), indent=1, ensure_ascii=False)

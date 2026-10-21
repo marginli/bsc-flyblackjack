@@ -2,15 +2,17 @@
  "brain_somas_drawn": 123322,
  "all_somas_with_coords": 138496,
  "brain_z_max": 50000,
+ "kc_all": 4064,
+ "kc_off_pathway": 253,
  "kc_live": 3811,
  "kc_sampled": 1200,
  "edges_pn_kc": 7182,
  "edges_kc_mbon": 18183,
  "counts": {
   "KC_other": {
-   "cells": 2864,
-   "with_soma": 2852,
-   "without_soma": 12
+   "cells": 2611,
+   "with_soma": 2601,
+   "without_soma": 10
   },
   "KC": {
    "cells": 1200,
