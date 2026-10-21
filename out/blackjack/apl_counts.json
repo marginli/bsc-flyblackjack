@@ -1,0 +1,12 @@
+{
+ "apl_cells": 2,
+ "apl_soma_sides": [
+  "L",
+  "R"
+ ],
+ "kc_all": 4064,
+ "kc_to_apl_synapses": 210352,
+ "kc_to_apl_kcs": 4063,
+ "apl_to_kc_synapses": 196200,
+ "apl_to_kc_kcs": 4063
+}

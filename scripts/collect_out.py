@@ -26,7 +26,7 @@ PLAN = [
 
 def main():
     keep = {}
-    for f in ("porttest.json", "demo_data.json", "bj_demo_summary.json", "figures.json", "code_meta.json", "video_meta.json", "dan_counts.json", "soma_fig.json", "encoding_pn.json", "anim_data.json", "learn_anim_data.json", "explore_schedule.json", "part5_progress_split.json", "reference_margin.json", "x2_alignment.json", "part4_extras.json", "part3_extras.json", "part1_extras.json", "x3_untrained_tables.json", "x4_permutation.json", "seeds20_tables.json", "row21_visits.json", "readme_kc_counts.json"):   # 另幾支程式產生的檔案，收資料時保留
+    for f in ("porttest.json", "demo_data.json", "bj_demo_summary.json", "figures.json", "code_meta.json", "video_meta.json", "dan_counts.json", "soma_fig.json", "encoding_pn.json", "anim_data.json", "learn_anim_data.json", "explore_schedule.json", "part5_progress_split.json", "reference_margin.json", "x2_alignment.json", "part4_extras.json", "part3_extras.json", "part1_extras.json", "x3_untrained_tables.json", "x4_permutation.json", "seeds20_tables.json", "row21_visits.json", "readme_kc_counts.json", "apl_counts.json"):   # 另幾支程式產生的檔案，收資料時保留
         for rel in (f, os.path.join("blackjack", f)):   # 有的放在 out/、有的放在 out/blackjack/，寫回原位置
             p = os.path.join(OUT, rel)
             if os.path.exists(p):
