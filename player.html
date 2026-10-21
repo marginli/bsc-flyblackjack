@@ -97,6 +97,8 @@ body{background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.5;
       <span class="lab">策略表</span><span class="lab" id="bjAgr"></span>
     </div>
     <p class="note" id="bjNote"></p>
+    <p class="note">好惡值怎麼算：一條連結的權重 ＝ 突觸數 ÷ 那顆下游神經元在這一層收到的突觸總數（每層各自除，全部為正，不看傳導物質）；KC→MBON 的權重再乘上增益。學習改的只有增益：起始 1，只會往下削。</p>
+    <p class="figsrc" hidden>數字出處：三種條件的輸贏在 out/demo_data.json；永遠停牌與隨機出牌的參考線在 out/blackjack/anim_data.json（out/blackjack/logs/bj_extra.log）；權重定義在 out/weight_def.json。說明全文：https://marginli.github.io/bsc-flyblackjack/part5-demo.html 與 part1-what.html#wdef</p>
   </div>
 </div>
 <div class="bottom">
