@@ -98,7 +98,7 @@ body{background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.5;
     </div>
     <p class="note" id="bjNote"></p>
     <p class="note">好惡值怎麼算：一條連結的權重 ＝ 突觸數 ÷ 那顆下游神經元在這一層收到的突觸總數（每層各自除，全部為正，不看傳導物質）；KC→MBON 的權重再乘上增益。學習改的只有增益：起始 1，只會往下削。</p>
-    <p class="figsrc" hidden>數字出處：三種條件的輸贏在 out/demo_data.json；永遠停牌與隨機出牌的參考線在 out/blackjack/anim_data.json（out/blackjack/logs/bj_extra.log）；權重定義在 out/weight_def.json。說明全文：https://marginli.github.io/bsc-flyblackjack/part5-demo.html 與 part1-what.html#wdef</p>
+    <p class="figsrc" hidden>數字出處：三種條件的輸贏在 out/demo_data.json；永遠停牌與隨機出牌的參考線在 out/blackjack/anim_data.json（out/blackjack/logs/bj_extra.log）；權重定義在 out/weight_def.json。PN 活動範圍的比較在 out/blackjack/pn_amp_check.json。說明全文：https://marginli.github.io/bsc-flyblackjack/part5-demo.html 與 part1-what.html#wdef</p>
   </div>
 </div>
 <div class="bottom">
@@ -117,7 +117,7 @@ body{background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.5;
 const BJ_FPS=30,BJ_ACT=["要牌","停牌","加倍"],BJ_ST=["發牌","聞三個候選動作","選擇","抽牌","莊家翻牌","莊家補牌","結果","快轉","結束"];
 const $=s=>document.querySelector(s),css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const BJ_NOTE={
-  bj_fly:E=>`每手結束後的學習方向：輸了，懲罰多巴胺減弱通往「趨近型」輸出神經元的突觸，這手聞過的情境＋動作以後聞起來更差；贏了，獎賞多巴胺減弱通往「迴避型」的突觸，聞起來更好。種子 0 每 2,000 手的平均輸贏從 ${E.blocks[0].toFixed(3)} 變成 ${E.blocks[E.blocks.length-1].toFixed(3)}；與基本策略的一致率 ${(E.agree[0]*100).toFixed(0)}% → ${(E.agree[E.agree.length-1]*100).toFixed(0)}%。`,
+  bj_fly:E=>`每手結束後的學習方向：輸了，懲罰多巴胺減弱通往「趨近型」輸出神經元的突觸，這手聞過的情境＋動作以後聞起來更差；贏了，獎賞多巴胺減弱通往「迴避型」的突觸，聞起來更好。種子 0 每 2,000 手的平均輸贏從 ${E.blocks[0].toFixed(3)} 變成 ${E.blocks[E.blocks.length-1].toFixed(3)}；與基本策略的一致率 ${(E.agree[0]*100).toFixed(0)}% → ${(E.agree[E.agree.length-1]*100).toFixed(0)}%。20 個種子平均學完略好於永遠停牌，但這只在作者替 PN 定的活動量（0.7 到 1，人設）下成立；換成全部 1.0 或 0.45 到 1，學完就和永遠停牌分不出來，學了比不學好得多則不變。`,
   bj_nodopa:E=>`多巴胺神經元照常放電，但到輸出神經元的連結被切斷（影片中的紅叉），突觸不會改變；探索率照樣衰減。種子 0 整場停在 ${E.blocks[E.blocks.length-1].toFixed(3)} 左右，和隨機出牌差不多。`,
   bj_untrained:E=>`從頭到尾選好惡值最高的動作、不探索、不學習。未訓練的蕈狀體在策略表 260 格裡有 239 格要牌，常常爆牌，種子 0 每手平均 ${E.blocks[E.blocks.length-1].toFixed(3)}。`
 };
