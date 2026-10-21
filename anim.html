@@ -36,6 +36,7 @@ body.showdesc .desc{display:block}
 .anim-steps li.on{display:block}
 .anim-steps li b{color:var(--ink)}
 .desc .hint{color:var(--soft);margin:0}
+.desc .figsrc{margin:.4em 0 0;font-size:.8em;color:var(--soft)}
 body.clean{padding:0;grid-template-rows:minmax(0,1fr)}
 body.clean .anim-ctl,body.clean .desc{display:none!important}
 body.clean .anim-svg{border:0;border-radius:0}
@@ -2154,6 +2155,7 @@ body.clean .anim-svg{border:0;border-radius:0}
     <li class="on"><b>第 5 步　加總成好惡值。</b>每顆 MBON 乘它的標記再全部加起來。圖上 MBON 依標記排成兩堆：上面 56 顆 +1（趨近型）、下面 41 顆 −1（迴避型）。加分堆 1.618、扣分堆 1.375，相減得到配「要牌」的好惡值 0.243。</li>
     <li><b>第 6 步　三個動作各算一次，選最高。</b>同一手牌配停牌、配加倍再各走一遍步驟 1 到 5：PN 只換「動作」那組。三個好惡值：要牌 0.2432、停牌 0.1681、加倍 0.0185，選最高的要牌。用上面的按鈕切換三個動作，看 PN、KC、MBON 怎麼跟著換；細節在六步下面的「第 6 步的細節」。</li>
   </ol>
+  <p class="figsrc">數字出處：打牌種子 0 第 1 手，由 scripts/anim_data.py 用作者的 flybrain/mb/model.py 算出，存在 out/blackjack/anim_data.json；圖由 scripts/make_anim.py 產生。說明全文：https://marginli.github.io/bsc-flyblackjack/part1-what.html</p>
 </div>
 <script>
 (function(){

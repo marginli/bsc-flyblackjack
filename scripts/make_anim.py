@@ -243,6 +243,7 @@ alone = build(prefix="anim", box_id="p1anim", name="蕈狀體：三條式子走�
               doc="PART 1 圖 2 的單獨版", gen="scripts/make_anim.py",
               params="?s=0..6（從第幾步開始）&a=hit|stand|double（第 6 步的動作）&clean=1（只留圖，截圖用）",
               hint="按「下一步 →」開始。六步走完同一手牌的第一個決定：硬 20 對莊家 8、前兩張。",
-              n_steps=6, ctl=ctl, svg=svg, ol=ol, script=script)
+              n_steps=6, ctl=ctl, svg=svg, ol=ol, script=script,
+              src="數字出處：打牌種子 0 第 1 手，由 scripts/anim_data.py 用作者的 flybrain/mb/model.py 算出，存在 out/blackjack/anim_data.json；圖由 scripts/make_anim.py 產生。說明全文：https://marginli.github.io/bsc-flyblackjack/part1-what.html")
 open(os.path.join(D, "anim.html"), "w", encoding="utf-8").write(alone)
 print("寫入 anim.html", len(alone) // 1024, "KB")

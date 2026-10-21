@@ -39,6 +39,7 @@ body.showdesc .desc{display:block}
 .anim-steps li.on{display:block}
 .anim-steps li b{color:var(--ink)}
 .desc .hint{color:var(--soft);margin:0}
+.desc .figsrc{margin:.4em 0 0;font-size:.8em;color:var(--soft)}
 body.clean{padding:0;grid-template-rows:minmax(0,1fr)}
 body.clean .anim-ctl,body.clean .desc{display:none!important}
 body.clean .anim-svg{border:0;border-radius:0}
@@ -52,6 +53,7 @@ body.clean .anim-svg{border:0;border-radius:0}
 <div class="desc" id="desc">
   <p class="hint" id="descHint">%HINT%</p>
   %OL%
+  <p class="figsrc">%SRC%</p>
 </div>
 %SCRIPT%
 <script>
@@ -91,8 +93,9 @@ body.clean .anim-svg{border:0;border-radius:0}
 '''
 
 
-def build(*, prefix, box_id, name, title, doc, gen, params, hint, n_steps, ctl, svg, ol, script):
-    """prefix：按鈕 id 的開頭（anim、lrn）；box_id：頁面裡包住整張圖的 div id（p1anim、p1learn）。"""
+def build(*, prefix, box_id, name, title, doc, gen, params, hint, n_steps, ctl, svg, ol, script, src):
+    """prefix：按鈕 id 的開頭（anim、lrn）；box_id：頁面裡包住整張圖的 div id（p1anim、p1learn）。
+    src：出處行（數字存在 out/ 哪裡），放在說明區最下面，按「說明」才看得到。"""
     c = (ctl.replace(f'<div class="anim" id="{box_id}">\n', f'<div id="{box_id}" style="display:contents">\n')
          .replace('  <div class="anim-ctl">\n', f'  <div class="anim-ctl">\n    <span class="name">{name}</span>\n', 1))
     k = c.rindex("\n  </div>\n")
@@ -103,7 +106,7 @@ def build(*, prefix, box_id, name, title, doc, gen, params, hint, n_steps, ctl, 
     s = script.replace(f'document.querySelector("#{box_id} .anim-svg")', 'document.querySelector(".anim-svg")')
     assert s != script
     out = TEMPLATE
-    for key, v in (("%TITLE%", title), ("%DOC%", doc), ("%GEN%", gen), ("%PARAMS%", params), ("%HINT%", hint),
+    for key, v in (("%TITLE%", title), ("%DOC%", doc), ("%GEN%", gen), ("%PARAMS%", params), ("%HINT%", hint), ("%SRC%", src),
                    ("%N%", str(n_steps)), ("%P%", prefix), ("%CTL%", c), ("%SVG%", svg), ("%OL%", ol), ("%SCRIPT%", s)):
         out = out.replace(key, v)
     return out

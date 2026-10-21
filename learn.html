@@ -36,6 +36,7 @@ body.showdesc .desc{display:block}
 .anim-steps li.on{display:block}
 .anim-steps li b{color:var(--ink)}
 .desc .hint{color:var(--soft);margin:0}
+.desc .figsrc{margin:.4em 0 0;font-size:.8em;color:var(--soft)}
 body.clean{padding:0;grid-template-rows:minmax(0,1fr)}
 body.clean .anim-ctl,body.clean .desc{display:none!important}
 body.clean .anim-svg{border:0;border-radius:0}
@@ -1672,6 +1673,7 @@ body.clean .anim-svg{border:0;border-radius:0}
     <li><b>第 4 步　回復。</b>式子的第二行：所有連結都往 1 拉回一點。增益還是 1 的不變；剛被削弱的只拉回百萬分之一左右，這一次看不出來，要累積很多次呈現才有作用。</li>
     <li><b>第 5 步　好惡值變了。</b>被削弱的多半是趨近型（加分），所以要牌的好惡值從 0.2432 降到 0.2245。停牌、加倍也降了一點（0.1681 → 0.1636、0.0185 → 0.0138），因為它們的代碼和要牌共用十幾顆 KC。要牌仍最高，細節在下面。</li>
   </ol>
+  <p class="figsrc">數字出處：打牌種子 0 第 1 手輸了之後的那次學習，由 scripts/learn_anim_data.py 呼叫作者的 FlyPlayer.outcome（flybrain/mb/blackjack.py）算出，存在 out/blackjack/learn_anim_data.json；圖由 scripts/make_learn_anim.py 產生。說明全文：https://marginli.github.io/bsc-flyblackjack/part1-what.html</p>
 </div>
 <script>
 (function(){

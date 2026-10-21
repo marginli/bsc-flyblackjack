@@ -183,6 +183,7 @@ alone = build(prefix="lrn", box_id="p1learn", name="蕈狀體：學習規則走�
               doc="PART 1 圖 3 的單獨版", gen="scripts/make_learn_anim.py",
               params="?s=0..5（從第幾步開始）&clean=1（只留圖，截圖用）",
               hint="按「下一步 →」開始。五步走完第 1 手輸了之後的一次學習：硬 20 對莊家 8 選了要牌、爆牌輸一注。",
-              n_steps=5, ctl=ctl, svg=svg, ol=ol, script=script)
+              n_steps=5, ctl=ctl, svg=svg, ol=ol, script=script,
+              src="數字出處：打牌種子 0 第 1 手輸了之後的那次學習，由 scripts/learn_anim_data.py 呼叫作者的 FlyPlayer.outcome（flybrain/mb/blackjack.py）算出，存在 out/blackjack/learn_anim_data.json；圖由 scripts/make_learn_anim.py 產生。說明全文：https://marginli.github.io/bsc-flyblackjack/part1-what.html")
 open(os.path.join(D, "learn.html"), "w", encoding="utf-8").write(alone)
 print("寫入 learn.html", len(alone) // 1024, "KB")
