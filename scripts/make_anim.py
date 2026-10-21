@@ -116,7 +116,7 @@ st, sd = A["actions"]["stand"], A["actions"]["double"]
 by = hit["pn_lit_by_feature"]
 steps = [
     ("牌面變成 PN 的活動",
-     f"這手的局面。硬 20：你手上 10＋10，沒有 A 算成 11；硬 20 再抽除了 A 以外都爆，軟手再抽一張不會爆（A 可以改算 1）。莊家 8：翻開的那張是 8，你做決定時只看得到它。前兩張：你還沒抽過牌，所以加倍也能選，三個動作都開著。編碼。這個局面拆成五項資訊：硬 20 是兩項（點數 20、硬手），加上明牌 8、前兩張、候選動作「要牌」，各選中一組 PN（哪一組對哪個值，是作者事先用固定亂數抽定的，人設，和這些 PN 在真果蠅裡聞什麼無關；第 5 節講）：點數 {by['total']} 顆、明牌 {by['upcard']} 顆、動作 {by['action']} 顆、軟硬 {by['soft']} 顆、前兩張 {by['first']} 顆，五組共 {hit['pn_lit'] + hit['pn_overlap']} 顆，其中 {hit['pn_overlap']} 顆被兩項資訊同時選中、只算一次，實際亮 {hit['pn_lit']} 顆，其餘 {hit['pn_dark']} 顆是 0。每顆被選中的 PN 各有一個 0.7 到 1 的固定數當活動量，動作那組乘 1.3，被同時選中的把兩邊相加；整欄超過 1 的有 {hit['pn_over_1']} 顆，多數是動作那組。圖上亮度照活動量。"),
+     f"這手的局面（本頁用詞：<b>牌面</b>＝自己手上的點數配莊家明牌；<b>局面</b>＝牌面再加上軟硬、是不是前兩張；<b>氣味</b>＝局面配一個候選動作）。硬 20：你手上 10＋10，沒有 A 算成 11；硬 20 再抽除了 A 以外都爆，軟手再抽一張不會爆（A 可以改算 1）。莊家 8：翻開的那張是 8，你做決定時只看得到它。前兩張：你還沒抽過牌，所以加倍也能選，三個動作都開著。編碼。這個局面拆成五項資訊：硬 20 是兩項（點數 20、硬手），加上明牌 8、前兩張、候選動作「要牌」，各選中一組 PN（哪一組對哪個值，是作者事先用固定亂數抽定的，人設，和這些 PN 在真果蠅裡聞什麼無關；第 5 節講）：點數 {by['total']} 顆、明牌 {by['upcard']} 顆、動作 {by['action']} 顆、軟硬 {by['soft']} 顆、前兩張 {by['first']} 顆，五組共 {hit['pn_lit'] + hit['pn_overlap']} 顆，其中 {hit['pn_overlap']} 顆被兩項資訊同時選中、只算一次，實際亮 {hit['pn_lit']} 顆，其餘 {hit['pn_dark']} 顆是 0。每顆被選中的 PN 各有一個 0.7 到 1 的固定數當活動量，動作那組乘 1.3，被同時選中的把兩邊相加；整欄超過 1 的有 {hit['pn_over_1']} 顆，多數是動作那組。圖上亮度照活動量。"),
     ("每顆 KC 收到多少",
      f"每顆 KC 把「收到的每顆 PN 的活動 × 那條連結的權重」加總；權重是突觸數除以該 KC 收到的 PN 突觸總數。1,200 顆裡 {hit['kc_drive_nonzero']} 顆收到非零的量（接到亮的 PN 才有），最高 {hit['kc_drive_max_3dp']}。圖上 KC 欄變成深淺不一。"),
     ("只留最高的 6%",
@@ -218,8 +218,8 @@ script = '''<script>
 script = script % (js_data, KC_COLS, KC_SP, KC_X, KC_Y, MB_X, MB_Y, MB_H, MB_W)
 detail6 = (f'<details class="note"><summary>第 6 步的細節</summary>'
            f'<p>PN 怎麼換：不換的四組共 {A["pn_fixed_sum"]} 顆，其中被兩組同時選中的只算一次，是 {A["pn_fixed_union"]} 顆，加上要牌與停牌的動作組碰巧撞到的 {A["pn_action_shared_hit_stand"]} 顆，所以要牌與停牌亮的 PN 有 {A["pn_shared_hit_stand"]} 顆相同。</p>'
-           f'<p>KC 為什麼幾乎全換（{A["k_winners"]} 顆裡只有 {A["kc_shared_hit_stand"]} 顆相同）：動作那組乘了 1.3，是推得最用力的一組，換動作等於換掉最強的 36 顆輸入，每顆 KC 收到的總量都跟著動，前 {A["k_winners"]} 名的名單就大洗牌；作者要的正是「三種氣味只差在動作、但代碼差很多」。</p>'
-           f'<p>這一手的後續：模型有時會不看好惡值、隨機選一個動作（第 5 節叫探索），實跑裡這一手沒有，是照好惡值選的。接著抽到 6，爆牌，輸一注，懲罰多巴胺送出去（第 4 節）。基本策略（賭場數學算出來的公開最佳打法表，第 5 節）在 20 點該停牌；沒學過的果蠅在 20 點還要牌，第 5 節會解釋。</p>'
+           f'<p>KC 為什麼幾乎全換（{A["k_winners"]} 顆裡只有 {A["kc_shared_hit_stand"]} 顆相同）：動作那組乘了 1.3，是推得最用力的一組，換動作等於換掉最強的 36 顆輸入，每顆 KC 收到的總量都跟著動，前 {A["k_winners"]} 名的名單就大洗牌；作者在 Situation（作者程式裡把牌面變成 PN 輸入的那一段）的註解裡寫，動作給最寬的代碼，「因為選擇正是要學的東西」；三種氣味只差在動作、代碼卻差很多，就是這個設計的結果。</p>'
+           f'<p>這一手的後續：模型有時會不看好惡值、隨機選一個動作（第 5 節叫探索），實跑裡這個決定沒有亂選，是照好惡值選的。接著抽到 6，爆牌，輸一注，懲罰多巴胺送出去（第 4 節）。基本策略（賭場數學算出來的公開最佳打法表，第 5 節）在 20 點該停牌；沒學過的果蠅在 20 點還要牌：它幾乎每格都選要牌，為什麼偏要牌，見第 5 節「未訓練的對照值」那段。</p>'
            f'</details>')
 rules_html = '  <p><b>先懂這手牌（沒玩過 21 點的人看這段；第 5 節有作者簡化的幾條）。</b>' + RULES + '</p>\n'
 frag = "<!-- anim:start -->\n" + rules_html + ctl + svg + "\n  " + ol + "\n  " + detail6 + "\n  " + cap + "\n</div>\n" + script + "\n<!-- anim:end -->"
@@ -233,3 +233,105 @@ else:
     page = page.replace(anchor, frag + "\n" + anchor)
 open(PAGE, "w", encoding="utf-8").write(page)
 print("寫入 part1-what.html")
+
+# ── 單獨頁 anim.html：給簡報嵌入或離線開（同一份 SVG、按鈕、六步文字與腳本） ─────────
+STANDALONE = '''<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<title>三條式子走一遍｜蕈狀體學 21 點</title>
+<style>
+/* PART 1 圖 2 的單獨版：給簡報嵌入（PowerPoint 增益集）或離線用瀏覽器全螢幕開。由 scripts/make_anim.py 產生，不要手改。
+   單一檔案、不依賴其他檔，file:// 也能用。版面照視窗大小縮放，16:9 剛好填滿。
+   網址參數：?s=0..6（從第幾步開始）&a=hit|stand|double（第 6 步的動作）&clean=1（只留圖，截圖用） */
+:root{--ink:#1b2733;--soft:#5a6b7b;--faint:#8b98a5;--border:#e4e8ee;--panel:#f7f8fa;--accent:#2563eb;--accent-soft:#eef3fe;--fs:clamp(11px,1.05vw,24px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#fff;color:var(--ink);font-size:var(--fs);line-height:1.6;
+  font-family:-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei","PingFang TC",Roboto,Helvetica,Arial,sans-serif;
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.5em;padding:.7em 1em;overflow:hidden}
+.anim-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:.5em}
+.name{font-weight:700;margin-right:.6em}
+.anim-btn,.anim-act,.pbtn{font:inherit;font-size:.95em;padding:.2em .8em;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--ink);cursor:pointer}
+.anim-btn:disabled{opacity:.4;cursor:default}
+.anim-btn:hover:not(:disabled),.anim-act:hover,.pbtn:hover{border-color:var(--accent)}
+.anim-btn:focus-visible,.anim-act:focus-visible,.pbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.anim-step{font-weight:700;color:var(--accent);min-width:6em;text-align:center}
+.anim-acts{color:var(--soft);display:flex;gap:.35em;align-items:center}
+.anim-act.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.right{margin-left:auto;display:flex;gap:.4em;align-items:center}
+.pbtn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stage{min-height:0;display:flex;justify-content:center;align-items:center}
+.anim-svg{display:block;height:100%;width:auto;max-width:100%;border:1px solid var(--border);border-radius:8px;background:#fff}
+.desc{display:none;max-height:26vh;overflow:auto;border-top:1px solid var(--border);padding-top:.3em}
+body.showdesc .desc{display:block}
+.anim-steps{margin:0;padding:0;list-style:none;font-size:.95em}
+.anim-steps li{display:none;padding:.2em .7em;border-left:3px solid var(--accent);background:var(--accent-soft)}
+.anim-steps li.on{display:block}
+.anim-steps li b{color:var(--ink)}
+.desc .hint{color:var(--soft);margin:0}
+body.clean{padding:0;grid-template-rows:minmax(0,1fr)}
+body.clean .anim-ctl,body.clean .desc{display:none!important}
+body.clean .anim-svg{border:0;border-radius:0}
+</style>
+</head>
+<body>
+%CTL%
+<div class="stage">
+%SVG%
+</div>
+<div class="desc" id="desc">
+  <p class="hint" id="descHint">按「下一步 →」開始。六步走完同一手牌的第一個決定：硬 20 對莊家 8、前兩張。</p>
+  %OL%
+</div>
+%SCRIPT%
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var next = $("animNext"), prev = $("animPrev"), q = new URLSearchParams(location.search);
+  var curStep = function(){ var t = $("animStep").textContent; var m = t.match(/第 (\\d) 步/); return m ? +m[1] : 0; };
+  function syncHint(){ $("descHint").style.display = curStep()===0 ? "block" : "none"; }
+  next.addEventListener("click", syncHint); prev.addEventListener("click", syncHint);
+  if(q.get("clean")==="1") document.body.classList.add("clean");
+  if(q.get("d")==="1") document.body.classList.add("showdesc");
+  var s0 = Math.max(0, Math.min(6, parseInt(q.get("s")||"0",10)||0));
+  for(var i=0;i<s0;i++) next.click();
+  var a0 = q.get("a"), btn = a0 && document.querySelector('#animActs .anim-act[data-act="'+a0+'"]');
+  if(btn && s0===6) btn.click();
+  syncHint();
+  var dBtn = $("animDesc");
+  dBtn.onclick = function(){ var on = document.body.classList.toggle("showdesc"); dBtn.setAttribute("aria-pressed", on); };
+  dBtn.setAttribute("aria-pressed", document.body.classList.contains("showdesc"));
+  var fs = $("animFull"), de = document.documentElement;
+  if(!(document.fullscreenEnabled||document.webkitFullscreenEnabled)) fs.style.display = "none";
+  fs.onclick = function(){ if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen||document.webkitExitFullscreen).call(document); else (de.requestFullscreen||de.webkitRequestFullscreen).call(de); };
+  document.addEventListener("keydown", function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey) return;
+    var k = e.key;
+    if(k==="ArrowRight"||k==="PageDown"||k===" "){ e.preventDefault(); if(!next.disabled) next.click(); }
+    else if(k==="ArrowLeft"||k==="PageUp"){ e.preventDefault(); if(!prev.disabled) prev.click(); }
+    else if(k==="Home"){ e.preventDefault(); while(!prev.disabled) prev.click(); }
+    else if("123".indexOf(k)>=0 && k.length===1){ while(!next.disabled) next.click(); document.querySelectorAll("#animActs .anim-act")[+k-1].click(); }
+    else if(k==="d"||k==="D") dBtn.click();
+    else if(k==="f"||k==="F") fs.click();
+  });
+})();
+</script>
+</body>
+</html>
+'''
+ctl_alone = (ctl.replace('<div class="anim" id="p1anim">\n', '<div id="p1anim" style="display:contents">\n')
+             .replace('  <div class="anim-ctl">\n', '  <div class="anim-ctl">\n    <span class="name">蕈狀體：三條式子走一遍</span>\n', 1)
+             .replace('</span>\n  </div>\n', '</span>\n    <span class="right"><button type="button" class="pbtn" id="animDesc" aria-pressed="false">說明</button>'
+                      '<button type="button" class="pbtn" id="animFull">全螢幕</button></span>\n  </div>\n</div>', 1))
+assert ctl_alone.count('id="animDesc"') == 1 and ctl_alone.count("</div>\n</div>") == 1
+# 單獨頁裡 SVG 不在 #p1anim 底下，腳本的選擇器改成直接找 .anim-svg
+script_alone = script.replace('document.querySelector("#p1anim .anim-svg")', 'document.querySelector(".anim-svg")')
+assert script_alone != script
+alone = (STANDALONE.replace("%CTL%", ctl_alone).replace("%SVG%", svg).replace("%OL%", ol)
+         .replace("%SCRIPT%", script_alone))
+open(os.path.join(D, "anim.html"), "w", encoding="utf-8").write(alone)
+print("寫入 anim.html", len(alone) // 1024, "KB")
