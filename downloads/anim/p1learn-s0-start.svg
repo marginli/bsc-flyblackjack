@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 960 580" role="img" aria-labelledby="lrnTitle" xmlns="http://www.w3.org/2000/svg" width="960" height="580" font-family="&quot;Microsoft JhengHei&quot;,&quot;Noto Sans TC&quot;,&quot;PingFang TC&quot;,&quot;Segoe UI&quot;,sans-serif"><rect width="100%" height="100%" fill="#fff"></rect>
+<title id="lrnTitle">第 1 手輸了之後的一次學習：72 顆亮的 KC、每顆 MBON 收到的多巴胺、MBON 活動與它減少的量</title>
+<text id="lrnHead" x="24" y="34" font-size="17" font-weight="700" fill="#1b2733">開始：第 1 手剛結束</text>
+<text x="24" y="58" font-size="13" fill="#5a6b7b">第 1 手：硬 20 對莊家 8 選了要牌 → 抽到 6 爆牌 → 輸一注 → 懲罰強度 0.5</text>
+<text x="115" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">KC　1,200 顆</text>
+<text x="350" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">收到的多巴胺</text>
+<text x="510" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">MBON 活動　97 顆</text>
+<text x="700" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">活動減少的量 ×50</text>
+<text x="850" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#5a6b7b">好惡值</text>
+
+
+
+
+
+
+
+<line x1="294" y1="347.2" x2="766" y2="347.2" stroke="#8b98a5" stroke-dasharray="3 3"></line>
+<text x="300" y="106" font-size="11" fill="#2563eb">上面 56 顆：標記 +1（趨近型）</text>
+<text x="300" y="531" font-size="11" fill="#d97706">下面 41 顆：標記 −1（迴避型）</text>
+
+
+<text x="24" y="566" font-size="12" fill="#8b98a5">KC 每顆一點、MBON 每顆一條，全部畫出。線：每顆亮的 KC 只畫它推得最用力的那一條。最右欄放大 50 倍，原尺寸看不出來。</text>
+</svg>

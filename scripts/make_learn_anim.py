@@ -2,7 +2,7 @@
 重新呈現 → 送多巴胺 → 削弱 → 回復 → 好惡值變了。
 數字讀 out/blackjack/learn_anim_data.json（scripts/learn_anim_data.py 用作者的 FlyPlayer.outcome 算的）與
 out/blackjack/anim_data.json（圖 2 的 72 顆 KC 與每顆 KC 推得最用力的 MBON）。
-產出：part1-what.html 裡 <!-- learn:start --> … <!-- learn:end --> 之間的片段。
+產出：part1-what.html 裡 <!-- learn:start --> … <!-- learn:end --> 之間的片段，與單獨頁 learn.html（給簡報嵌入或離線開）。
 沒有 JavaScript 時看到的是第 3 步（削弱）的靜態圖。
 用法：python3 scripts/make_learn_anim.py"""
 import json
@@ -135,11 +135,11 @@ detail = (f'<details class="note"><summary>圖 3 的細節</summary>'
           f'<p>為什麼只動到 {L["n_links_cut"]} 條：一顆 KC 只連到少數幾顆 MBON，72 顆亮的 KC 一共連出 {L["n_links_kc_lit"]} 條，其中 {L["n_links_cut"]} 條通往收到多巴胺的 MBON。最多減 {L["cut_max"]} ＝ 0.05 × KC 活動 1 × 多巴胺 0.5：出現在最亮的 KC（活動 1）通往只接 PPL1 的 MBON（多巴胺是滿的 0.5）的連結上。</p>'
           f'<p>為什麼好惡值往負走：好惡值＝加分堆 − 扣分堆。學之前加分堆 {sp:.3f}、扣分堆 {sm:.3f}；學之後加分堆 {L["sum_plus_after"]:.3f}、扣分堆 {L["sum_minus_after"]:.3f}。懲罰多巴胺多半送到趨近型，所以加分堆少得多、扣分堆幾乎不動，相減就變小。</p>'
           f'<p>停牌、加倍為什麼也跟著降：削弱的是「亮的 KC → MBON」這些連結本身，不是「要牌」這個動作。停牌的 72 顆 KC 有 {L["kc_shared_hit_stand"]} 顆和要牌相同、加倍有 {L["kc_shared_hit_double"]} 顆，這些 KC 的連結被削弱了，停牌、加倍算好惡值時也會用到。共用得少，所以降得少。</p>'
-          f'<p>一次學習改變多少：要牌只降了 {VB["hit"] - VA["hit"]:.4f}，仍比停牌高 {VA["hit"] - VA["stand"]:.4f}。單看這一次，下次遇到同樣的局面還是會選要牌；要多輸幾次、把差距削掉，選擇才會換。這就是為什麼一次訓練要打 30,000 手。</p>'
+          f'<p>一次學習改變多少：要牌只降了 {VB["hit"] - VA["hit"]:.4f}，仍比停牌高 {VA["hit"] - VA["stand"]:.4f}。單看這一次，下次遇到同樣的局面還是會選要牌；要多輸幾次、把差距削掉，選擇才會換。而同一個局面配同一個動作很少重複出現（種子 0 的 30,000 手裡出現過 422 種局面：「前兩張」也是編碼的一項，同一個點數的第一個決定和之後的決定是兩種局面，第一個決定 260 種、之後的決定 162 種；這 260 種含硬 4、軟 12、不含硬 21、軟 21，和第 5 節拿來評分的那張 260 格表（每格一種點數、軟硬配明牌，一律當成第一個決定）不是同一組，只是數目碰巧相同；每個局面兩三個動作；本頁用詞對照：牌面＝自己手上的點數配莊家明牌；局面＝牌面再加上軟硬、是不是第一個決定；氣味＝局面配一個候選動作；一致率表上的一「格」＝一種（點數、軟硬、明牌），一律當成第一個決定來填），同一個局面配同一個動作可能要隔幾百手才遇到一次，而每個局面大致得各自輸好幾次才會換（削弱其實也會透過共用的 KC 擴散到別的局面，第 5 節），所以一次訓練要打很多手（作者設 30,000 手）。</p>'
           f'<p>回復的量：0.00005 × (1 − {L["gain_min_after"]}) ＝ {L["decay_on_min_txt"]}。制約實驗那組（0.012）回復得快 240 倍，所以 21 點刻意放慢，見本節「兩個作者設定的數」。</p>'
           f'</details>')
 cap = (f'<p class="anim-cap"><b>圖 3　學習規則走一遍：第 1 手輸了之後的一次呈現。</b>按「上一步」「下一步」一步一步走，每一步的說明在圖下。'
-       f'<span class="figsrc">例子接著圖 2：同一次訓練（打牌種子 0）的第 1 手，選了要牌、爆牌輸一注。這是整個訓練的第一次學習，學之前增益全是 1，所以每個數都能重算；學之前的三個好惡值與 PART 5 錄下的實跑相同；學之後的三個值實跑沒有錄（PART 5 只錄了前 6 手與最後 6 手的決定），是用作者這支學習程式直接算的。數字由 <code>scripts/learn_anim_data.py</code> 呼叫作者的 <code>FlyPlayer.outcome</code>（<code>flybrain/mb/blackjack.py</code>）算出，存在 <code>out/blackjack/learn_anim_data.json</code>；圖由 <code>scripts/make_learn_anim.py</code> 產生。沒有 JavaScript 時看到的是第 3 步的靜態圖。</span></p>')
+       f'<span class="figsrc">例子接著圖 2：同一次訓練（打牌種子 0）的第 1 手，選了要牌、爆牌輸一注。這是整個訓練的第一次學習，學之前增益全是 1，所以每個數都能重算；學之前的三個好惡值與 PART 5 錄下的實跑相同；學之後的三個值實跑沒有錄（PART 5 只錄了前 6 手與最後 6 手的決定），是用作者這支學習程式直接算的。數字由 <code>scripts/learn_anim_data.py</code> 呼叫作者的 <code>FlyPlayer.outcome</code>（FlyPlayer 是作者程式裡負責選動作與學習的那一段，outcome 是一手結束後送回饋的那一步；<code>flybrain/mb/blackjack.py</code>）算出，存在 <code>out/blackjack/learn_anim_data.json</code>；圖由 <code>scripts/make_learn_anim.py</code> 產生。沒有 JavaScript 時看到的是第 3 步的靜態圖。</span></p>')
 script = '''<script>
 (function(){
   var TITLES = %s;
@@ -173,3 +173,16 @@ else:
     page = page.replace(anchor, "  <p><b>整條規則走一遍。</b>下面圖 3 接著圖 2 的那一手：硬 20 對 8 選了要牌、爆牌輸了，看一次呈現怎麼改動連結、好惡值怎麼跟著變。</p>\n" + frag + "\n" + anchor)
 open(PAGE, "w", encoding="utf-8").write(page)
 print("寫入 part1-what.html，片段", len(frag), "字元")
+
+# ── 單獨頁 learn.html：給簡報嵌入或離線開（同一份 SVG、按鈕、五步文字與腳本；版型在 standalone_page.py） ─────────
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from standalone_page import build
+
+alone = build(prefix="lrn", box_id="p1learn", name="蕈狀體：學習規則走一遍", title="學習規則走一遍",
+              doc="PART 1 圖 3 的單獨版", gen="scripts/make_learn_anim.py",
+              params="?s=0..5（從第幾步開始）&clean=1（只留圖，截圖用）",
+              hint="按「下一步 →」開始。五步走完第 1 手輸了之後的一次學習：硬 20 對莊家 8 選了要牌、爆牌輸一注。",
+              n_steps=5, ctl=ctl, svg=svg, ol=ol, script=script)
+open(os.path.join(D, "learn.html"), "w", encoding="utf-8").write(alone)
+print("寫入 learn.html", len(alone) // 1024, "KB")

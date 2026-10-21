@@ -19,7 +19,7 @@ BSC 專題課程（**重現型**，規範見 `../types/repro.md`）。對象是�
 | `part5-demo.html` | PART 5　逐手看蕈狀體怎麼打（三支影片的互動播放） |
 | `part6-code.html` | PART 6　讀程式：一鍵重跑的三層（兩支 shell script → 六支 Python 程式 → model.py、blackjack.py）；程式區塊由 `scripts/make_code.py` 產生 |
 | `player.html` | PART 5 播放台的單獨頁（給簡報嵌入或離線開）：版面配合 16:9、網址參數 `?b=` `&h=`、鍵盤操作；播放邏輯照抄 `part5-demo.html`，改那邊要一起改這裡 |
-| `anim.html` | PART 1 圖 2（三條式子走一遍）的單獨頁（給簡報嵌入或離線開，單一檔案）：版面配合 16:9、網址參數 `?s=` `&a=` `&clean=1`、鍵盤操作；由 `scripts/make_anim.py` 和 PART 1 的片段一起產生，不要手改 |
+| `anim.html`、`learn.html` | PART 1 圖 2（三條式子走一遍）、圖 3（學習規則走一遍）的單獨頁（給簡報嵌入或離線開，單一檔案）：版面配合 16:9、網址參數 `?s=`（圖 2 另有 `&a=`）`&clean=1`、鍵盤操作；分別由 `scripts/make_anim.py`、`make_learn_anim.py` 和 PART 1 的片段一起產生，共用版型在 `scripts/standalone_page.py`，不要手改。**圖 2、圖 3 的文字要改在產生程式裡，直接改頁面會在下次重產時被蓋掉** |
 
 ## 目錄
 
@@ -31,7 +31,7 @@ BSC 專題課程（**重現型**，規範見 `../types/repro.md`）。對象是�
 | `out/` | **頁面上每個數字的出處**：實跑的 JSON 與 log（`collect_out.py`）、可攜測試（`porttest.json`）、PART 5 的檢查點（`bj_demo_summary.json`）；`out/code_meta.json` 是 PART 6 用的行數與常數，由 `make_code.py` 從原檔抓 |
 | `pack/` | 學員下載包的原始檔（`setup_envs.sh`、`blackjack/run_all.sh`、`blackjack/scripts/`、`check.py`、`expected.json`）。2026-10-19 起只跑 21 點：BJ1 下載並切出蕈狀體、BJ2 21 點、BJ3 評分作者大腦檔、X1–X4 |
 | `downloads/flyblackjack-code.zip` | `pack/` 打包，附 `SHA256SUMS.txt`。改了 `pack/` 任何檔案都要重打包 |
-| `downloads/anim/` | PART 1 圖 2 的投影片用圖：九個畫面的 PNG 與 SVG，加上打包好的 `flyblackjack-anim.zip`（含 `anim.html`），由 `scripts/make_anim_images.py` 用無頭 Chrome 截出 |
+| `downloads/anim/` | PART 1 圖 2、圖 3 的投影片用圖：`p1anim-*`（九個畫面）、`p1learn-*`（六個畫面）的 PNG 與 SVG，加上 `flyblackjack-anim.zip`、`flyblackjack-learn.zip`（各含自己的單獨頁），由 `scripts/make_anim_images.py` 用無頭 Chrome 截出 |
 | `scripts/` | 收資料、產圖、產驗收表、整理影片資料、記錄可攜測試，四道稽核（`page_audit.py`、`content_audit.py`、`svg_audit.py`、`number_audit.py`），以及首頁說明影片的產生器（`video_slides.py` 投影片要點＋旁白稿、`make_video.py`、`video_check.py` 查旁白覆蓋、`video_verify.py` 查影音同步與辨識回填、`make_shots.py` 抽影片畫面） |
 | `_notes/` | 修正紀錄。**進 repo，但由 workflow 的 `rm -rf _notes` 擋在網站之外** |
 
@@ -42,7 +42,8 @@ BSC 專題課程（**重現型**，規範見 `../types/repro.md`）。對象是�
 python3 scripts/build_demo_data.py                # fly_play_game/demo → assets/demo/、out/demo_data.json、out/bj_demo_summary.json
 python3 scripts/make_player.py                    # assets/demo/data.json → assets/demo/data.js；打包 downloads/player/flyblackjack-player.zip（離線播放台）
 python3 scripts/make_anim.py                      # PART 1 圖 2 的片段 ＋ anim.html（單獨頁）
-~/anaconda3/bin/python scripts/make_anim_images.py   # anim.html → downloads/anim/（九個畫面的 PNG、SVG 與 zip）
+python3 scripts/make_learn_anim.py                # PART 1 圖 3 的片段 ＋ learn.html（單獨頁）
+~/anaconda3/bin/python scripts/make_anim_images.py   # anim.html、learn.html → downloads/anim/（PNG、SVG 與兩個 zip）
 ~/anaconda3/bin/python scripts/make_figures.py    # out/ → assets/*.png
 python3 scripts/make_expected.py                  # out/ → pack/expected.json，接著重打包 downloads/
 python3 scripts/make_code.py                      # PART 6 的程式區塊：從 pack/ 與本機 clone 的作者 repo（~/claude_bscai/fly_play_game/blackjack/repo）照抄；--check 只比對

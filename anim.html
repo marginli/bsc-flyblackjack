@@ -2240,7 +2240,7 @@ body.clean .anim-svg{border:0;border-radius:0}
     if(k==="ArrowRight"||k==="PageDown"||k===" "){ e.preventDefault(); if(!next.disabled) next.click(); }
     else if(k==="ArrowLeft"||k==="PageUp"){ e.preventDefault(); if(!prev.disabled) prev.click(); }
     else if(k==="Home"){ e.preventDefault(); while(!prev.disabled) prev.click(); }
-    else if("123".indexOf(k)>=0 && k.length===1){ while(!next.disabled) next.click(); document.querySelectorAll("#animActs .anim-act")[+k-1].click(); }
+    else if("123".indexOf(k)>=0 && k.length===1 && document.querySelectorAll("#animActs .anim-act").length){ while(!next.disabled) next.click(); document.querySelectorAll("#animActs .anim-act")[+k-1].click(); }
     else if(k==="d"||k==="D") dBtn.click();
     else if(k==="f"||k==="F") fs.click();
   });
