@@ -107,7 +107,7 @@
   <div class="plain"><b>白話：</b>一種氣味進來，1,200 顆 KC 裡只有 72 顆「亮」（亮＝活化＝活動量不是 0，本頁三個詞通用），哪 72 顆由氣味決定——這就是這種氣味的代碼，換一種氣味就換一組。「只留最高的 6%」是作者用一個固定比例代替真實果蠅裡負責壓抑其他 KC 的那顆抑制神經元（APL），是人為設定。亮的 KC 沿著連結體量到的接線推動 97 顆 MBON；每顆 MBON 帶一個標記，趨近型加分、迴避型扣分，加總就是<b>好惡值</b>：正代表想靠近，負代表想躲。21 點裡的「氣味」是輸入：把這一手的牌面和一個候選動作合起來算成一種氣味（第 5 節講怎麼合）。動作明明是要選的東西，為什麼放進輸入：蕈狀體對一種輸入只算出一個好惡值（一個數），要比三個動作，只能把動作放進輸入、各算一次再比大小。做一個決定時，同一手牌配每個能選的動作（第一個決定是要牌、停牌、加倍三個，之後只有要牌、停牌兩個）各送進去一次，是幾種只差在動作那部分的氣味，各得一個好惡值，果蠅選最高的那個（偶爾不看好惡值、亂選一個，第 5 節的「探索」）。</div>
   <details class="note"><summary>APL 是什麼、「只留最高的 6%」和它差在哪</summary>
   <p><b>APL 是什麼。</b>APL（anterior paired lateral neuron）是蕈狀體裡一顆很大的抑制神經元，左右腦各一顆，放的傳導物質是 GABA（讓下游更安靜的那一種）。它的纖維鋪滿整個蕈狀體：KC 活動時會推動 APL，APL 再把抑制送回全部 KC；KC 整體愈活躍，APL 就愈強、壓得愈多。這種「輸出回頭壓自己」的接法叫<b>負回饋</b>。MaleCNS 裡量得到這兩顆：資料裡 4,064 顆 KC 有 4,063 顆送突觸給 APL（共 210,352 個突觸），APL 也送突觸回 4,063 顆 KC（共 196,200 個）。作者切蕈狀體時沒有收它。</p>
-  <p><b>為什麼要稀疏。</b>真實果蠅一種氣味通常只讓一小部分 KC 活化（常見的估計是 5% 到 10% 左右）。代碼稀疏，兩種氣味的代碼重疊就少，學習時削弱某一種氣味的連結，比較不會連帶改到另一種。實驗上把 APL 關掉，KC 的反應變多、代碼重疊變大，果蠅就比較分不出兩種相似的氣味（Lin 等人，2014，<i>Nature Neuroscience</i>）。放到 21 點：「硬 20 配要牌」和「硬 20 配停牌」的代碼要分得開，學到的教訓才不會混在一起；圖 2 第 6 步裡，兩者亮的 72 顆 KC 只有 12 顆相同。</p>
+  <p><b>為什麼要稀疏。</b>真實果蠅一種氣味通常只讓一小部分 KC 活化（約 5% 到 10%：Honegger 等人 2011 用鈣影像量到平均約 5%，沒有一種氣味超過 10%）。代碼稀疏，兩種氣味的代碼重疊就少，學習時削弱某一種氣味的連結，比較不會連帶改到另一種。實驗上把 APL 關掉，KC 的反應變多、代碼重疊變大，果蠅就比較分不出兩種相似的氣味；兩種差很多的氣味則照樣分得出來（Lin 等人，2014，<i>Nature Neuroscience</i>）。也就是說，稀疏的代碼主要是在幫忙分開「很像」的東西。放到 21 點：「硬 20 配要牌」和「硬 20 配停牌」的代碼要分得開，學到的教訓才不會混在一起；圖 2 第 6 步裡，兩者亮的 72 顆 KC 只有 12 顆相同。</p>
   <p><b>規則和真實 APL 差在哪。</b>作者的規則一般叫 k-winners-take-all（只讓前 k 名活動），在 <code>model.py</code> 裡是常數 <code>KC_SPARSITY = 0.06</code>（PART 6 第 6 節逐行講）。它抓住了「只有少數 KC 亮」這個結果，做法卻不一樣：</p>
   <ul>
     <li><b>亮幾顆</b>：規則每次固定 72 顆；真實 APL 的抑制跟著 KC 總活動變，輸入強弱不同，亮的顆數也不同。</li>
@@ -116,7 +116,7 @@
     <li><b>時間</b>：規則一步算完；真實的負回饋要 KC 與 APL 來回作用一段時間才穩定。</li>
   </ul>
   <p><b>作者為什麼不收 APL。</b>作者沒說。本課的推測（沒有查證）：模型裡的連結全部當成推高、也沒有時間步，要放進一顆會回頭抑制的 APL，得加上負的連結和「反覆算到穩定」的迴圈；一條固定比例的規則簡單得多，也一樣做得出稀疏的代碼（兩種做法學起來差多少，本課沒有比過）。代價是 6% 變成一個人選的數字，作者也沒說明為什麼是 6%。</p>
-  <p class="figsrc">APL 的顆數與突觸數由 <code>scripts/apl_counts.py</code> 從 MaleCNS 的連結表數出，存在 <code>out/blackjack/apl_counts.json</code>；作者註解原文是 “k-winners-take-all stands in for APL inhibition”（<code>model.py</code> 的 <code>kenyon_from_drive</code>）。</p>
+  <p class="figsrc">APL 的顆數與突觸數由 <code>scripts/apl_counts.py</code> 從 MaleCNS 的連結表數出，存在 <code>out/blackjack/apl_counts.json</code>；作者註解原文是 “k-winners-take-all stands in for APL inhibition”（<code>model.py</code> 的 <code>kenyon_from_drive</code>）。文獻：Lin, Bygrave, de Calignon, Lee &amp; Miesenböck (2014) Sparse, decorrelated odor coding in the mushroom body enhances learned odor discrimination. <i>Nature Neuroscience</i> 17: 559–568（<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4000970" target="_blank" rel="noopener">全文</a>；APL 左右各一顆、GABA、KC 與 APL 互為負回饋、關掉 APL 的三個結果都出自這篇）；Honegger, Campbell &amp; Turner (2011) Cellular-resolution population imaging reveals robust sparse coding in the <i>Drosophila</i> mushroom body. <i>Journal of Neuroscience</i> 31: 11772–11785（<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3180869" target="_blank" rel="noopener">全文</a>；約 5%、不超過 10%）。</p>
   </details>
   <div class="plain"><b>白話：連結為什麼沒有負的。</b>連結體直接量到的只有突觸數；一條連結是推高還是壓低下游的活動，要靠它釋放的傳導物質判斷（傳導物質：神經元在突觸放出的化學分子，有的種類讓下游更活躍，有的讓它更安靜）。MaleCNS 附有從影像猜出的傳導物質預測（PART 4 的 X4 用這份預測，拿作者的 ±1 標記去對文獻），作者在另一個實驗 Dino 的迴路裡也用它定了正負，但在蕈狀體這裡把四層連結全部當成推高，沒有說明理由（人設）。模型裡因此沒有壓低別人的連結，唯一的壓抑是「只留最高 6%」那條規則；要讓好惡值往負走，只能靠 MBON 的標記。</div>
 
